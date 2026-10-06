@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notifications — Teacher Portal — Classora</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <style>
+    .notif-row {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 18px 22px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: var(--transition);
+    }
+    .notif-row.unread {
+      border-left: 4px solid var(--primary-600);
+      background: rgba(238, 242, 255, 0.4);
+    }
+    .notif-row:hover {
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Teacher navigation">
+    <div class="sidebar-header">
+      <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
+        <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
+        <span style="color:var(--gray-900); font-size:1.125rem; font-weight:800;">Classora</span>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Main</span>
+      <a href="dashboard.html" class="sidebar-link" id="nav-dashboard">
+        <span class="sidebar-icon">🏠</span> Dashboard
+      </a>
+      <a href="profile.html" class="sidebar-link" id="nav-profile">
+        <span class="sidebar-icon">👤</span> My Profile
+      </a>
+
+      <span class="sidebar-section-label">Classroom</span>
+      <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
+        <span class="sidebar-icon">🏫</span> Classrooms
+        <span class="sidebar-badge">3</span>
+      </a>
+      <a href="students.html" class="sidebar-link" id="nav-students">
+        <span class="sidebar-icon">👥</span> Students
+      </a>
+      <a href="join-requests.html" class="sidebar-link" id="nav-join">
+        <span class="sidebar-icon">📩</span> Join Requests
+        <span class="sidebar-badge">2</span>
+      </a>
+
+      <span class="sidebar-section-label">Academic</span>
+      <a href="schedule.html" class="sidebar-link" id="nav-schedule">
+        <span class="sidebar-icon">📅</span> Schedule
+      </a>
+      <a href="exams.html" class="sidebar-link" id="nav-exams">
+        <span class="sidebar-icon">📝</span> Examinations
+      </a>
+      <a href="homework.html" class="sidebar-link" id="nav-homework">
+        <span class="sidebar-icon">📚</span> Homework
+      </a>
+      <a href="results.html" class="sidebar-link" id="nav-results">
+        <span class="sidebar-icon">📊</span> Results
+      </a>
+      <a href="progress.html" class="sidebar-link" id="nav-progress">
+        <span class="sidebar-icon">📈</span> Progress
+      </a>
+      <a href="notes.html" class="sidebar-link" id="nav-notes">
+        <span class="sidebar-icon">🗒️</span> Notes
+      </a>
+
+      <span class="sidebar-section-label">System</span>
+      <a href="notifications.html" class="sidebar-link active" id="nav-notif">
+        <span class="sidebar-icon">🔔</span> Notifications
+        <span class="sidebar-badge" id="top-notif-count">0</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
+        <div class="user-avatar avatar-sm">T</div>
+        <div style="flex:1; min-width:0;">
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Teacher Workspace</div>
+          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Active</div>
+        </div>
+        <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
+      </div>
+      <div id="user-dropdown" style="position:absolute;bottom:80px;left:12px;right:12px;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);display:none;z-index:1000;" class="dropdown-menu">
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.875rem;color:var(--gray-700);border-radius:var(--radius-md) var(--radius-md) 0 0;" class="dropdown-item-link">👤 View Profile</a>
+        <a href="../login.html" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.875rem;color:var(--danger-600);border-radius:0 0 var(--radius-md) var(--radius-md);" class="dropdown-item-link">🚪 Sign Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <main class="dash-main" id="main-content">
+    <div class="dash-topbar">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="btn btn-icon btn-ghost" id="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;">☰</button>
+        <div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Activity Feed</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Notifications Center</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="btn btn-secondary btn-sm" onclick="markAllRead()">Mark all as read</button>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      
+      <div class="tabs">
+        <div class="tab active" onclick="filterNotifs('all', this)">All (0)</div>
+        <div class="tab" onclick="filterNotifs('request', this)">Join Requests (0)</div>
+        <div class="tab" onclick="filterNotifs('homework', this)">Homework (0)</div>
+        <div class="tab" onclick="filterNotifs('system', this)">System (0)</div>
+      </div>
+
+      <div id="notif-list">
+        
+        <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
+          <div style="font-size:3rem; margin-bottom:12px;">🔔</div>
+          <h3>No Notifications Yet</h3>
+          <p style="color:var(--gray-500); max-width:420px; margin:8px auto 0;">
+            When students request to join or turn in homework assignments, updates will appear here in real time.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-client.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  function markAllRead() {
+    document.querySelectorAll('.notif-row.unread').forEach(r => r.classList.remove('unread'));
+    document.getElementById('top-notif-count').textContent = '0';
+    showToast('All notifications marked as read', 'success');
+  }
+
+  function filterNotifs(type, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.notif-row').forEach(row => {
+      row.style.display = (type === 'all' || row.dataset.type === type) ? 'flex' : 'none';
+    });
+  }
+</script>
+</body>
+</html>

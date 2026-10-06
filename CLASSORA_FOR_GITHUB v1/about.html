@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Classora — Connected Academic Management</title>
+  <meta name="description" content="Discover how Classora simplifies academic management for private teachers and students with a unified, transparent platform."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <style>
+    .faq-item {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .faq-question {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--gray-900);
+      user-select: none;
+    }
+    .faq-question:hover {
+      background: var(--gray-50);
+    }
+    .faq-answer {
+      padding: 0 24px 20px 24px;
+      color: var(--gray-600);
+      line-height: 1.7;
+      display: none;
+    }
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+    .faq-icon {
+      transition: transform 0.2s ease;
+      font-size: 1.25rem;
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+    .hero-subpage {
+      padding: 140px 0 70px;
+      background: var(--grad-hero);
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .id-preview-box {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      backdrop-filter: blur(20px);
+      margin-top: 32px;
+      display: inline-block;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════ NAVBAR ════ -->
+  <header class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <div class="logo-icon">C</div>
+        <span>Classora</span>
+      </a>
+
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="search.html" class="nav-link">Directory</a>
+        <a href="about.html" class="nav-link active">About & Help</a>
+        <a href="teacher/dashboard.html" class="nav-link">Teachers</a>
+        <a href="student/dashboard.html" class="nav-link">Students</a>
+      </nav>
+
+      <div class="navbar-actions">
+        <button class="nav-search-btn" onclick="openGlobalSearch()" title="Search Teachers & Students (Ctrl+K)">
+          <span>🔍</span>
+          <span class="hide-mobile">Search</span>
+          <span class="kbd-hint hide-mobile">Ctrl K</span>
+        </button>
+        <a href="login.html" class="btn btn-ghost btn-sm hide-mobile">Sign In</a>
+        <a href="register-teacher.html" class="btn btn-primary btn-sm hide-mobile">Get Started</a>
+        <button class="btn btn-ghost btn-sm mobile-menu-btn" style="font-size:1.35rem; padding:6px 10px;" onclick="toggleMobileDrawer()" aria-label="Open mobile menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════ MOBILE DRAWER ════ -->
+  <div class="mobile-drawer-overlay" id="mobile-drawer-overlay" onclick="toggleMobileDrawer()">
+    <div class="mobile-drawer" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--gray-100); padding-bottom:12px;">
+        <div class="navbar-logo">
+          <div class="logo-icon">C</div>
+          <span>Classora</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="toggleMobileDrawer()" style="font-size:1.2rem;">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <a href="index.html" class="mobile-drawer-link">🏠 Home</a>
+        <a href="search.html" class="mobile-drawer-link">🔍 Directory Search</a>
+        <a href="about.html" class="mobile-drawer-link active">ℹ️ About & Help</a>
+        <a href="teacher/dashboard.html" class="mobile-drawer-link">🧑‍🏫 Teacher Portal</a>
+        <a href="student/dashboard.html" class="mobile-drawer-link">🎒 Student Portal</a>
+        <a href="#" class="mobile-drawer-link" onclick="event.preventDefault(); toggleMobileDrawer(); openGlobalSearch();">⚡ Quick Find (Name/ID)</a>
+      </div>
+      <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
+        <a href="login.html" class="btn btn-secondary btn-full">Sign In</a>
+        <a href="register-teacher.html" class="btn btn-primary btn-full">Register Account</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ HERO SUBPAGE ════ -->
+  <section class="hero-subpage">
+    <div class="container">
+      <span class="hero-badge">THE CLASSORA PHILOSOPHY</span>
+      <h1 style="color:#fff; margin-bottom: 16px;">Built for Teachers, Loved by Students</h1>
+      <p style="color: rgba(255,255,255,0.75); max-width: 680px; margin: 0 auto; font-size: 1.125rem;">
+        Classora replaces messy chat groups, scattered spreadsheets, and lost homework with a refined, single-point academic operating system.
+      </p>
+
+      <div class="id-preview-box">
+        <div style="font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.05em; color: var(--primary-200); text-transform: uppercase; margin-bottom: 8px;">The Universal Classora ID System</div>
+        <p style="color: rgba(255,255,255,0.85); font-size: 0.95rem; margin-bottom: 16px;">
+          Every student and educator is assigned a unique, permanent public identifier:
+        </p>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+          <div style="background: rgba(0,0,0,0.3); padding: 12px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">Teacher Identity Format</div>
+            <code style="color: #A5B4FC; font-size: 1.05rem; font-weight: 700;">TC5839201746</code>
+          </div>
+          <div style="background: rgba(0,0,0,0.3); padding: 12px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">Student Identity Format</div>
+            <code style="color: #34D399; font-size: 1.05rem; font-weight: 700;">ST7416382059</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ CORE VALUES ════ -->
+  <section class="section">
+    <div class="container">
+      <div style="text-align: center; max-width: 640px; margin: 0 auto 60px;">
+        <span class="badge badge-primary" style="margin-bottom: 12px;">CORE PRINCIPLES</span>
+        <h2>Why Traditional Software Fails Teachers</h2>
+        <p>Enterprise school ERPs are bloated, expensive, and designed for accountants, not educators. Classora gives teachers clean autonomy.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h4 style="margin-bottom: 8px;">Zero Bureaucracy</h4>
+          <p>Sign up in 30 seconds and your independent teacher workspace is provisioned immediately. No IT department approval needed.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h4 style="margin-bottom: 8px;">Permanent Identity</h4>
+          <p>Your Classora ID remains permanent across classes, academic years, and organisations. It identifies you without exposing credentials.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h4 style="margin-bottom: 8px;">Controlled Access</h4>
+          <p>Students submit Join Requests by Classora ID. Teachers have absolute control to approve, reject, or assign students to specific classes.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h4 style="margin-bottom: 8px;">Actionable Progress</h4>
+          <p>No useless data charts. Track homework turn-in rates, examination score trends, and pinpoint students needing guidance.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📑</div>
+          <h4 style="margin-bottom: 8px;">Formal Documents</h4>
+          <p>One-click generation of transcripts, report cards, syllabus materials, and assignment briefs ready for print or digital export.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h4 style="margin-bottom: 8px;">Data Integrity</h4>
+          <p>Mandatory email verification, authenticated grade publications, and tamper-resistant academic records.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ FAQ SECTION ════ -->
+  <section class="section" style="background: var(--gray-100);">
+    <div class="container" style="max-width: 800px;">
+      <div style="text-align: center; margin-bottom: 50px;">
+        <span class="badge badge-primary" style="margin-bottom: 12px;">FREQUENTLY ASKED QUESTIONS</span>
+        <h2>Everything You Need to Know</h2>
+        <p>Clarifications on accounts, Classora IDs, and platform usage.</p>
+      </div>
+
+      <div class="faq-item active">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>What is the difference between my Email and my Classora ID?</span>
+          <span class="faq-icon">▾</span>
+        </div>
+        <div class="faq-answer">
+          Your email address and password are your private authentication credentials used only to log into Classora. Your <strong>Classora ID</strong> (e.g. <code>TC5839201746</code> or <code>ST7416382059</code>) is your public academic badge. You share it with students or teachers so they can discover and connect with you without sharing your login details.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>Can students join multiple classrooms across different teachers?</span>
+          <span class="faq-icon">▾</span>
+        </div>
+        <div class="faq-answer">
+          Yes! A student maintains one permanent Classora ID and can belong to multiple classrooms (e.g., Physics with Ms. Sharma, Chemistry with Mr. Patel). Each classroom is isolated with its own syllabus, assignments, and grades.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>How does student onboarding work?</span>
+          <span class="faq-icon">▾</span>
+        </div>
+        <div class="faq-answer">
+          Students can pre-register independently on Classora to receive their ID. Then they either send a join request to a classroom code or the teacher invites them directly using their Student ID. Teachers approve requests with a single click.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>Can I change my registered email address later?</span>
+          <span class="faq-icon">▾</span>
+        </div>
+        <div class="faq-answer">
+          Yes. Classora permits email changes inside your Profile settings, protected by mandatory dual-email verification to guarantee account security.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+          <span>Are exam results published automatically or manually?</span>
+          <span class="faq-icon">▾</span>
+        </div>
+        <div class="faq-answer">
+          Teachers input marks in draft mode. When finalized, the teacher clicks "Publish Results," which instantly updates the student portals and triggers automated notifications.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ CTA SECTION ════ -->
+  <section class="section" style="text-align: center;">
+    <div class="container" style="max-width: 680px;">
+      <h2>Ready to modernize your classroom?</h2>
+      <p style="margin-bottom: 32px;">Join educators and students enjoying effortless academic collaboration.</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="register-teacher.html" class="btn btn-primary btn-lg">Register as Teacher</a>
+        <a href="register-student.html" class="btn btn-secondary btn-lg">Register as Student</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ FOOTER ════ -->
+  <footer style="background: var(--gray-900); color: rgba(255,255,255,0.7); padding: 60px 0 30px;">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 40px; margin-bottom: 30px;">
+        <div class="navbar-logo">
+          <div class="logo-icon">C</div>
+          <span style="color:#fff;">Classora</span>
+        </div>
+        <div style="display: flex; gap: 24px; font-size: 0.9rem;">
+          <a href="index.html" style="color: rgba(255,255,255,0.8);">Home</a>
+          <a href="about.html" style="color: #fff; font-weight: 600;">About & Help</a>
+          <a href="login.html" style="color: rgba(255,255,255,0.8);">Sign In</a>
+          <a href="teacher/dashboard.html" style="color: rgba(255,255,255,0.8);">Teacher Portal</a>
+          <a href="student/dashboard.html" style="color: rgba(255,255,255,0.8);">Student Portal</a>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; color: rgba(255,255,255,0.4);">
+        <div>&copy; 2026 Classora Platform. All rights reserved.</div>
+        <div>Based on Classora Blueprint v0.5</div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-container" id="toast-container"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

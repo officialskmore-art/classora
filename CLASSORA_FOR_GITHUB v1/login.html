@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In — Classora</title>
+  <meta name="description" content="Sign in to your Classora account — teacher or student login."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <style>
+    .auth-left-content { position:relative; z-index:1; max-width:420px; }
+    .auth-feature { display:flex; align-items:flex-start; gap:14px; margin-bottom:24px; }
+    .auth-feature-icon { width:44px; height:44px; border-radius:12px; background:rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; font-size:1.25rem; flex-shrink:0; }
+    .auth-feature-text h5 { color:#fff; font-weight:600; margin-bottom:4px; }
+    .auth-feature-text p  { color:rgba(255,255,255,0.65); font-size:0.875rem; line-height:1.6; }
+
+    .role-toggle { display:flex; background:var(--gray-100); border-radius:var(--radius-md); padding:4px; gap:4px; margin-bottom:28px; }
+    .role-btn {
+      flex:1; padding:10px; border-radius:calc(var(--radius-md) - 2px);
+      font-size:0.9rem; font-weight:600; color:var(--gray-500);
+      transition:var(--transition); text-align:center; cursor:pointer;
+    }
+    .role-btn.active { background:#fff; color:var(--primary-700); box-shadow:var(--shadow-sm); }
+  </style>
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- LEFT: Branding -->
+  <div class="auth-left">
+    <div class="auth-left-content">
+      <a href="index.html" class="navbar-logo" style="margin-bottom:48px; display:flex;">
+        <div class="logo-icon">C</div>
+        <span style="color:#fff; font-size:1.375rem; font-weight:800;">Classora</span>
+      </a>
+      <h2 style="color:#fff; font-size:2.25rem; margin-bottom:12px;">Welcome back<br/>to Classora</h2>
+      <p style="color:rgba(255,255,255,0.65); margin-bottom:48px; line-height:1.8;">Your academic management platform — organised, transparent, and useful.</p>
+
+      <div class="auth-feature">
+        <div class="auth-feature-icon">🏫</div>
+        <div class="auth-feature-text">
+          <h5>Manage Classrooms</h5>
+          <p>Create, organise and run your classes with full control over students and schedules.</p>
+        </div>
+      </div>
+      <div class="auth-feature">
+        <div class="auth-feature-icon">📊</div>
+        <div class="auth-feature-text">
+          <h5>Track Progress</h5>
+          <p>View real-time academic progress, results, and performance across all students.</p>
+        </div>
+      </div>
+      <div class="auth-feature">
+        <div class="auth-feature-icon">🪪</div>
+        <div class="auth-feature-text">
+          <h5>Classora ID System</h5>
+          <p>Permanent unique identities for every teacher and student — secure and simple.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="auth-right">
+    <div class="auth-form-wrapper">
+      <div class="auth-logo">
+        <a href="index.html" class="navbar-logo">
+          <div class="logo-icon">C</div>
+          <span style="color:var(--gray-900);">Classora</span>
+        </a>
+      </div>
+
+      <h2 class="auth-title">Sign in to your account</h2>
+      <p class="auth-subtitle">Don't have an account? <a href="register-teacher.html" style="color:var(--primary-600); font-weight:600;">Register here</a></p>
+
+      <!-- Role Toggle -->
+      <div class="role-toggle" role="tablist" aria-label="Select account type">
+        <div class="role-btn active" id="role-teacher" role="tab" aria-selected="true" onclick="switchRole('teacher')">🧑‍🏫 Teacher</div>
+        <div class="role-btn" id="role-student" role="tab" aria-selected="false" onclick="switchRole('student')">🎒 Student</div>
+      </div>
+
+      <!-- Google Sign In -->
+      <button class="google-btn" id="google-signin-btn" type="button">
+        <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#FFC107" d="M43.6 20.5H24v7h11.3c-1.6 4.4-5.8 7.6-11.3 7.6-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.3-5.3C33.8 5.6 29.2 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.2-.1-2.4-.1-3.5z"/>
+          <path fill="#FF3D00" d="M6.3 14.7l6.2 4.5C14.3 14.9 18.8 12 24 12c3 0 5.7 1.1 7.8 2.9l5.3-5.3C33.8 5.6 29.2 4 24 4 16.1 4 9.3 8.4 6.3 14.7z"/>
+          <path fill="#4CAF50" d="M24 44c5 0 9.6-1.7 13.2-4.6l-6-5.2C29.3 35.9 26.8 37 24 37c-5.4 0-9.6-3.2-11.3-7.6L6.4 34c3 6.3 9.8 10 17.6 10z"/>
+          <path fill="#1976D2" d="M43.6 20.5H24v7h11.3c-.7 2-2.1 3.7-3.9 5l6 5.2C41.1 34 44 29.4 44 24c0-1.2-.1-2.4-.4-3.5z"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <div class="divider">or sign in with email</div>
+
+      <!-- Login Form -->
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="email">Email address</label>
+          <div class="form-input-icon">
+            <span class="icon">📧</span>
+            <input class="form-input" type="email" id="email" name="email" placeholder="example@gmail.com" autocomplete="email" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password" style="display:flex; justify-content:space-between;">
+            Password
+            <a href="forgot-password.html" style="color:var(--primary-600); font-size:0.8rem; font-weight:500;">Forgot password?</a>
+          </label>
+          <div class="form-input-icon" style="position:relative;">
+            <span class="icon">🔒</span>
+            <input class="form-input" type="password" id="password" name="password" placeholder="Your password" autocomplete="current-password" required style="padding-right:48px;"/>
+            <button type="button" data-toggle-password="password" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;" aria-label="Toggle password visibility">👁️</button>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:24px;">
+          <input type="checkbox" id="remember" style="width:16px;height:16px;accent-color:var(--primary-600);cursor:pointer;"/>
+          <label for="remember" style="font-size:0.875rem;color:var(--gray-600);cursor:pointer;">Remember me for 30 days</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="login-btn">
+          Sign In
+        </button>
+
+        <p style="text-align:center; margin-top:20px; font-size:0.875rem; color:var(--gray-500);">
+          New to Classora? 
+          <a id="register-link" href="register-teacher.html" style="color:var(--primary-600); font-weight:600;">Create an account</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script>
+  let currentRole = 'teacher';
+
+  function switchRole(role) {
+    currentRole = role;
+    document.getElementById('role-teacher').classList.toggle('active', role === 'teacher');
+    document.getElementById('role-student').classList.toggle('active', role === 'student');
+    document.getElementById('register-link').href = role === 'teacher' ? 'register-teacher.html' : 'register-student.html';
+  }
+
+  // Email & Password login
+  document.getElementById('login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    let valid = true;
+
+    clearAllErrors(this);
+
+    if (!email)              { setError('email', 'Email is required'); valid = false; }
+    else if (!validateEmail(email)) { setError('email', 'Enter a valid email address'); valid = false; }
+
+    if (!password)           { setError('password', 'Password is required'); valid = false; }
+
+    if (!valid) return;
+
+    const btn = document.getElementById('login-btn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Signing in…';
+    btn.disabled = true;
+
+    try {
+      const res = await ClassoraAuth.signIn({ email, password });
+      if (!res.success) {
+        btn.textContent = originalText;
+        btn.disabled = false;
+        showToast(res.error || 'Invalid credentials or unconfirmed account.', 'error');
+        return;
+      }
+
+      showToast('Signed in successfully! Redirecting…', 'success');
+      const profile = res.profile || ClassoraAuth.getActiveProfile();
+      const isAdmin = email === 'kaitysnehasish@gmail.com';
+
+      if (!isAdmin && profile && profile.is_setup_completed !== true) {
+        setTimeout(() => {
+          window.location.href = 'setup-profile.html';
+        }, 500);
+        return;
+      }
+
+      const targetRole = (profile && profile.role) || currentRole;
+
+      setTimeout(() => {
+        if (isAdmin || targetRole === 'teacher') {
+          window.location.href = 'teacher/dashboard.html';
+        } else {
+          window.location.href = 'student/dashboard.html';
+        }
+      }, 700);
+    } catch (err) {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      showToast(err.message || 'Error communicating with Supabase', 'error');
+    }
+  });
+
+  // Google OAuth login
+  document.getElementById('google-signin-btn').addEventListener('click', async () => {
+    const btn = document.getElementById('google-signin-btn');
+    btn.style.opacity = '0.7';
+    btn.style.pointerEvents = 'none';
+    showToast(`Redirecting to Google for ${currentRole === 'teacher' ? 'Teacher' : 'Student'} sign-in…`, 'info');
+    try {
+      await ClassoraAuth.signInWithGoogle(currentRole);
+    } catch (err) {
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+      showToast('Could not start Google Sign-In: ' + err.message, 'error');
+    }
+  });
+</script>
+</body>
+</html>

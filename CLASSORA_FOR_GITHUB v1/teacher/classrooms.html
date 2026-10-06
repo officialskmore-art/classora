@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Classrooms — Teacher Portal — Classora</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <style>
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+    }
+    .class-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .class-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+    .class-card-header {
+      padding: 24px 24px 20px;
+      color: #fff;
+      position: relative;
+    }
+    .card-grad-1 { background: linear-gradient(135deg, #4F46E5, #7C3AED); }
+    .card-grad-2 { background: linear-gradient(135deg, #059669, #10B981); }
+    .card-grad-3 { background: linear-gradient(135deg, #D97706, #F59E0B); }
+    .card-grad-4 { background: linear-gradient(135deg, #2563EB, #38BDF8); }
+
+    .class-card-body {
+      padding: 20px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .class-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--gray-600);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+  </style>
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Teacher navigation">
+    <div class="sidebar-header">
+      <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
+        <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
+        <span style="color:var(--gray-900); font-size:1.125rem; font-weight:800;">Classora</span>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Main</span>
+      <a href="dashboard.html" class="sidebar-link" id="nav-dashboard">
+        <span class="sidebar-icon">🏠</span> Dashboard
+      </a>
+      <a href="profile.html" class="sidebar-link" id="nav-profile">
+        <span class="sidebar-icon">👤</span> My Profile
+      </a>
+
+      <span class="sidebar-section-label">Classroom</span>
+      <a href="classrooms.html" class="sidebar-link active" id="nav-classrooms">
+        <span class="sidebar-icon">🏫</span> Classrooms
+        <span class="sidebar-badge" id="class-badge-count">3</span>
+      </a>
+      <a href="students.html" class="sidebar-link" id="nav-students">
+        <span class="sidebar-icon">👥</span> Students
+      </a>
+      <a href="join-requests.html" class="sidebar-link" id="nav-join">
+        <span class="sidebar-icon">📩</span> Join Requests
+        <span class="sidebar-badge">2</span>
+      </a>
+
+      <span class="sidebar-section-label">Academic</span>
+      <a href="schedule.html" class="sidebar-link" id="nav-schedule">
+        <span class="sidebar-icon">📅</span> Schedule
+      </a>
+      <a href="exams.html" class="sidebar-link" id="nav-exams">
+        <span class="sidebar-icon">📝</span> Examinations
+      </a>
+      <a href="homework.html" class="sidebar-link" id="nav-homework">
+        <span class="sidebar-icon">📚</span> Homework
+      </a>
+      <a href="results.html" class="sidebar-link" id="nav-results">
+        <span class="sidebar-icon">📊</span> Results
+      </a>
+      <a href="progress.html" class="sidebar-link" id="nav-progress">
+        <span class="sidebar-icon">📈</span> Progress
+      </a>
+      <a href="notes.html" class="sidebar-link" id="nav-notes">
+        <span class="sidebar-icon">🗒️</span> Notes
+      </a>
+
+      <span class="sidebar-section-label">System</span>
+      <a href="notifications.html" class="sidebar-link" id="nav-notif">
+        <span class="sidebar-icon">🔔</span> Notifications
+        <span class="sidebar-badge">5</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
+        <div class="user-avatar avatar-sm">T</div>
+        <div style="flex:1; min-width:0;">
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Educator Portal</div>
+          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
+        </div>
+        <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
+      </div>
+      <div id="user-dropdown" style="position:absolute;bottom:80px;left:12px;right:12px;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);display:none;z-index:1000;" class="dropdown-menu">
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.875rem;color:var(--gray-700);border-radius:var(--radius-md) var(--radius-md) 0 0;" class="dropdown-item-link">👤 View Profile</a>
+        <a href="../login.html" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.875rem;color:var(--danger-600);border-radius:0 0 var(--radius-md) var(--radius-md);" class="dropdown-item-link">🚪 Sign Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <main class="dash-main" id="main-content">
+    <div class="dash-topbar">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="btn btn-icon btn-ghost" id="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;">☰</button>
+        <div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Academic Management</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">My Active Classrooms</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="btn btn-primary btn-sm" onclick="openModal('modal-new-class')">➕ Create Classroom</button>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      
+      <!-- Top Filters -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 16px;">
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-sm btn-primary filter-btn active" onclick="filterClasses('all', this)">All Classrooms</button>
+          <button class="btn btn-sm btn-ghost filter-btn" onclick="filterClasses('active', this)">Active</button>
+          <button class="btn btn-sm btn-ghost filter-btn" onclick="filterClasses('archived', this)">Archived</button>
+        </div>
+        <div class="search-input" style="min-width: 260px;">
+          <span>🔍</span>
+          <input type="text" placeholder="Search by name, subject, grade…" id="search-class-input" onkeyup="searchClasses()"/>
+        </div>
+      </div>
+
+      <!-- Classrooms Grid -->
+      <div class="class-grid" id="classrooms-container">
+        <div style="grid-column:1/-1; text-align:center; padding:64px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
+          <div style="font-size:3rem; margin-bottom:12px;">🏫</div>
+          <h3 style="margin-bottom:6px; color:var(--gray-800);">Your Classroom Roster is Empty</h3>
+          <p style="font-size:0.9rem; color:var(--gray-500); max-width:440px; margin:0 auto 20px;">
+            Create your first class to generate a unique Class Code and start organizing subjects, students, and materials.
+          </p>
+          <button class="btn btn-primary" onclick="openModal('modal-new-class')">➕ Create First Classroom</button>
+        </div>
+      </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Create Classroom -->
+<div class="modal-overlay" id="modal-new-class">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 style="margin:0;">Create New Classroom</h3>
+      <button class="btn btn-ghost btn-sm" data-modal-close="modal-new-class">✕</button>
+    </div>
+    <form id="new-class-form" onsubmit="createClassroom(event)">
+      <div class="form-group">
+        <label class="form-label">Classroom Name</label>
+        <input class="form-input" type="text" id="class-name-input" placeholder="e.g. Grade 12 Calculus Mastery" required/>
+      </div>
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="form-group">
+          <label class="form-label">Grade / Standard</label>
+          <input class="form-input" type="text" id="class-grade-input" placeholder="e.g. Grade 12" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input class="form-input" type="text" id="class-subject-input" placeholder="e.g. Mathematics" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Weekly Schedule</label>
+        <input class="form-input" type="text" id="class-schedule-input" placeholder="e.g. Mon, Wed 10:00 AM" required/>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+        <button type="button" class="btn btn-ghost" data-modal-close="modal-new-class">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Classroom</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-client.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  function searchClasses() {
+    const q = document.getElementById('search-class-input').value.toLowerCase();
+    document.querySelectorAll('.class-card').forEach(card => {
+      const text = card.dataset.search || card.textContent || '';
+      card.style.display = text.toLowerCase().includes(q) ? 'flex' : 'none';
+    });
+  }
+
+  function filterClasses(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('btn-primary', 'active');
+      b.classList.add('btn-ghost');
+    });
+    btn.classList.add('btn-primary', 'active');
+    btn.classList.remove('btn-ghost');
+
+    document.querySelectorAll('.class-card').forEach(card => {
+      if (type === 'all' || card.dataset.category === type) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  async function createClassroom(e) {
+    e.preventDefault();
+    const name = document.getElementById('class-name-input').value.trim();
+    const grade = document.getElementById('class-grade-input').value.trim();
+    const subject = document.getElementById('class-subject-input').value.trim();
+    const sched = document.getElementById('class-schedule-input').value.trim();
+
+    showToast('Creating classroom in Supabase…', 'info');
+
+    try {
+      if (ClassoraAuth.isLoggedIn()) {
+        const saved = await ClassoraAuth.createClassroom({
+          name: name,
+          subject: subject,
+          section: grade,
+          description: sched
+        });
+        showToast(`Classroom "${name}" created with Code: ${saved.class_code}!`, 'success', 5000);
+      } else {
+        showToast(`Classroom "${name}" created in preview!`, 'success');
+      }
+
+      closeModal('modal-new-class');
+      document.getElementById('new-class-form').reset();
+      
+      // Refresh UI to display new classroom
+      ClassoraAuth.syncAuthUI();
+    } catch (err) {
+      showToast('Error: ' + err.message, 'error');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Directory Search — Classora</title>
+  <meta name="description" content="Find teachers and students by Name or unique Classora ID (TC... or ST...)."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <style>
+    .search-hero {
+      background: var(--grad-hero);
+      padding: 130px 0 60px;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .search-input-box {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      padding: 8px 12px 8px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      max-width: 680px;
+      margin: 28px auto 0;
+      border: 2px solid transparent;
+      transition: var(--transition);
+    }
+    .search-input-box:focus-within {
+      border-color: var(--primary-400);
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.25), 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .search-input-field {
+      border: none;
+      outline: none;
+      font-size: 1.1rem;
+      flex: 1;
+      color: var(--gray-900);
+    }
+    .search-input-field::placeholder { color: var(--gray-400); }
+    
+    .person-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      animation: mobileSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .person-card:hover, .person-card:active {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-300);
+    }
+
+    @media (max-width: 600px) {
+      .search-hero { padding: 100px 0 40px; }
+      .search-input-box {
+        padding: 6px 8px 6px 16px;
+      }
+      .search-input-field { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════ NAVBAR ════ -->
+  <header class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <div class="logo-icon">C</div>
+        <span>Classora</span>
+      </a>
+
+      <nav class="navbar-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="search.html" class="nav-link active">Directory</a>
+        <a href="about.html" class="nav-link">About & Help</a>
+        <a href="teacher/dashboard.html" class="nav-link">Teachers</a>
+        <a href="student/dashboard.html" class="nav-link">Students</a>
+      </nav>
+
+      <div class="navbar-actions">
+        <button class="nav-search-btn" onclick="openGlobalSearch()" title="Search Teachers & Students (Ctrl+K)">
+          <span>🔍</span>
+          <span class="hide-mobile">Search</span>
+          <span class="kbd-hint hide-mobile">Ctrl K</span>
+        </button>
+        <a href="login.html" class="btn btn-ghost btn-sm hide-mobile">Sign In</a>
+        <a href="register-teacher.html" class="btn btn-primary btn-sm hide-mobile">Get Started</a>
+        <button class="btn btn-ghost btn-sm mobile-menu-btn" style="font-size:1.35rem; padding:6px 10px;" onclick="toggleMobileDrawer()" aria-label="Open mobile menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════ MOBILE DRAWER ════ -->
+  <div class="mobile-drawer-overlay" id="mobile-drawer-overlay" onclick="toggleMobileDrawer()">
+    <div class="mobile-drawer" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--gray-100); padding-bottom:12px;">
+        <div class="navbar-logo">
+          <div class="logo-icon">C</div>
+          <span>Classora</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="toggleMobileDrawer()" style="font-size:1.2rem;">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <a href="index.html" class="mobile-drawer-link">🏠 Home</a>
+        <a href="search.html" class="mobile-drawer-link active">🔍 Directory Search</a>
+        <a href="about.html" class="mobile-drawer-link">ℹ️ About & Help</a>
+        <a href="teacher/dashboard.html" class="mobile-drawer-link">🧑‍🏫 Teacher Portal</a>
+        <a href="student/dashboard.html" class="mobile-drawer-link">🎒 Student Portal</a>
+      </div>
+      <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
+        <a href="login.html" class="btn btn-secondary btn-full">Sign In</a>
+        <a href="register-teacher.html" class="btn btn-primary btn-full">Register Account</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ SEARCH HERO ════ -->
+  <section class="search-hero">
+    <div class="container">
+      <span class="hero-badge animate-fade-up">UNIVERSAL CLASSORA DIRECTORY</span>
+      <h1 style="color:#fff; margin-bottom: 12px;" class="animate-fade-up delay-1">Find Teachers & Students</h1>
+      <p style="color: rgba(255,255,255,0.75); max-width: 620px; margin: 0 auto; font-size: 1.05rem;" class="animate-fade-up delay-2">
+        Search any educator or enrolled student using their Name or unique Classora ID (<code style="color:#A5B4FC;">TC...</code> / <code style="color:#34D399;">ST...</code>).
+      </p>
+
+      <div class="search-input-box animate-fade-up delay-3">
+        <span style="font-size: 1.35rem; color: var(--primary-600);">🔍</span>
+        <input type="text" class="search-input-field" id="directory-search-input" placeholder="Search by name or Classora ID (e.g. ADM-001, TCH-..., STD-...)" oninput="filterDirectory()"/>
+        <button class="btn btn-primary btn-sm touch-press" onclick="filterDirectory()">Search</button>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;">
+        <button class="badge search-pill active touch-press" style="padding:6px 16px; cursor:pointer; font-size:0.85rem;" onclick="setDirectoryFilter('all', this)">All Members (<span id="count-all">0</span>)</button>
+        <button class="badge badge-gray search-pill touch-press" style="padding:6px 16px; cursor:pointer; font-size:0.85rem;" onclick="setDirectoryFilter('Teacher', this)">🧑‍🏫 Teachers (<span id="count-teachers">0</span>)</button>
+        <button class="badge badge-gray search-pill touch-press" style="padding:6px 16px; cursor:pointer; font-size:0.85rem;" onclick="setDirectoryFilter('Student', this)">🎒 Students (<span id="count-students">0</span>)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ RESULTS GRID ════ -->
+  <section class="section" style="padding-top:40px;">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+        <h3 id="search-status-label" style="font-size:1.25rem;">Showing All Directory Members</h3>
+        <span style="font-size:0.85rem; color:var(--gray-500);" id="results-count-text">0 results</span>
+      </div>
+
+      <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;" id="directory-cards-container">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ FOOTER ════ -->
+  <footer style="background: var(--gray-900); color: rgba(255,255,255,0.7); padding: 50px 0 28px;">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; margin-bottom: 24px;">
+        <div class="navbar-logo">
+          <div class="logo-icon">C</div>
+          <span style="color:#fff;">Classora</span>
+        </div>
+        <div style="display: flex; gap: 20px; font-size: 0.9rem; flex-wrap:wrap;">
+          <a href="index.html" style="color: rgba(255,255,255,0.8);">Home</a>
+          <a href="search.html" style="color: #fff; font-weight:600;">Directory Search</a>
+          <a href="about.html" style="color: rgba(255,255,255,0.8);">About & Help</a>
+          <a href="login.html" style="color: rgba(255,255,255,0.8);">Sign In</a>
+          <a href="teacher/dashboard.html" style="color: rgba(255,255,255,0.8);">Teacher Portal</a>
+          <a href="student/dashboard.html" style="color: rgba(255,255,255,0.8);">Student Portal</a>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; color: rgba(255,255,255,0.4); flex-wrap:wrap; gap:10px;">
+        <div>&copy; 2026 Classora Platform. All rights reserved.</div>
+        <div>Universal Classora ID System</div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-container" id="toast-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    let activeRoleFilter = 'all';
+
+    function setDirectoryFilter(role, btn) {
+      activeRoleFilter = role;
+      document.querySelectorAll('.search-pill').forEach(b => {
+        b.className = 'badge badge-gray search-pill touch-press';
+      });
+      btn.className = 'badge badge-primary search-pill touch-press active';
+      filterDirectory();
+    }
+
+    function filterDirectory() {
+      const q = (document.getElementById('directory-search-input').value || '').trim().toLowerCase();
+      const container = document.getElementById('directory-cards-container');
+
+      const allTeachers = CLASSORA_DIRECTORY.filter(i => i.role === 'Teacher' || i.role === 'Admin');
+      const allStudents = CLASSORA_DIRECTORY.filter(i => i.role === 'Student');
+      const countAllEl = document.getElementById('count-all');
+      const countTchEl = document.getElementById('count-teachers');
+      const countStdEl = document.getElementById('count-students');
+      if (countAllEl) countAllEl.textContent = CLASSORA_DIRECTORY.length;
+      if (countTchEl) countTchEl.textContent = allTeachers.length;
+      if (countStdEl) countStdEl.textContent = allStudents.length;
+
+      const matches = CLASSORA_DIRECTORY.filter(item => {
+        const matchesRole = activeRoleFilter === 'all' || item.role === activeRoleFilter;
+        const matchesText = !q ||
+          item.name.toLowerCase().includes(q) ||
+          item.id.toLowerCase().includes(q) ||
+          item.subjects.toLowerCase().includes(q) ||
+          item.classes.toLowerCase().includes(q);
+        return matchesRole && matchesText;
+      });
+
+      document.getElementById('results-count-text').textContent = `${matches.length} results`;
+      document.getElementById('search-status-label').textContent = q ? `Search results for "${q}"` : (activeRoleFilter === 'all' ? 'All Directory Members' : `${activeRoleFilter}s`);
+
+      if (matches.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align:center; padding:60px 20px; background:#fff; border-radius:var(--radius-xl); border:1px solid var(--gray-200);">
+            <div style="font-size:3rem; margin-bottom:12px;">🔍</div>
+            <h3>No results found</h3>
+            <p style="color:var(--gray-500); max-width:440px; margin:0 auto 16px;">We couldn't find anyone matching your search query. Try checking for typos or searching by Classora ID (ADM..., TCH..., or STD...).</p>
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('directory-search-input').value=''; filterDirectory();">Clear Search</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = matches.map(p => `
+        <div class="person-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div class="user-avatar avatar-lg" style="background:${p.avatarColor}; font-size:1.3rem;">${p.avatar}</div>
+              <div>
+                <h4 style="margin:0 0 2px; color:var(--gray-900); font-size:1.0625rem;">${p.name}</h4>
+                <div style="font-size:0.75rem; color:var(--gray-500);">${p.title}</div>
+              </div>
+            </div>
+            <span class="badge ${p.role === 'Teacher' ? 'badge-primary' : 'badge-success'}" style="font-size:0.75rem;">${p.role}</span>
+          </div>
+
+          <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:16px;">
+            <div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; margin-bottom:4px;">Universal Classora ID</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <code class="classora-id" style="font-size:0.95rem; padding:3px 8px;">${p.id}</code>
+              <button class="btn btn-ghost btn-sm touch-press" style="padding:3px 8px; font-size:0.75rem;" onclick="copyToClipboard('${p.id}', '${p.role} ID Copied!')">📋 Copy</button>
+            </div>
+          </div>
+
+          <div style="font-size:0.825rem; color:var(--gray-600); margin-bottom:16px; flex:1; display:flex; flex-direction:column; gap:4px;">
+            <div><strong>Classes:</strong> ${p.classes}</div>
+            <div><strong>Subjects:</strong> ${p.subjects}</div>
+          </div>
+
+          <div style="display:flex; gap:8px; border-top:1px solid var(--gray-100); padding-top:14px;">
+            ${p.role === 'Teacher' ? `
+              <a href="login.html" class="btn btn-primary btn-sm btn-full touch-press">Request to Join Class</a>
+            ` : `
+              <button class="btn btn-secondary btn-sm btn-full touch-press" onclick="showToast('Student ID copied to clipboard: ${p.id}', 'success'); copyToClipboard('${p.id}');">Invite by ID</button>
+            `}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      filterDirectory();
+    });
+  </script>
+</body>
+</html>

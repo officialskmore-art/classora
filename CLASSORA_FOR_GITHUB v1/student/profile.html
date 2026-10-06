@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Profile — Classora</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- ════ STUDENT SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Student navigation">
+    <div class="sidebar-header">
+      <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
+        <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
+        <span style="color:var(--gray-900); font-size:1.125rem; font-weight:800;">Classora</span>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Main</span>
+      <a href="dashboard.html" class="sidebar-link" id="nav-dashboard">
+        <span class="sidebar-icon">🏠</span> Dashboard
+      </a>
+      <a href="profile.html" class="sidebar-link active" id="nav-profile">
+        <span class="sidebar-icon">👤</span> My Profile
+      </a>
+
+      <span class="sidebar-section-label">Academics</span>
+      <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
+        <span class="sidebar-icon">🏫</span> My Classrooms
+        <span class="sidebar-badge">0</span>
+      </a>
+      <a href="teachers.html" class="sidebar-link" id="nav-teachers">
+        <span class="sidebar-icon">🧑‍🏫</span> My Teachers
+      </a>
+      <a href="schedule.html" class="sidebar-link" id="nav-schedule">
+        <span class="sidebar-icon">📅</span> Schedule
+      </a>
+
+      <span class="sidebar-section-label">Performance</span>
+      <a href="homework.html" class="sidebar-link" id="nav-homework">
+        <span class="sidebar-icon">📚</span> Homework
+        <span class="sidebar-badge" style="background:#F59E0B;">0</span>
+      </a>
+      <a href="exams.html" class="sidebar-link" id="nav-exams">
+        <span class="sidebar-icon">📝</span> Examinations
+      </a>
+      <a href="results.html" class="sidebar-link" id="nav-results">
+        <span class="sidebar-icon">📊</span> Results
+      </a>
+      <a href="progress.html" class="sidebar-link" id="nav-progress">
+        <span class="sidebar-icon">📈</span> Progress
+      </a>
+
+      <span class="sidebar-section-label">Resources</span>
+      <a href="downloads.html" class="sidebar-link" id="nav-downloads">
+        <span class="sidebar-icon">📥</span> Downloads
+      </a>
+      <a href="notifications.html" class="sidebar-link" id="nav-notif">
+        <span class="sidebar-icon">🔔</span> Notifications
+        <span class="sidebar-badge">0</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
+        <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
+        <div style="flex:1; min-width:0;">
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
+          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Active</div>
+        </div>
+        <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
+      </div>
+      <div id="user-dropdown" style="position:absolute;bottom:80px;left:12px;right:12px;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);display:none;z-index:1000;" class="dropdown-menu">
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.875rem;color:var(--gray-700);border-radius:var(--radius-md) var(--radius-md) 0 0;" class="dropdown-item-link">👤 View Profile</a>
+        <a href="../login.html" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.875rem;color:var(--danger-600);border-radius:0 0 var(--radius-md) var(--radius-md);" class="dropdown-item-link">🚪 Sign Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <main class="dash-main" id="main-content">
+    <div class="dash-topbar">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="btn btn-icon btn-ghost" id="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;">☰</button>
+        <div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Account Profile</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Student Profile & Credentials</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="btn btn-primary btn-sm" onclick="saveStudentProfile()">Save Changes</button>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      <div class="grid" style="grid-template-columns: 320px 1fr; gap: 28px; align-items: start;">
+        
+        <!-- Left: Student ID Badge Card -->
+        <div>
+          <div class="card" style="text-align: center; margin-bottom: 24px;">
+            <div style="position:relative; display:inline-block; margin-bottom:16px;">
+              <div class="user-avatar avatar-xl" id="avatar-preview" style="font-size: 2.25rem; margin: 0 auto; background:var(--grad-primary);">S</div>
+              <label for="avatar-input" style="position:absolute; bottom:0; right:0; background:var(--primary-600); color:#fff; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow-sm); font-size:0.85rem;" title="Upload photo">📷</label>
+              <input type="file" id="avatar-input" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)"/>
+            </div>
+            
+            <h3 style="margin-bottom: 4px;" id="badge-student-name">Student Account</h3>
+            <p style="font-size: 0.875rem; color: var(--gray-500); margin-bottom: 16px;">Enrolled Student</p>
+            
+            <div style="background: var(--primary-50); border: 1.5px dashed var(--primary-300); border-radius: var(--radius-md); padding: 14px; margin-bottom: 16px;">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--primary-800); text-transform: uppercase; margin-bottom: 4px;">Universal Student ID</div>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <code class="classora-id" style="font-size: 1.1rem; padding: 4px 10px;" id="student-profile-id">STD-ACTIVE</code>
+                <button class="btn btn-ghost btn-sm" style="padding: 4px 8px;" onclick="copyToClipboard(document.getElementById('student-profile-id').textContent, 'Student Classora ID Copied!')">📋</button>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--gray-500); margin-top: 6px;">Give this ID to teachers to enroll in their classes</div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; border-top: 1px solid var(--gray-100); padding-top: 16px;">
+              <div>
+                <div style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;">0</div>
+                <div style="font-size: 0.75rem; color: var(--gray-500);">Classes</div>
+              </div>
+              <div>
+                <div style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;">--</div>
+                <div style="font-size: 0.75rem; color: var(--gray-500);">GPA Avg</div>
+              </div>
+              <div>
+                <div style="font-weight: 700; color: var(--accent-600); font-size: 1.125rem;">--</div>
+                <div style="font-size: 0.75rem; color: var(--gray-500);">Attendance</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Profile Details -->
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          
+          <div class="card">
+            <h4 style="margin-bottom: 20px;">Student Details</h4>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label" for="prof-name">Full Name</label>
+                <input class="form-input" type="text" id="prof-name" placeholder="Your full name" value=""/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="class-level">Academic Standard / Grade</label>
+                <input class="form-input" type="text" id="class-level" placeholder="e.g. Grade 10" value=""/>
+              </div>
+            </div>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label" for="current-email">Primary Login Email</label>
+                <input class="form-input" type="email" id="current-email" placeholder="Your login email" disabled style="background:var(--gray-100);"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="prof-phone">Contact Phone</label>
+                <input class="form-input" type="tel" id="prof-phone" placeholder="e.g. +1 555-0100" value=""/>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4 style="margin-bottom: 20px;">Guardian Information</h4>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Parent / Guardian Name</label>
+                <input class="form-input" type="text" placeholder="Guardian full name" value=""/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Guardian Phone</label>
+                <input class="form-input" type="tel" placeholder="Guardian phone number" value=""/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danger Zone: Account Deletion -->
+          <div class="card" id="danger-zone-card" style="border: 1.5px solid var(--danger-300, #FCA5A5); background: #FEF2F2;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+              <div>
+                <h4 style="color:var(--danger-700, #B91C1C); margin-bottom: 4px;">⚠️ Danger Zone — Delete Account</h4>
+                <p style="font-size: 0.85rem; color: var(--danger-600, #DC2626); margin:0;">
+                  Permanently delete your Classora student account, enrolled classrooms, and homework records. This action cannot be undone.
+                </p>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+              <button class="btn btn-sm" onclick="openModal('modal-delete-account')" style="background:var(--danger-600, #DC2626); color:#fff; border:none; padding:8px 16px; font-weight:600;">
+                🗑️ Delete My Account
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Delete Account Confirmation -->
+<div class="modal-overlay" id="modal-delete-account">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-header" style="border-bottom:1px solid var(--danger-100, #FEE2E2);">
+      <h3 style="margin:0; color:var(--danger-700, #B91C1C); display:flex; align-items:center; gap:8px;">
+        <span>⚠️</span> Delete Account Confirmation
+      </h3>
+      <button class="btn btn-ghost btn-sm" data-modal-close="modal-delete-account">✕</button>
+    </div>
+    <div style="padding:20px 0;">
+      <p style="font-size:0.9rem; color:var(--gray-700); margin-bottom:14px; line-height:1.5;">
+        Are you sure you want to delete your Classora account? All your personal information, submissions, and records will be permanently removed.
+      </p>
+      <p style="font-size:0.85rem; color:var(--gray-600); margin-bottom:12px;">
+        To confirm, please type <strong style="color:var(--danger-600, #DC2626); letter-spacing:1px;">DELETE</strong> below:
+      </p>
+      <input class="form-input" type="text" id="delete-confirm-text" placeholder="Type DELETE to confirm" style="border-color:var(--danger-300, #FCA5A5);"/>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:10px;">
+      <button type="button" class="btn btn-ghost" data-modal-close="modal-delete-account">Cancel</button>
+      <button type="button" class="btn" id="btn-confirm-delete" onclick="handleConfirmDeleteAccount()" style="background:var(--danger-600, #DC2626); color:#fff; font-weight:700;">
+        Permanently Delete Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-client.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  async function saveStudentProfile() {
+    const fullName = document.getElementById('prof-name').value.trim();
+    const phone = document.getElementById('prof-phone').value.trim();
+    const grade = document.getElementById('class-level').value.trim();
+
+    showToast('Saving student profile to Supabase…', 'info');
+    const res = await ClassoraAuth.updateProfile({
+      full_name: fullName,
+      phone: phone,
+      grade: grade
+    });
+
+    if (res.success) {
+      showToast('Student profile saved successfully!', 'success');
+    } else {
+      showToast(res.error || 'Failed to save changes', 'error');
+    }
+  }
+
+  async function handleAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+      showToast('Uploading photo to Supabase Storage…', 'info');
+      try {
+        const publicUrl = await ClassoraAuth.uploadAvatar(file);
+        const preview = document.getElementById('avatar-preview');
+        preview.style.backgroundImage = `url("${publicUrl}")`;
+        preview.style.backgroundSize = 'cover';
+        preview.textContent = '';
+        showToast('Profile photo updated!', 'success');
+      } catch (err) {
+        showToast('Photo upload error: ' + err.message, 'error');
+      }
+    }
+  }
+
+  async function handleConfirmDeleteAccount() {
+    const confirmInput = document.getElementById('delete-confirm-text').value.trim();
+    if (confirmInput !== 'DELETE') {
+      showToast('Please type DELETE in capital letters to confirm account deletion.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-confirm-delete');
+    const orig = btn.textContent;
+    btn.textContent = 'Deleting Account…';
+    btn.disabled = true;
+
+    try {
+      const res = await ClassoraAuth.deleteMyAccount();
+      if (!res.success) {
+        throw new Error(res.error || 'Failed to delete account');
+      }
+
+      closeModal('modal-delete-account');
+      showToast('Your account and student profile have been permanently deleted. Goodbye!', 'success', 5000);
+      setTimeout(() => {
+        window.location.href = '../index.html';
+      }, 1500);
+    } catch (err) {
+      btn.textContent = orig;
+      btn.disabled = false;
+      showToast(err.message || 'Error deleting account', 'error');
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (ClassoraAuth.isAdmin()) {
+      const dangerCard = document.getElementById('danger-zone-card');
+      if (dangerCard) dangerCard.style.display = 'none';
+    }
+  });
+
+  const topbarSaveBtn = document.querySelector('.dash-topbar button.btn-primary');
+  if (topbarSaveBtn) topbarSaveBtn.onclick = saveStudentProfile;
+</script>
+</body>
+</html>

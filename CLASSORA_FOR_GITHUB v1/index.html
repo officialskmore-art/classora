@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Classora — Student-Teacher Management Platform</title>
+  <meta name="description" content="Classora is a connected academic management platform that makes the relationship between teachers and students more organised, transparent, and useful."/>
+  <meta name="keywords" content="Classora, student management, teacher platform, classroom management, academic management"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <style>
+    /* ── Landing-specific styles ── */
+    .navbar-logo span { color: var(--gray-900); }
+    .navbar-dark-logo span { color: #fff; }
+
+    /* Hero floating cards */
+    .hero-visual {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-mockup {
+      position: relative; z-index: 2;
+      width: 100%; max-width: 520px;
+    }
+    .mockup-window {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(40px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    }
+    .mockup-topbar {
+      background: rgba(255,255,255,0.08);
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mockup-body { padding: 20px; }
+    .mockup-card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 10px;
+    }
+    .mockup-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .mockup-avatar { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+    .mockup-line { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.15); }
+    .mockup-progress { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1); overflow: hidden; margin-top: 8px; }
+    .mockup-progress-fill { height: 100%; border-radius: 3px; }
+
+    .float-card {
+      position: absolute;
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      z-index: 3;
+    }
+    .float-card-1 { top: 20px; left: -60px; animation: float 3.5s ease-in-out infinite; }
+    .float-card-2 { bottom: 40px; right: -50px; animation: float 4.5s ease-in-out infinite 0.8s; }
+    .float-card-3 { top: 50%; left: -80px; animation: float 5s ease-in-out infinite 1.5s; }
+
+    /* Features section */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    /* How it works */
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    }
+    .step-number {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-md);
+      background: var(--grad-primary);
+      color: #fff; font-size: 1.25rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(99,102,241,0.3);
+    }
+
+    /* Roles section */
+    .roles-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    }
+    .role-card {
+      border-radius: var(--radius-xl); padding: 40px;
+      position: relative; overflow: hidden;
+    }
+    .role-card-teacher { background: var(--grad-primary); color: #fff; }
+    .role-card-student { background: linear-gradient(135deg, #0F172A, #1E293B); color: #fff; }
+    .role-card::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .role-features { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+    .role-feature {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.9rem; opacity: 0.9;
+    }
+    .role-feature::before {
+      content: '✓'; width: 20px; height: 20px;
+      background: rgba(255,255,255,0.2); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: var(--grad-hero);
+      position: relative; overflow: hidden;
+      padding: 100px 0; text-align: center; color: #fff;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(99,102,241,0.3) 0%, transparent 70%);
+    }
+
+    /* Testimonials */
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    .testimonial-card {
+      background: #fff; border-radius: var(--radius-xl); padding: 28px;
+      border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);
+    }
+    .quote-text { font-style: italic; color: var(--gray-700); line-height: 1.7; margin-bottom: 20px; }
+    .quote-stars { color: #F59E0B; letter-spacing: 2px; font-size: 1rem; margin-bottom: 16px; }
+
+    /* Footer */
+    footer {
+      background: var(--gray-900); color: rgba(255,255,255,0.7);
+      padding: 64px 0 32px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-brand-desc { margin-top: 12px; font-size: 0.9rem; line-height: 1.8; max-width: 300px; }
+    .footer-col-title { color: #fff; font-size: 0.875rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-link { font-size: 0.9rem; transition: var(--transition-fast); }
+    .footer-link:hover { color: var(--primary-400); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px; font-size: 0.875rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-row { grid-template-columns: 1fr !important; gap: 40px !important; }
+      .id-section-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .roles-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .hero-visual { display: flex !important; width: 100%; margin-top: 10px; }
+      .float-card-1 { top: -10px; left: 0; }
+      .float-card-2 { bottom: -10px; right: 0; }
+      .float-card-3 { display: none; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .float-card { display: none !important; }
+    }
+
+    /* Section label */
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px;
+      background: var(--primary-50);
+      color: var(--primary-700);
+      border-radius: var(--radius-full);
+      font-size: 0.8125rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title-center { text-align: center; margin-bottom: 60px; }
+    .section-title-center .section-desc { max-width: 600px; margin: 12px auto 0; font-size: 1.0625rem; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══════════════════════════════════ -->
+<nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo" id="nav-logo">
+      <div class="logo-icon">C</div>
+      <span>Classora</span>
+    </a>
+
+    <ul class="navbar-nav">
+      <li><a href="#features" class="nav-link">Features</a></li>
+      <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+      <li><a href="search.html" class="nav-link">Directory</a></li>
+      <li><a href="about.html" class="nav-link">About & Help</a></li>
+      <li><a href="teacher/dashboard.html" class="nav-link">Teachers</a></li>
+      <li><a href="student/dashboard.html" class="nav-link">Students</a></li>
+    </ul>
+
+    <div class="navbar-actions">
+      <button class="nav-search-btn" onclick="openGlobalSearch()" title="Search Teachers & Students (Ctrl+K)">
+        <span>🔍</span>
+        <span class="hide-mobile">Search</span>
+        <span class="kbd-hint hide-mobile">Ctrl K</span>
+      </button>
+      <a href="login.html" class="btn btn-ghost btn-sm hide-mobile">Sign In</a>
+      <a href="register-teacher.html" class="btn btn-primary btn-sm hide-mobile">Get Started</a>
+      <button class="btn btn-ghost btn-sm mobile-menu-btn" style="font-size:1.35rem; padding:6px 10px;" onclick="toggleMobileDrawer()" aria-label="Open mobile menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ MOBILE DRAWER ════════════════════════════ -->
+<div class="mobile-drawer-overlay" id="mobile-drawer-overlay" onclick="toggleMobileDrawer()">
+  <div class="mobile-drawer" onclick="event.stopPropagation()">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--gray-100); padding-bottom:12px;">
+      <div class="navbar-logo">
+        <div class="logo-icon">C</div>
+        <span>Classora</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="toggleMobileDrawer()" style="font-size:1.2rem;">✕</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <a href="index.html" class="mobile-drawer-link active">🏠 Home</a>
+      <a href="search.html" class="mobile-drawer-link">🔍 Directory Search</a>
+      <a href="about.html" class="mobile-drawer-link">ℹ️ About & Help</a>
+      <a href="teacher/dashboard.html" class="mobile-drawer-link">🧑‍🏫 Teacher Portal</a>
+      <a href="student/dashboard.html" class="mobile-drawer-link">🎒 Student Portal</a>
+      <a href="#" class="mobile-drawer-link" onclick="event.preventDefault(); toggleMobileDrawer(); openGlobalSearch();">⚡ Quick Find (Name/ID)</a>
+    </div>
+    <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px;">
+      <a href="login.html" class="btn btn-secondary btn-full">Sign In</a>
+      <a href="register-teacher.html" class="btn btn-primary btn-full">Register Account</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HERO ══════════════════════════════════════ -->
+<section class="hero" id="hero" aria-label="Hero section">
+  <div class="hero-grid"></div>
+  <div class="container hero-content">
+    <div class="hero-row">
+      <div>
+        <div class="hero-badge animate-fade-up">
+          <span>🎓</span> Version 0.5 — Refined Blueprint
+        </div>
+        <h1 class="hero-title animate-fade-up delay-1">
+          Academic Management,<br/>
+          <span style="background: linear-gradient(90deg,#a5b4fc,#c4b5fd,#6ee7b7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Beautifully Simple.</span>
+        </h1>
+        <p class="hero-desc animate-fade-up delay-2">
+          Classora connects teachers and students in one organised platform — manage classrooms, schedules, exams, homework, and results with clarity and ease.
+        </p>
+        <div class="hero-actions animate-fade-up delay-3">
+          <a href="register-teacher.html" class="btn btn-white btn-lg" id="hero-teacher-cta">
+            🧑‍🏫 I'm a Teacher
+          </a>
+          <a href="register-student.html" class="btn btn-lg" style="background:rgba(255,255,255,0.12); color:#fff; border:1.5px solid rgba(255,255,255,0.25);" id="hero-student-cta">
+            🎒 I'm a Student
+          </a>
+        </div>
+
+        <!-- Instant Demo Preview Trigger -->
+        <div class="animate-fade-up delay-3" style="margin-top:16px; font-size:0.875rem; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span>⚡ Explore Live Demo:</span>
+          <a href="teacher/dashboard.html" style="color:#A5B4FC; font-weight:600; text-decoration:underline;">Demo Teacher Portal</a>
+          <span>&bull;</span>
+          <a href="student/dashboard.html" style="color:#6EE7B7; font-weight:600; text-decoration:underline;">Demo Student Portal</a>
+        </div>
+
+        <div class="hero-stats animate-fade-up delay-4">
+          <div>
+            <div class="hero-stat-value">500+</div>
+            <div class="hero-stat-label">Classrooms managed</div>
+          </div>
+          <div>
+            <div class="hero-stat-value">10K+</div>
+            <div class="hero-stat-label">Students onboarded</div>
+          </div>
+          <div>
+            <div class="hero-stat-value">99%</div>
+            <div class="hero-stat-label">Satisfaction rate</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual animate-fade-up delay-2">
+        <div class="hero-mockup">
+          <div class="mockup-window">
+            <div class="mockup-topbar">
+              <div class="mockup-dot" style="background:#FF5F57"></div>
+              <div class="mockup-dot" style="background:#FFBD2E"></div>
+              <div class="mockup-dot" style="background:#28CA41"></div>
+              <div style="flex:1; margin:0 12px; height:8px; border-radius:4px; background:rgba(255,255,255,0.1);"></div>
+              <div style="font-size:0.75rem; color:rgba(255,255,255,0.4);">classora.app</div>
+            </div>
+            <div class="mockup-body">
+              <div style="color:rgba(255,255,255,0.5); font-size:0.75rem; margin-bottom:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;">📊 Teacher Dashboard</div>
+              <div class="mockup-card">
+                <div class="mockup-row">
+                  <div class="mockup-avatar" style="background: linear-gradient(135deg,#6366F1,#8B5CF6);"></div>
+                  <div style="flex:1">
+                    <div class="mockup-line" style="width:60%; margin-bottom:6px;"></div>
+                    <div class="mockup-line" style="width:40%; opacity:0.6;"></div>
+                  </div>
+                  <div style="background:rgba(16,185,129,0.2); color:#34D399; font-size:0.7rem; font-weight:700; padding:3px 8px; border-radius:20px;">Active</div>
+                </div>
+                <div class="mockup-progress"><div class="mockup-progress-fill" style="width:75%; background:linear-gradient(90deg,#6366F1,#8B5CF6);"></div></div>
+              </div>
+              <div class="mockup-card">
+                <div class="mockup-row">
+                  <div class="mockup-avatar" style="background: linear-gradient(135deg,#F59E0B,#EF4444);"></div>
+                  <div style="flex:1">
+                    <div class="mockup-line" style="width:50%; margin-bottom:6px;"></div>
+                    <div class="mockup-line" style="width:35%; opacity:0.6;"></div>
+                  </div>
+                  <div style="background:rgba(245,158,11,0.2); color:#FCD34D; font-size:0.7rem; font-weight:700; padding:3px 8px; border-radius:20px;">3 Pending</div>
+                </div>
+                <div class="mockup-progress"><div class="mockup-progress-fill" style="width:55%; background:linear-gradient(90deg,#F59E0B,#EF4444);"></div></div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:12px;">
+                <div style="background:rgba(99,102,241,0.15); border-radius:10px; padding:12px; text-align:center;">
+                  <div style="color:#A5B4FC; font-size:1.25rem; font-weight:800;">24</div>
+                  <div style="color:rgba(255,255,255,0.4); font-size:0.65rem; margin-top:2px;">Students</div>
+                </div>
+                <div style="background:rgba(16,185,129,0.15); border-radius:10px; padding:12px; text-align:center;">
+                  <div style="color:#6EE7B7; font-size:1.25rem; font-weight:800;">3</div>
+                  <div style="color:rgba(255,255,255,0.4); font-size:0.65rem; margin-top:2px;">Classes</div>
+                </div>
+                <div style="background:rgba(245,158,11,0.15); border-radius:10px; padding:12px; text-align:center;">
+                  <div style="color:#FCD34D; font-size:1.25rem; font-weight:800;">5</div>
+                  <div style="color:rgba(255,255,255,0.4); font-size:0.65rem; margin-top:2px;">Exams</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating cards -->
+        <div class="float-card float-card-1" style="min-width:190px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;">✓</div>
+            <div>
+              <div style="font-size:0.75rem;font-weight:700;color:#1E293B;">Join Request</div>
+              <div style="font-size:0.7rem;color:#64748B;margin-top:1px;">Student approved</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="float-card float-card-2" style="min-width:200px;">
+          <div style="font-size:0.7rem;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">📅 Next Exam</div>
+          <div style="font-size:0.875rem;font-weight:700;color:#1E293B;">Mathematics</div>
+          <div style="font-size:0.75rem;color:#94A3B8;margin-top:2px;">Tomorrow, 10:00 AM</div>
+          <div style="height:4px;border-radius:2px;background:#E2E8F0;margin-top:8px;overflow:hidden;">
+            <div style="width:65%;height:100%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:2px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ══════════════════════════════════ -->
+<section class="section" id="features" aria-label="Features">
+  <div class="container">
+    <div class="section-title-center">
+      <div class="section-label">✨ Features</div>
+      <h2>Everything you need,<br/><span class="text-gradient">in one place</span></h2>
+      <p class="section-desc">From classroom creation to progress tracking — Classora gives teachers and students a single organised workspace.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card animate-fade-up">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#EEF2FF,#C7D2FE);">🏫</div>
+        <h4 style="margin-bottom:8px;">Classroom Management</h4>
+        <p style="font-size:0.9rem;">Create and manage multiple classrooms with ease. Invite students by Classora ID or approve join requests in one click.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card animate-fade-up delay-1">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);">📅</div>
+        <h4 style="margin-bottom:8px;">Schedule & Calendar</h4>
+        <p style="font-size:0.9rem;">Organise class timetables and academic events. Students instantly see today's and upcoming schedules on their dashboard.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card animate-fade-up delay-2">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);">📝</div>
+        <h4 style="margin-bottom:8px;">Exams & Homework</h4>
+        <p style="font-size:0.9rem;">Schedule examinations and assign homework. Track submission and review upcoming deadlines in a clean view.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card animate-fade-up delay-3">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#FCE7F3,#FBCFE8);">📊</div>
+        <h4 style="margin-bottom:8px;">Results & Progress</h4>
+        <p style="font-size:0.9rem;">Enter exam results, view averages and totals, and track student progress based on real academic data — not arbitrary scores.</p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card animate-fade-up delay-1">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#E0E7FF,#C7D2FE);">🔔</div>
+        <h4 style="margin-bottom:8px;">Smart Notifications</h4>
+        <p style="font-size:0.9rem;">Stay updated with in-app notifications for exam schedules, result publications, join requests, and classroom updates.</p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card animate-fade-up delay-2">
+        <div class="feature-icon" style="background:linear-gradient(135deg,#ECFDF5,#D1FAE5);">🪪</div>
+        <h4 style="margin-bottom:8px;">Classora ID System</h4>
+        <p style="font-size:0.9rem;">Every user receives a permanent, unique Classora ID (TC... for teachers, ST... for students) — a stable identity that never changes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ══════════════════════════════ -->
+<section class="section" id="how-it-works" style="background:var(--gray-100);" aria-label="How it works">
+  <div class="container">
+    <div class="section-title-center">
+      <div class="section-label">🚀 How It Works</div>
+      <h2>Up and running in <span class="text-gradient">minutes</span></h2>
+      <p class="section-desc">Simple onboarding for both teachers and students with no technical expertise required.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div style="text-align:center; padding:0 20px;">
+        <div class="step-number" style="margin:0 auto 20px;">1</div>
+        <h4 style="margin-bottom:12px;">Create Your Account</h4>
+        <p style="font-size:0.9375rem;">Register as a teacher or student with your email and password, or sign in with Google. Email verification is required.</p>
+      </div>
+      <div style="text-align:center; padding:0 20px;">
+        <div class="step-number" style="margin:0 auto 20px;">2</div>
+        <h4 style="margin-bottom:12px;">Set Up Your Space</h4>
+        <p style="font-size:0.9375rem;">Teachers automatically get an independent workspace. Create classrooms and invite students using their Classora ID.</p>
+      </div>
+      <div style="text-align:center; padding:0 20px;">
+        <div class="step-number" style="margin:0 auto 20px;">3</div>
+        <h4 style="margin-bottom:12px;">Manage & Track</h4>
+        <p style="font-size:0.9375rem;">Schedule classes, assign homework, run exams, publish results, and track student progress — all from your dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOR WHO ════════════════════════════════════ -->
+<section class="section" id="for-who" aria-label="Who is Classora for">
+  <div class="container">
+    <div class="section-title-center">
+      <div class="section-label">👥 Who It's For</div>
+      <h2>Built for <span class="text-gradient">teachers first</span>,<br/>designed for students too</h2>
+    </div>
+
+    <div class="roles-grid">
+      <!-- Teacher -->
+      <div class="role-card role-card-teacher">
+        <div style="position:relative; z-index:1;">
+          <div style="font-size:3rem; margin-bottom:16px;">🧑‍🏫</div>
+          <h3 style="color:#fff; margin-bottom:8px;">For Teachers</h3>
+          <p style="color:rgba(255,255,255,0.75); font-size:0.9375rem;">Your independent workspace is ready the moment you register. Everything for your classroom, all in one place.</p>
+          <ul class="role-features">
+            <li class="role-feature">Create and manage multiple classrooms</li>
+            <li class="role-feature">Invite students by Classora ID</li>
+            <li class="role-feature">Schedule exams and assign homework</li>
+            <li class="role-feature">Enter and publish results</li>
+            <li class="role-feature">Track student progress and attendance</li>
+            <li class="role-feature">Write classroom notes and announcements</li>
+          </ul>
+          <a href="register-teacher.html" class="btn btn-white" style="margin-top:28px; display:inline-flex;" id="teacher-cta-card">Register as Teacher →</a>
+        </div>
+      </div>
+
+      <!-- Student -->
+      <div class="role-card role-card-student">
+        <div style="position:relative; z-index:1;">
+          <div style="font-size:3rem; margin-bottom:16px;">🎒</div>
+          <h3 style="color:#fff; margin-bottom:8px;">For Students</h3>
+          <p style="color:rgba(255,255,255,0.75); font-size:0.9375rem;">Your personal dashboard shows everything relevant to you — across all your classrooms and teachers.</p>
+          <ul class="role-features">
+            <li class="role-feature">Register independently, join classrooms later</li>
+            <li class="role-feature">View schedule and upcoming exams</li>
+            <li class="role-feature">Track homework and deadlines</li>
+            <li class="role-feature">Access personal results and progress</li>
+            <li class="role-feature">Connect with multiple teachers</li>
+            <li class="role-feature">Download formal academic documents</li>
+          </ul>
+          <a href="register-student.html" class="btn" style="margin-top:28px; display:inline-flex; background:rgba(255,255,255,0.12); color:#fff; border:1.5px solid rgba(255,255,255,0.25);" id="student-cta-card">Register as Student →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CLASSORA ID SECTION ═══════════════════════ -->
+<section class="section" style="background: var(--gray-900); overflow: hidden; width: 100%; max-width: 100vw;" id="classora-id" aria-label="Classora ID system">
+  <div class="container" style="overflow: hidden; max-width: 100%;">
+    <div class="id-section-grid">
+      <div>
+        <div class="section-label" style="background:rgba(99,102,241,0.15); color:var(--primary-300);">🪪 Classora ID</div>
+        <h2 style="color:#fff; margin-bottom:16px;">Your permanent<br/><span class="text-gradient">academic identity</span></h2>
+        <p style="color:rgba(255,255,255,0.65); margin-bottom:32px; font-size:1.0625rem; line-height:1.8;">Every user receives a unique, permanent Classora ID the moment they register. It's your identity inside Classora — not your login credential, just who you are.</p>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(99,102,241,0.2);display:flex;align-items:center;justify-content:center;color:var(--primary-300);font-size:1.1rem;flex-shrink:0;">🔒</div>
+            <div>
+              <div style="color:#fff; font-weight:600; font-size:0.9375rem;">Identity, not authentication</div>
+              <div style="color:rgba(255,255,255,0.5); font-size:0.875rem;">Classora ID identifies you — it never replaces your password</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(16,185,129,0.2);display:flex;align-items:center;justify-content:center;color:var(--accent-400);font-size:1.1rem;flex-shrink:0;">♾️</div>
+            <div>
+              <div style="color:#fff; font-weight:600; font-size:0.9375rem;">Permanent and stable</div>
+              <div style="color:rgba(255,255,255,0.5); font-size:0.875rem;">Your ID stays the same even if you change teacher or classroom</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(245,158,11,0.2);display:flex;align-items:center;justify-content:center;color:var(--warn-400);font-size:1.1rem;flex-shrink:0;">🔍</div>
+            <div>
+              <div style="color:#fff; font-weight:600; font-size:0.9375rem;">Searchable and visible</div>
+              <div style="color:rgba(255,255,255,0.5); font-size:0.875rem;">Share your ID so teachers can find and invite you directly</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px; min-width:0; width:100%;">
+        <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:20px 18px; word-break:break-word;">
+          <div style="font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px;">🧑‍🏫 Teacher ID Example</div>
+          <div style="font-family:'Courier New',monospace; font-size:clamp(1.1rem, 5vw, 1.375rem); font-weight:800; color:var(--primary-300); letter-spacing:0.05em; word-break:break-all;">TC5839201746</div>
+          <div style="color:rgba(255,255,255,0.4); font-size:0.8rem; margin-top:8px;">TC + unique identifier (server-generated)</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:20px 18px; word-break:break-word;">
+          <div style="font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px;">🎒 Student ID Example</div>
+          <div style="font-family:'Courier New',monospace; font-size:clamp(1.1rem, 5vw, 1.375rem); font-weight:800; color:var(--accent-400); letter-spacing:0.05em; word-break:break-all;">ST7416382059</div>
+          <div style="color:rgba(255,255,255,0.4); font-size:0.8rem; margin-top:8px;">ST + unique identifier (server-generated)</div>
+        </div>
+        <div style="background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.2); border-radius:12px; padding:16px; font-size:0.875rem; color:rgba(255,255,255,0.65); line-height:1.7;">
+          💡 <strong style="color:var(--primary-300);">Pro tip:</strong> Share your Student Classora ID with your teacher so they can invite you directly to a classroom — no need to search manually.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ══════════════════════════════ -->
+<section class="section" id="testimonials" aria-label="Testimonials">
+  <div class="container">
+    <div class="section-title-center">
+      <div class="section-label">💬 Testimonials</div>
+      <h2>Loved by <span class="text-gradient">educators</span></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="quote-stars">★★★★★</div>
+        <p class="quote-text">"Classora made managing my private students so much easier. The Classora ID system is genius — no more confusing login mix-ups."</p>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#8B5CF6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">A</div>
+          <div>
+            <div style="font-weight:600; color:var(--gray-900); font-size:0.9rem;">Verified Educator</div>
+            <div style="font-size:0.8rem; color:var(--gray-500);">Mathematics Department</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="quote-stars">★★★★★</div>
+        <p class="quote-text">"Finally a platform where I can see all my classes, upcoming exams, and results in one dashboard. My studies are so much more organised now."</p>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">S</div>
+          <div>
+            <div style="font-weight:600; color:var(--gray-900); font-size:0.9rem;">Enrolled Scholar</div>
+            <div style="font-size:0.8rem; color:var(--gray-500);">Senior Science Stream</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="quote-stars">★★★★★</div>
+        <p class="quote-text">"Setting up my classroom took under 5 minutes. Inviting students by their Classora ID is so much cleaner than WhatsApp groups."</p>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#F59E0B,#EF4444);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">P</div>
+          <div>
+            <div style="font-weight:600; color:var(--gray-900); font-size:0.9rem;">Faculty Lead</div>
+            <div style="font-size:0.8rem; color:var(--gray-500);">Science & Technology Educator</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ════════════════════════════════════════ -->
+<section class="cta-section" id="cta" aria-label="Call to action">
+  <div class="container" style="position:relative; z-index:1;">
+    <div class="hero-badge" style="display:inline-flex; margin-bottom:20px;">🚀 Start for free today</div>
+    <h2 style="color:#fff; margin-bottom:16px; font-size:clamp(2rem,4vw,3rem);">Ready to organise your<br/>academic world?</h2>
+    <p style="color:rgba(255,255,255,0.7); margin-bottom:40px; font-size:1.0625rem;">Join thousands of teachers and students already using Classora.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="register-teacher.html" class="btn btn-white btn-lg" id="cta-teacher">🧑‍🏫 Register as Teacher</a>
+      <a href="register-student.html" class="btn btn-lg" style="background:rgba(255,255,255,0.12); color:#fff; border:1.5px solid rgba(255,255,255,0.3);" id="cta-student">🎒 Register as Student</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════ -->
+<footer id="footer" aria-label="Footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="navbar-logo" style="margin-bottom:4px;">
+          <div class="logo-icon">C</div>
+          <span style="color:#fff;">Classora</span>
+        </div>
+        <p class="footer-brand-desc">A connected academic management platform making the relationship between teachers and students more organised, transparent, and useful.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#features" class="footer-link">Features</a></li>
+          <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+          <li><a href="#for-who" class="footer-link">For Teachers</a></li>
+          <li><a href="#for-who" class="footer-link">For Students</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Account</div>
+        <ul class="footer-links">
+          <li><a href="login.html" class="footer-link">Sign In</a></li>
+          <li><a href="register-teacher.html" class="footer-link">Teacher Registration</a></li>
+          <li><a href="register-student.html" class="footer-link">Student Registration</a></li>
+          <li><a href="forgot-password.html" class="footer-link">Password Recovery</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Help</div>
+        <ul class="footer-links">
+          <li><a href="about.html" class="footer-link">About Classora</a></li>
+          <li><a href="about.html#faq" class="footer-link">FAQ</a></li>
+          <li><a href="about.html#privacy" class="footer-link">Privacy Policy</a></li>
+          <li><a href="about.html#terms" class="footer-link">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Classora. All rights reserved. Version 0.5</div>
+      <div style="display:flex; gap:20px;">
+        <span>Built for teachers. Loved by students.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ TOAST CONTAINER ═══════════════════════════ -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Intersection Observer for animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.animate-fade-up').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Authenticating with Google — Classora</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gray-50);
+      font-family: var(--font-main);
+      padding: 20px;
+    }
+    .callback-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .spinner-ring {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 24px;
+      border: 4px solid var(--primary-100);
+      border-top-color: var(--primary-600);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="callback-card">
+  <div class="spinner-ring" id="spinner"></div>
+  <div style="font-size:2rem; margin-bottom:12px; display:none;" id="status-icon">🎉</div>
+  <h2 style="font-size:1.375rem; font-weight:700; color:var(--gray-900); margin-bottom:8px;" id="status-title">Authenticating with Google…</h2>
+  <p style="font-size:0.9rem; color:var(--gray-500); line-height:1.6; margin-bottom:20px;" id="status-desc">Connecting to your secure Supabase account and preparing your academic portal.</p>
+  
+  <div id="action-btn" style="display:none;">
+    <a href="login.html" class="btn btn-primary btn-full">Back to Login</a>
+  </div>
+</div>
+
+<script>
+  async function handleOAuthCallback() {
+    const titleEl = document.getElementById('status-title');
+    const descEl  = document.getElementById('status-desc');
+    const spinner = document.getElementById('spinner');
+    const icon    = document.getElementById('status-icon');
+    const action  = document.getElementById('action-btn');
+
+    try {
+      // 1. Check URL hash parameters (#access_token=...&refresh_token=...)
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash || window.location.search);
+      
+      const accessToken  = params.get('access_token');
+      const refreshToken = params.get('refresh_token');
+      const errorCode    = params.get('error_code') || params.get('error');
+      const errorDesc    = params.get('error_description');
+
+      if (errorCode || errorDesc) {
+        throw new Error(errorDesc || 'Google authentication was cancelled or could not be completed.');
+      }
+
+      let session = null;
+
+      if (accessToken) {
+        session = {
+          access_token: accessToken,
+          refresh_token: refreshToken,
+          expires_in: params.get('expires_in'),
+          token_type: params.get('token_type')
+        };
+        ClassoraAuth.saveSession(session);
+      }
+
+      // If official client is loaded, verify or refresh session
+      if (window.ClassoraAuth && window.ClassoraAuth.client) {
+        try {
+          const { data } = await window.ClassoraAuth.client.auth.getSession();
+          if (data && data.session) {
+            session = data.session;
+            ClassoraAuth.saveSession(session);
+          }
+        } catch (e) {
+          console.warn('Session check error:', e);
+        }
+      }
+
+      // 2. Fetch User Info from Supabase
+      const stored = ClassoraAuth.getLocalSession();
+      const token = (session && session.access_token) || (stored && stored.access_token);
+
+      if (!token) {
+        throw new Error('No authorization tokens returned. Please try signing in again.');
+      }
+
+      // Request current user
+      const userResp = await fetch(`${SUPABASE_CONFIG.url}/auth/v1/user`, {
+        headers: {
+          'apikey': SUPABASE_CONFIG.anonKey,
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!userResp.ok) {
+        throw new Error('Unable to retrieve user credentials from Supabase.');
+      }
+
+      const user = await userResp.json();
+      localStorage.setItem('classora_user', JSON.stringify(user));
+
+      // Intended role (default from registration / login selection)
+      const intendedRole = localStorage.getItem('classora_auth_role') || (user.user_metadata && user.user_metadata.role) || 'student';
+
+      // 3. Retrieve or create profile
+      let profile = await ClassoraAuth.fetchAndStoreProfile(user.id, {
+        role: intendedRole,
+        full_name: (user.user_metadata && user.user_metadata.full_name) || user.email.split('@')[0],
+        email: user.email
+      });
+
+      // Respect privacy: Do not pull external photos automatically
+      localStorage.setItem('classora_profile', JSON.stringify(profile));
+
+      // 4. Check if profile setup is completed
+      const isAdmin = user.email === 'kaitysnehasish@gmail.com';
+      const needsSetup = !isAdmin && (!profile || profile.is_setup_completed !== true);
+
+      spinner.style.display = 'none';
+      icon.style.display = 'block';
+
+      if (needsSetup) {
+        titleEl.textContent = 'Complete Profile Setup';
+        descEl.textContent = `Authenticated as ${user.email}. Taking you to your profile setup to choose Teacher or Student…`;
+        setTimeout(() => {
+          window.location.href = 'setup-profile.html';
+        }, 800);
+      } else {
+        const targetRole = profile ? profile.role : (isAdmin ? 'teacher' : 'student');
+        titleEl.textContent = 'Welcome to Classora!';
+        descEl.textContent = `Authenticated as ${user.email}. Taking you to your ${targetRole === 'teacher' ? 'Teacher' : 'Student'} Dashboard…`;
+        setTimeout(() => {
+          if (isAdmin || targetRole === 'teacher') {
+            window.location.href = 'teacher/dashboard.html';
+          } else {
+            window.location.href = 'student/dashboard.html';
+          }
+        }, 800);
+      }
+
+    } catch (err) {
+      console.error('OAuth Callback Error:', err);
+      spinner.style.display = 'none';
+      icon.textContent = '⚠️';
+      icon.style.display = 'block';
+      titleEl.textContent = 'Authentication Issue';
+      descEl.textContent = err.message || 'Something went wrong during authentication. Please try again.';
+      action.style.display = 'block';
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', handleOAuthCallback);
+</script>
+</body>
+</html>

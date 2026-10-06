@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teacher Registration — Classora</title>
+  <meta name="description" content="Register as a teacher on Classora. Get your independent workspace and start managing your classrooms."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <style>
+    .step-indicator { display:flex; align-items:center; gap:8px; margin-bottom:28px; }
+    .step-dot { width:10px; height:10px; border-radius:50%; background:var(--gray-300); transition:var(--transition); }
+    .step-dot.active { background:var(--primary-600); transform:scale(1.3); }
+    .step-dot.done { background:var(--accent-500); }
+    .step-text { font-size:0.8rem; color:var(--gray-500); margin-left:4px; }
+    .benefits-list { list-style:none; display:flex; flex-direction:column; gap:12px; margin-top:32px; }
+    .benefit-item { display:flex; align-items:center; gap:12px; color:rgba(255,255,255,0.85); font-size:0.9375rem; }
+    .benefit-item::before { content:'✓'; width:22px; height:22px; border-radius:50%; background:rgba(16,185,129,0.25); color:#34D399; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; flex-shrink:0; }
+  </style>
+</head>
+<body>
+
+<div class="auth-page">
+  <!-- LEFT -->
+  <div class="auth-left">
+    <div style="position:relative; z-index:1; max-width:400px;">
+      <a href="index.html" class="navbar-logo" style="margin-bottom:40px; display:flex;">
+        <div class="logo-icon">C</div>
+        <span style="color:#fff; font-size:1.375rem; font-weight:800;">Classora</span>
+      </a>
+      <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; background:rgba(255,255,255,0.1); border-radius:999px; font-size:0.8rem; color:rgba(255,255,255,0.8); margin-bottom:20px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase;">🧑‍🏫 Teacher Account</div>
+      <h2 style="color:#fff; margin-bottom:12px;">Start teaching smarter</h2>
+      <p style="color:rgba(255,255,255,0.65); line-height:1.8; margin-bottom:8px;">Your independent workspace is created automatically the moment you register.</p>
+
+      <ul class="benefits-list">
+        <li class="benefit-item">Automatic independent workspace</li>
+        <li class="benefit-item">Create unlimited classrooms</li>
+        <li class="benefit-item">Manage students with Classora ID</li>
+        <li class="benefit-item">Schedule exams & track progress</li>
+        <li class="benefit-item">Permanent Teacher Classora ID (TC...)</li>
+      </ul>
+
+      <div style="margin-top:40px; padding:20px; background:rgba(255,255,255,0.07); border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
+        <div style="font-size:0.75rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; font-weight:600;">Your Classora ID will look like</div>
+        <div style="font-family:'Courier New',monospace; font-size:1.25rem; font-weight:800; color:#A5B4FC; letter-spacing:0.06em;">TC5839201746</div>
+        <div style="font-size:0.8rem; color:rgba(255,255,255,0.4); margin-top:6px;">Auto-assigned after email verification</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="auth-right">
+    <div class="auth-form-wrapper" style="max-width:460px;">
+      <div class="auth-logo">
+        <a href="index.html" class="navbar-logo">
+          <div class="logo-icon">C</div>
+          <span style="color:var(--gray-900);">Classora</span>
+        </a>
+      </div>
+
+      <h2 class="auth-title">Create your teacher account</h2>
+      <p class="auth-subtitle">Already have an account? <a href="login.html" style="color:var(--primary-600); font-weight:600;">Sign in</a></p>
+
+      <!-- Step indicator -->
+      <div class="step-indicator">
+        <div class="step-dot active" id="dot-1"></div>
+        <div class="step-dot" id="dot-2"></div>
+        <div class="step-dot" id="dot-3"></div>
+        <span class="step-text" id="step-text">Step 1 of 3 — Basic Info</span>
+      </div>
+
+      <form id="register-form" novalidate>
+
+        <!-- STEP 1 -->
+        <div id="step-1">
+          <button class="google-btn" type="button" id="google-reg-btn">
+            <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#FFC107" d="M43.6 20.5H24v7h11.3c-1.6 4.4-5.8 7.6-11.3 7.6-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.3-5.3C33.8 5.6 29.2 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.2-.1-2.4-.1-3.5z"/>
+              <path fill="#FF3D00" d="M6.3 14.7l6.2 4.5C14.3 14.9 18.8 12 24 12c3 0 5.7 1.1 7.8 2.9l5.3-5.3C33.8 5.6 29.2 4 24 4 16.1 4 9.3 8.4 6.3 14.7z"/>
+              <path fill="#4CAF50" d="M24 44c5 0 9.6-1.7 13.2-4.6l-6-5.2C29.3 35.9 26.8 37 24 37c-5.4 0-9.6-3.2-11.3-7.6L6.4 34c3 6.3 9.8 10 17.6 10z"/>
+              <path fill="#1976D2" d="M43.6 20.5H24v7h11.3c-.7 2-2.1 3.7-3.9 5l6 5.2C41.1 34 44 29.4 44 24c0-1.2-.1-2.4-.4-3.5z"/>
+            </svg>
+            Register with Google
+          </button>
+          <div class="divider">or register with email</div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="first-name">First name</label>
+              <input class="form-input" type="text" id="first-name" placeholder="Priya" required/>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="last-name">Last name</label>
+              <input class="form-input" type="text" id="last-name" placeholder="Sharma" required/>
+            </div>
+          </div>
+          <div style="height:16px;"></div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email address</label>
+            <div class="form-input-icon">
+              <span class="icon">📧</span>
+              <input class="form-input" type="email" id="reg-email" placeholder="example@gmail.com" required/>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary btn-full btn-lg" onclick="goStep(2)">Continue →</button>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="step-2" style="display:none;">
+          <div class="form-group">
+            <label class="form-label" for="reg-password">Create password</label>
+            <div class="form-input-icon" style="position:relative;">
+              <span class="icon">🔒</span>
+              <input class="form-input" type="password" id="reg-password" placeholder="Minimum 8 characters" required style="padding-right:48px;"/>
+              <button type="button" data-toggle-password="reg-password" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;" aria-label="Toggle password">👁️</button>
+            </div>
+            <!-- Password strength -->
+            <div style="margin-top:8px;">
+              <div style="display:flex; gap:4px; margin-bottom:6px;">
+                <div style="flex:1; height:4px; border-radius:2px;" id="str-1" class="skeleton"></div>
+                <div style="flex:1; height:4px; border-radius:2px;" id="str-2" class="skeleton"></div>
+                <div style="flex:1; height:4px; border-radius:2px;" id="str-3" class="skeleton"></div>
+                <div style="flex:1; height:4px; border-radius:2px;" id="str-4" class="skeleton"></div>
+              </div>
+              <div style="font-size:0.75rem; color:var(--gray-400);" id="strength-label">Enter a password</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-confirm">Confirm password</label>
+            <div class="form-input-icon" style="position:relative;">
+              <span class="icon">🔒</span>
+              <input class="form-input" type="password" id="reg-confirm" placeholder="Repeat password" required style="padding-right:48px;"/>
+              <button type="button" data-toggle-password="reg-confirm" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;" aria-label="Toggle password">👁️</button>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px;">
+            <button type="button" class="btn btn-ghost" onclick="goStep(1)" style="flex:0.4;">← Back</button>
+            <button type="button" class="btn btn-primary" onclick="goStep(3)" style="flex:1;">Continue →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div id="step-3" style="display:none;">
+          <div class="form-group">
+            <label class="form-label" for="subject">Primary Subject / Expertise</label>
+            <input class="form-input" type="text" id="subject" placeholder="e.g. Mathematics, Physics, English"/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="experience">Years of Teaching Experience</label>
+            <select class="form-input" id="experience" style="appearance:none; cursor:pointer;">
+              <option value="">Select experience</option>
+              <option>Less than 1 year</option>
+              <option>1–3 years</option>
+              <option>3–5 years</option>
+              <option>5–10 years</option>
+              <option>10+ years</option>
+            </select>
+          </div>
+
+          <div style="background:var(--primary-50); border:1px solid var(--primary-100); border-radius:var(--radius-md); padding:16px; margin-bottom:20px; font-size:0.875rem; color:var(--primary-700); line-height:1.7;">
+            📧 <strong>Email verification required</strong> — After registering, we'll send a verification link to your email. You'll need to verify before using Classora.
+          </div>
+
+          <div style="display:flex; align-items:flex-start; gap:8px; margin-bottom:24px;">
+            <input type="checkbox" id="terms" style="width:16px;height:16px;accent-color:var(--primary-600);margin-top:2px;cursor:pointer;" required/>
+            <label for="terms" style="font-size:0.875rem; color:var(--gray-600); cursor:pointer; line-height:1.5;">
+              I agree to Classora's <a href="about.html#terms" style="color:var(--primary-600); font-weight:600;">Terms of Use</a> and <a href="about.html#privacy" style="color:var(--primary-600); font-weight:600;">Privacy Policy</a>
+            </label>
+          </div>
+
+          <div style="display:flex; gap:12px;">
+            <button type="button" class="btn btn-ghost" onclick="goStep(2)" style="flex:0.4;">← Back</button>
+            <button type="submit" class="btn btn-primary" id="reg-btn" style="flex:1;">Create Account 🎉</button>
+          </div>
+        </div>
+
+      </form>
+
+      <p style="text-align:center; margin-top:24px; font-size:0.8rem; color:var(--gray-400);">
+        Looking to register as a student? <a href="register-student.html" style="color:var(--primary-600); font-weight:500;">Student registration</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // Step navigation
+  function goStep(n) {
+    const steps = ['step-1','step-2','step-3'];
+    const dots  = ['dot-1','dot-2','dot-3'];
+    const labels = ['Step 1 of 3 — Basic Info', 'Step 2 of 3 — Password', 'Step 3 of 3 — Profile'];
+
+    // Validate before advancing
+    if (n === 2) {
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName  = document.getElementById('last-name').value.trim();
+      const email     = document.getElementById('reg-email').value.trim();
+      if (!firstName) return showToast('Please enter your first name', 'error');
+      if (!lastName)  return showToast('Please enter your last name', 'error');
+      if (!email || !validateEmail(email)) return showToast('Enter a valid email address', 'error');
+    }
+    if (n === 3) {
+      const pwd  = document.getElementById('reg-password').value;
+      const conf = document.getElementById('reg-confirm').value;
+      if (pwd.length < 8) return showToast('Password must be at least 8 characters', 'error');
+      if (pwd !== conf)   return showToast('Passwords do not match', 'error');
+    }
+
+    steps.forEach((id, i) => {
+      document.getElementById(id).style.display = (i + 1 === n) ? 'block' : 'none';
+      document.getElementById(dots[i]).className = 'step-dot' + (i + 1 < n ? ' done' : i + 1 === n ? ' active' : '');
+    });
+    document.getElementById('step-text').textContent = labels[n - 1];
+  }
+
+  // Password strength
+  document.getElementById('reg-password')?.addEventListener('input', function() {
+    const v = this.value;
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[A-Z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+
+    const colors = ['#EF4444','#F59E0B','#10B981','#6366F1'];
+    const labels = ['Weak','Fair','Good','Strong'];
+    for (let i = 1; i <= 4; i++) {
+      const el = document.getElementById(`str-${i}`);
+      el.style.background = i <= score ? colors[score - 1] : 'var(--gray-200)';
+      el.style.animation = 'none';
+    }
+    const lbl = document.getElementById('strength-label');
+    lbl.textContent = v ? `Password strength: ${labels[score - 1] || 'Weak'}` : 'Enter a password';
+    lbl.style.color = score > 0 ? colors[score - 1] : 'var(--gray-400)';
+  });
+
+  // Form submit to Supabase
+  document.getElementById('register-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const terms = document.getElementById('terms').checked;
+    if (!terms) return showToast('Please accept the Terms of Use to continue', 'warning');
+
+    const firstName = document.getElementById('first-name').value.trim();
+    const lastName  = document.getElementById('last-name').value.trim();
+    const email     = document.getElementById('reg-email').value.trim();
+    const password  = document.getElementById('reg-password').value;
+    const subject   = document.getElementById('subject').value.trim();
+
+    const btn = document.getElementById('reg-btn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Creating account…'; 
+    btn.disabled = true;
+
+    try {
+      const res = await ClassoraAuth.signUp({
+        email,
+        password,
+        fullName: `${firstName} ${lastName}`.trim(),
+        role: 'teacher',
+        subject: subject
+      });
+
+      if (!res.success) {
+        btn.textContent = originalText;
+        btn.disabled = false;
+        showToast(res.error || 'Failed to create teacher account', 'error');
+        return;
+      }
+
+      if (res.requiresEmailConfirmation) {
+        showToast('🎉 Account created! We sent a verification link to your email. Please verify and log in.', 'success', 8000);
+        setTimeout(() => window.location.href = 'login.html', 3000);
+      } else {
+        showToast('🎉 Teacher account created successfully! Taking you to your dashboard…', 'success');
+        setTimeout(() => window.location.href = 'teacher/dashboard.html', 1000);
+      }
+    } catch (err) {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      showToast(err.message || 'Error connecting to Supabase', 'error');
+    }
+  });
+
+  // Google OAuth registration
+  document.getElementById('google-reg-btn')?.addEventListener('click', async () => {
+    const btn = document.getElementById('google-reg-btn');
+    btn.style.opacity = '0.7';
+    btn.style.pointerEvents = 'none';
+    showToast('Redirecting to Google for Teacher registration…', 'info');
+    try {
+      await ClassoraAuth.signInWithGoogle('teacher');
+    } catch (err) {
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+      showToast('Could not initiate Google Sign-Up: ' + err.message, 'error');
+    }
+  });
+</script>
+</body>
+</html>
