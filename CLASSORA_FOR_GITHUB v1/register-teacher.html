@@ -147,7 +147,36 @@
         <div id="step-3" style="display:none;">
           <div class="form-group">
             <label class="form-label" for="subject">Primary Subject / Expertise</label>
-            <input class="form-input" type="text" id="subject" placeholder="e.g. Mathematics, Physics, English"/>
+            <select class="form-input" id="subject" style="appearance:none; cursor:pointer;" onchange="if(this.value==='Others'){document.getElementById('subject-custom').style.display='block';}else{document.getElementById('subject-custom').style.display='none';}">
+              <option value="">Select Subject (WB & CBSE)</option>
+              <option>Mathematics</option>
+              <option>Bengali (বাংলা)</option>
+              <option>English</option>
+              <option>Hindi (हिंदी)</option>
+              <option>General Science</option>
+              <option>Physical Science (ভৌত বিজ্ঞান)</option>
+              <option>Life Science (জীবন বিজ্ঞান)</option>
+              <option>Physics</option>
+              <option>Chemistry</option>
+              <option>Biology</option>
+              <option>Computer Science / IT</option>
+              <option>Environmental Studies (EVS)</option>
+              <option>History (ইতিহাস)</option>
+              <option>Geography (ভূগোল)</option>
+              <option>Social Studies (SST)</option>
+              <option>Political Science (রাষ্ট্রবিজ্ঞান)</option>
+              <option>Economics (অর্থনীতি)</option>
+              <option>Accountancy</option>
+              <option>Business Studies</option>
+              <option>Statistics</option>
+              <option>Sociology</option>
+              <option>Philosophy</option>
+              <option>Sanskrit</option>
+              <option>Nutrition</option>
+              <option>Psychology</option>
+              <option value="Others">Others (Custom Subject)</option>
+            </select>
+            <input class="form-input" type="text" id="subject-custom" placeholder="Write custom subject…" style="display:none; margin-top:8px;"/>
           </div>
 
           <div class="form-group">
@@ -252,8 +281,10 @@
     const firstName = document.getElementById('first-name').value.trim();
     const lastName  = document.getElementById('last-name').value.trim();
     const email     = document.getElementById('reg-email').value.trim();
-    const password  = document.getElementById('reg-password').value;
-    const subject   = document.getElementById('subject').value.trim();
+    let subject = document.getElementById('subject').value.trim();
+    if (subject === 'Others') {
+      subject = document.getElementById('subject-custom').value.trim() || 'Others';
+    }
 
     const btn = document.getElementById('reg-btn');
     const originalText = btn.textContent;

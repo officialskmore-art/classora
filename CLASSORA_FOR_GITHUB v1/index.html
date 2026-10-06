@@ -8,6 +8,30 @@
   <meta name="keywords" content="Classora, student management, teacher platform, classroom management, academic management"/>
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <script>
+    // Authenticated users cannot access landing page without logging out
+    (function() {
+      try {
+        if (sessionStorage.getItem('classora_signed_out') === 'true') return;
+        const u = localStorage.getItem('classora_user');
+        if (u) {
+          const p = localStorage.getItem('classora_profile');
+          let target = 'student/dashboard.html';
+          if (p) {
+            try {
+              const parsed = JSON.parse(p);
+              if (parsed.is_setup_completed === false) {
+                window.location.replace('setup-profile.html');
+                return;
+              }
+              if (parsed.role === 'teacher') target = 'teacher/dashboard.html';
+            } catch(e) {}
+          }
+          window.location.replace(target);
+        }
+      } catch(e) {}
+    })();
+  </script>
   <style>
     /* ── Landing-specific styles ── */
     .navbar-logo span { color: var(--gray-900); }
@@ -194,6 +218,7 @@
 <!-- ═══ NAVBAR ═══════════════════════════════════ -->
 <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
   <div class="navbar-inner">
+    <button class="btn btn-ghost btn-sm mobile-menu-btn" style="font-size:1.35rem; padding:6px 10px; margin-right:8px;" onclick="toggleMobileDrawer()" aria-label="Open mobile menu">☰</button>
     <a href="index.html" class="navbar-logo" id="nav-logo">
       <div class="logo-icon">C</div>
       <span>Classora</span>
@@ -216,7 +241,6 @@
       </button>
       <a href="login.html" class="btn btn-ghost btn-sm hide-mobile">Sign In</a>
       <a href="register-teacher.html" class="btn btn-primary btn-sm hide-mobile">Get Started</a>
-      <button class="btn btn-ghost btn-sm mobile-menu-btn" style="font-size:1.35rem; padding:6px 10px;" onclick="toggleMobileDrawer()" aria-label="Open mobile menu">☰</button>
     </div>
   </div>
 </nav>
@@ -668,6 +692,22 @@
 <script src="js/supabase-client.js"></script>
 <script src="js/main.js"></script>
 <script>
+  // Auth guard: If user is logged in, redirect them away from landing page
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      if (sessionStorage.getItem('classora_signed_out') === 'true') return;
+      if (typeof ClassoraAuth !== 'undefined' && ClassoraAuth.isLoggedIn()) {
+        const profile = ClassoraAuth.getActiveProfile();
+        if (profile && profile.is_setup_completed === false) {
+          window.location.replace('setup-profile.html');
+        } else {
+          const role = (profile && profile.role) || 'student';
+          window.location.replace(role === 'teacher' ? 'teacher/dashboard.html' : 'student/dashboard.html');
+        }
+      }
+    } catch (e) {}
+  });
+
   // Navbar scroll effect
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {

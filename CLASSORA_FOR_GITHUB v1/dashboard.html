@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard — Classora</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
+  <style>
+    .welcome-student-banner {
+      background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4F46E5 100%);
+      border-radius: var(--radius-xl); padding: 32px 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px; position: relative; overflow: hidden; color: #fff;
+    }
+    .welcome-student-banner::before {
+      content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;
+      border-radius:50%;background:rgba(255,255,255,0.06);
+    }
+  </style>
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- ════ STUDENT SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Student navigation">
+    <div class="sidebar-header">
+      <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
+        <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
+        <span style="color:var(--gray-900); font-size:1.125rem; font-weight:800;">Classora</span>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Main</span>
+      <a href="dashboard.html" class="sidebar-link active" id="nav-dashboard">
+        <span class="sidebar-icon">🏠</span> Dashboard
+      </a>
+      <a href="profile.html" class="sidebar-link" id="nav-profile">
+        <span class="sidebar-icon">👤</span> My Profile
+      </a>
+
+      <span class="sidebar-section-label">Academics</span>
+      <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
+        <span class="sidebar-icon">🏫</span> My Classrooms
+        <span class="sidebar-badge">0</span>
+      </a>
+      <a href="teachers.html" class="sidebar-link" id="nav-teachers">
+        <span class="sidebar-icon">🧑‍🏫</span> My Teachers
+      </a>
+      <a href="schedule.html" class="sidebar-link" id="nav-schedule">
+        <span class="sidebar-icon">📅</span> Schedule
+      </a>
+
+      <span class="sidebar-section-label">Performance</span>
+      <a href="homework.html" class="sidebar-link" id="nav-homework">
+        <span class="sidebar-icon">📚</span> Homework
+        <span class="sidebar-badge" style="background:#F59E0B;">0</span>
+      </a>
+      <a href="exams.html" class="sidebar-link" id="nav-exams">
+        <span class="sidebar-icon">📝</span> Examinations
+      </a>
+      <a href="results.html" class="sidebar-link" id="nav-results">
+        <span class="sidebar-icon">📊</span> Results
+      </a>
+      <a href="progress.html" class="sidebar-link" id="nav-progress">
+        <span class="sidebar-icon">📈</span> Progress
+      </a>
+
+      <span class="sidebar-section-label">Resources</span>
+      <a href="downloads.html" class="sidebar-link" id="nav-downloads">
+        <span class="sidebar-icon">📥</span> Downloads
+      </a>
+      <a href="notifications.html" class="sidebar-link" id="nav-notif">
+        <span class="sidebar-icon">🔔</span> Notifications
+        <span class="sidebar-badge">0</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
+        <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
+        <div style="flex:1; min-width:0;">
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
+          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Active</div>
+        </div>
+        <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
+      </div>
+      <div id="user-dropdown" style="position:absolute;bottom:80px;left:12px;right:12px;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);display:none;z-index:1000;" class="dropdown-menu">
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.875rem;color:var(--gray-700);border-radius:var(--radius-md) var(--radius-md) 0 0;" class="dropdown-item-link">👤 View Profile</a>
+        <a href="../login.html" style="display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:0.875rem;color:var(--danger-600);border-radius:0 0 var(--radius-md) var(--radius-md);" class="dropdown-item-link">🚪 Sign Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <main class="dash-main" id="main-content">
+    <div class="dash-topbar">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <button class="btn btn-icon btn-ghost" id="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;">☰</button>
+        <div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Welcome Student</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Hello, Student! 👋</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="notifications.html" class="notif-btn btn" aria-label="Notifications">
+          🔔<span class="notif-dot" style="display:none;"></span>
+        </a>
+        <a href="classrooms.html" class="btn btn-primary btn-sm">➕ Join Class</a>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      
+      <!-- Welcome Banner -->
+      <div class="welcome-student-banner">
+        <div>
+          <div class="badge" style="background:rgba(255,255,255,0.2); color:#fff; margin-bottom:12px;">STUDENT WORKSPACE</div>
+          <h2 style="color:#fff; margin-bottom:8px;">Welcome to your learning dashboard</h2>
+          <p style="color:rgba(255,255,255,0.8); max-width:540px; margin-bottom:18px;">
+            Join classrooms created by your educators using their Classora ID to track live homework, schedules, and grades.
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="classrooms.html" class="btn btn-white btn-sm">Join a Classroom</a>
+            <a href="schedule.html" class="btn btn-ghost btn-sm" style="color:#fff; border:1px solid rgba(255,255,255,0.3);">Check Schedule</a>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; background:rgba(255,255,255,0.1); border-radius:16px; padding:18px 24px; border:1px solid rgba(255,255,255,0.15); text-align:center;">
+          <div style="font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:600; text-transform:uppercase;">Classora Student ID</div>
+          <code style="font-size:1.25rem; font-weight:800; color:#34D399; margin:6px 0;" id="user-display-id">STD-ACTIVE</code>
+          <button class="btn btn-sm btn-ghost" style="color:#fff; padding:2px 8px; font-size:0.75rem;" onclick="copyToClipboard(document.getElementById('user-display-id').textContent, 'Student ID Copied!')">📋 Copy ID</button>
+        </div>
+      </div>
+
+      <!-- Quick KPI Stats -->
+      <div class="stats-grid">
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#EEF2FF; color:var(--primary-700);">🏫</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--gray-900);">0</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Enrolled Classes</div>
+          </div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#D1FAE5; color:#065F46;">📊</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--accent-600);">--</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Grade Average</div>
+          </div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#FEF3C7; color:#92400E;">📚</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:#D97706;">0 Pending</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Homework Due</div>
+          </div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#FCE7F3; color:#9D174D;">⏱️</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:#BE185D;">--</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Attendance Record</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Layout: 2 Columns -->
+      <div class="grid" style="grid-template-columns: 1fr 340px; gap: 24px;">
+        
+        <!-- Left: Today's Schedule & Enrolled Classes -->
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h4 style="margin:0;">My Enrolled Classrooms</h4>
+              <a href="classrooms.html" style="font-size:0.85rem; color:var(--primary-600); font-weight:600;">View All</a>
+            </div>
+
+            <div style="text-align:center; padding:32px 16px; background:var(--gray-50); border-radius:var(--radius-md);">
+              <div style="font-size:2rem; margin-bottom:8px;">🏫</div>
+              <div style="font-weight:600; color:var(--gray-800);">No Classrooms Enrolled</div>
+              <div style="font-size:0.8rem; color:var(--gray-500); margin:4px auto 14px; max-width:280px;">
+                Ask your teacher for their Classora ID to join their subject batch.
+              </div>
+              <a href="classrooms.html" class="btn btn-primary btn-sm">➕ Join a Classroom</a>
+            </div>
+          </div>
+
+          <!-- Pending Homework Task -->
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h4 style="margin:0;">Action Required: Pending Homework</h4>
+              <span class="badge badge-success">Up to date</span>
+            </div>
+            <div style="text-align:center; padding:24px 16px; background:var(--gray-50); border-radius:var(--radius-md);">
+              <div style="font-size:2rem; margin-bottom:6px;">🎉</div>
+              <div style="font-weight:600; color:var(--gray-800);">No Homework Pending</div>
+              <div style="font-size:0.8rem; color:var(--gray-500);">All assigned homework tasks will appear here once published by your educators.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Recent Activity & Teacher Contacts -->
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          
+          <div class="card">
+            <h4 style="margin-bottom:16px;">My Teachers</h4>
+            <div style="text-align:center; padding:24px 16px; background:var(--gray-50); border-radius:var(--radius-md);">
+              <div style="font-size:2rem; margin-bottom:6px;">🧑‍🏫</div>
+              <div style="font-weight:600; color:var(--gray-800);">No Teachers Added</div>
+              <div style="font-size:0.8rem; color:var(--gray-500); margin-bottom:12px;">Enrolled teacher contacts will appear here.</div>
+              <a href="teachers.html" class="btn btn-ghost btn-sm">Browse Directory</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4 style="margin-bottom:16px;">Upcoming Exam</h4>
+            <div style="text-align:center; padding:24px 16px; background:var(--gray-50); border-radius:var(--radius-md);">
+              <div style="font-size:2rem; margin-bottom:6px;">📝</div>
+              <div style="font-weight:600; color:var(--gray-800);">No Exams Scheduled</div>
+              <div style="font-size:0.8rem; color:var(--gray-500);">Upcoming tests and assessments will be displayed here.</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-client.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

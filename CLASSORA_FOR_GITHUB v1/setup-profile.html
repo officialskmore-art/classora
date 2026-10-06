@@ -197,24 +197,72 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="setup-phone">Phone Number <span style="color:var(--danger-500);">*</span></label>
+        <label class="form-label" for="setup-phone">Phone Number <span style="color:var(--gray-400); font-weight:400;">(Optional — 10 Digits)</span></label>
         <div class="form-input-icon">
           <span class="icon">📞</span>
-          <input class="form-input" type="tel" id="setup-phone" placeholder="e.g. +91 98765 43210 or +1 555-0199" required/>
+          <input class="form-input" type="tel" id="setup-phone" placeholder="e.g. 9876543210 (10-digit mobile)"/>
         </div>
-        <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">Used strictly for academic notifications and urgent institutional updates.</div>
+        <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">Optional. If provided, must be a valid 10-digit mobile number.</div>
       </div>
 
       <!-- 4. Dynamic Teacher Fields -->
       <div id="fields-teacher">
         <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
           <div class="form-group" style="margin-bottom:0;">
-            <label class="form-label" for="setup-subject">Primary Subject(s) <span style="color:var(--danger-500);">*</span></label>
-            <input class="form-input" type="text" id="setup-subject" placeholder="e.g. Mathematics, Physics"/>
+            <label class="form-label" for="setup-subject">Primary Subject <span style="color:var(--danger-500);">*</span></label>
+            <select class="form-input" id="setup-subject" onchange="handleSubjectSelectChange(this)">
+              <option value="" disabled selected>Select Subject (WB & CBSE Boards)</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Bengali (বাংলা)">Bengali (বাংলা)</option>
+              <option value="English">English</option>
+              <option value="Hindi (हिंदी)">Hindi (हिंदी)</option>
+              <option value="General Science">General Science</option>
+              <option value="Physical Science (ভৌত বিজ্ঞান)">Physical Science (ভৌত বিজ্ঞান)</option>
+              <option value="Life Science (জীবন বিজ্ঞান)">Life Science (জীবন বিজ্ঞান)</option>
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Biology">Biology</option>
+              <option value="Computer Science / IT">Computer Science / IT</option>
+              <option value="Environmental Studies (EVS)">Environmental Studies (EVS)</option>
+              <option value="History (ইতিহাস)">History (ইতিহাস)</option>
+              <option value="Geography (ভূগোল)">Geography (ভূগোল)</option>
+              <option value="Social Studies (SST)">Social Studies (SST)</option>
+              <option value="Political Science (রাষ্ট্রবিজ্ঞান)">Political Science (রাষ্ট্রবিজ্ঞান)</option>
+              <option value="Economics (অর্থনীতি)">Economics (অর্থনীতি)</option>
+              <option value="Accountancy">Accountancy</option>
+              <option value="Business Studies">Business Studies</option>
+              <option value="Statistics">Statistics</option>
+              <option value="Sociology">Sociology</option>
+              <option value="Philosophy">Philosophy</option>
+              <option value="Sanskrit">Sanskrit</option>
+              <option value="Nutrition">Nutrition</option>
+              <option value="Psychology">Psychology</option>
+              <option value="Others">Others (Write your own subject)</option>
+            </select>
+            <input class="form-input" type="text" id="setup-subject-custom" placeholder="Write custom subject name…" style="display:none; margin-top:8px;"/>
           </div>
           <div class="form-group" style="margin-bottom:0;">
             <label class="form-label" for="setup-grades-taught">Grades / Classes Taught <span style="color:var(--danger-500);">*</span></label>
-            <input class="form-input" type="text" id="setup-grades-taught" placeholder="e.g. Grade 9, Grade 10, Grade 11"/>
+            <select class="form-input" id="setup-grades-taught">
+              <option value="" disabled selected>Select Grade / Standard</option>
+              <option value="LKG">LKG</option>
+              <option value="UKG">UKG</option>
+              <option value="Class Grade 1">Class Grade 1</option>
+              <option value="Class Grade 2">Class Grade 2</option>
+              <option value="Class Grade 3">Class Grade 3</option>
+              <option value="Class Grade 4">Class Grade 4</option>
+              <option value="Class Grade 5">Class Grade 5</option>
+              <option value="Class Grade 6">Class Grade 6</option>
+              <option value="Class Grade 7">Class Grade 7</option>
+              <option value="Class Grade 8">Class Grade 8</option>
+              <option value="Class Grade 9">Class Grade 9</option>
+              <option value="Class Grade 10">Class Grade 10 (Madhyamik / Secondary)</option>
+              <option value="Class Grade 11">Class Grade 11th</option>
+              <option value="Class Grade 12">Class Grade 12th</option>
+              <option value="Multiple Grades (1-10)">Multiple Grades (1 - 10)</option>
+              <option value="Senior Grades (11-12)">Senior Grades (11 & 12)</option>
+              <option value="All Grades (1-12)">All Grades (1 - 12)</option>
+            </select>
           </div>
         </div>
 
@@ -229,7 +277,23 @@
         <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
           <div class="form-group" style="margin-bottom:0;">
             <label class="form-label" for="setup-student-grade">Current Grade / Standard <span style="color:var(--danger-500);">*</span></label>
-            <input class="form-input" type="text" id="setup-student-grade" placeholder="e.g. Standard 10 or Grade 11"/>
+            <select class="form-input" id="setup-student-grade">
+              <option value="" disabled selected>Select Grade / Standard</option>
+              <option value="LKG">LKG</option>
+              <option value="UKG">UKG</option>
+              <option value="Class Grade 1">Class Grade 1</option>
+              <option value="Class Grade 2">Class Grade 2</option>
+              <option value="Class Grade 3">Class Grade 3</option>
+              <option value="Class Grade 4">Class Grade 4</option>
+              <option value="Class Grade 5">Class Grade 5</option>
+              <option value="Class Grade 6">Class Grade 6</option>
+              <option value="Class Grade 7">Class Grade 7</option>
+              <option value="Class Grade 8">Class Grade 8</option>
+              <option value="Class Grade 9">Class Grade 9</option>
+              <option value="Class Grade 10">Class Grade 10 (Madhyamik / 10th Board)</option>
+              <option value="Class Grade 11th">Class Grade 11th</option>
+              <option value="Class Grade 12th">Class Grade 12th</option>
+            </select>
           </div>
           <div class="form-group" style="margin-bottom:0;">
             <label class="form-label" for="setup-student-section">Section / Stream</label>
@@ -259,6 +323,19 @@
 <script src="js/main.js"></script>
 <script>
   let avatarFile = null;
+
+  function handleSubjectSelectChange(select) {
+    const customInput = document.getElementById('setup-subject-custom');
+    if (select.value === 'Others') {
+      customInput.style.display = 'block';
+      customInput.required = true;
+      customInput.focus();
+    } else {
+      customInput.style.display = 'none';
+      customInput.required = false;
+      customInput.value = '';
+    }
+  }
 
   function selectRole(role) {
     document.getElementById('chosen-role').value = role;
@@ -324,23 +401,21 @@
 
   // Pre-fill user data on load
   window.addEventListener('DOMContentLoaded', async () => {
-    selectRole('teacher'); // default select teacher, user can toggle
+    // If pre-chosen role in registration/login, honor it first!
+    const savedRole = localStorage.getItem('classora_auth_role');
+    if (savedRole === 'student') {
+      selectRole('student');
+    } else {
+      selectRole('teacher');
+    }
 
     const user = ClassoraAuth.getCurrentUser();
     if (!user) {
-      // If no session found, redirect to login
       window.location.href = 'login.html';
       return;
     }
 
-    // Set email
     document.getElementById('setup-email').value = user.email || '';
-
-    // If pre-chosen role in registration/login
-    const savedRole = localStorage.getItem('classora_auth_role');
-    if (savedRole === 'student') {
-      selectRole('student');
-    }
 
     // Set name from Google metadata or email
     const meta = user.user_metadata || {};
@@ -356,8 +431,25 @@
       if (active) {
         if (active.full_name) document.getElementById('setup-fullname').value = active.full_name;
         if (active.phone) document.getElementById('setup-phone').value = active.phone;
-        if (active.role) selectRole(active.role);
-        if (active.subject) document.getElementById('setup-subject').value = active.subject;
+        if (active.role && !savedRole) selectRole(active.role);
+        
+        if (active.subject) {
+          const subjSelect = document.getElementById('setup-subject');
+          let found = false;
+          for (let i = 0; i < subjSelect.options.length; i++) {
+            if (subjSelect.options[i].value === active.subject) {
+              subjSelect.selectedIndex = i;
+              found = true;
+              break;
+            }
+          }
+          if (!found && active.subject) {
+            subjSelect.value = 'Others';
+            handleSubjectSelectChange(subjSelect);
+            document.getElementById('setup-subject-custom').value = active.subject;
+          }
+        }
+        
         if (active.grade) {
           if (active.role === 'teacher') document.getElementById('setup-grades-taught').value = active.grade;
           else document.getElementById('setup-student-grade').value = active.grade;
@@ -377,8 +469,6 @@
     e.preventDefault();
     const btn = document.getElementById('btn-submit-setup');
     const originalText = btn.innerHTML;
-    btn.disabled = true;
-    btn.innerHTML = 'Saving your profile…';
 
     const user = ClassoraAuth.getCurrentUser();
     if (!user) {
@@ -392,9 +482,42 @@
     const phone = document.getElementById('setup-phone').value.trim();
     const isTeacher = role === 'teacher';
 
-    const subject = isTeacher ? document.getElementById('setup-subject').value.trim() : '';
-    const grade = isTeacher ? document.getElementById('setup-grades-taught').value.trim() : document.getElementById('setup-student-grade').value.trim();
+    // Validate phone number if given
+    if (phone && !validatePhoneNumber(phone)) {
+      showToast('Please enter a valid 10-digit mobile number.', 'error');
+      document.getElementById('setup-phone').focus();
+      return;
+    }
+
+    let subject = '';
+    if (isTeacher) {
+      const selectVal = document.getElementById('setup-subject').value;
+      if (!selectVal) {
+        showToast('Please select your primary teaching subject.', 'warning');
+        return;
+      }
+      if (selectVal === 'Others') {
+        subject = document.getElementById('setup-subject-custom').value.trim();
+        if (!subject) {
+          showToast('Please write your custom subject name.', 'warning');
+          document.getElementById('setup-subject-custom').focus();
+          return;
+        }
+      } else {
+        subject = selectVal;
+      }
+    }
+
+    const grade = isTeacher ? document.getElementById('setup-grades-taught').value : document.getElementById('setup-student-grade').value;
+    if (!grade) {
+      showToast('Please select your grade/class level.', 'warning');
+      return;
+    }
+
     const institute = isTeacher ? document.getElementById('setup-institute-teacher').value.trim() : document.getElementById('setup-institute-student').value.trim();
+
+    btn.disabled = true;
+    btn.innerHTML = 'Saving your profile…';
 
     try {
       let avatarUrl = null;

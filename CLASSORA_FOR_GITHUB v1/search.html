@@ -183,6 +183,19 @@
     </div>
   </footer>
 
+  <!-- ════ PROFILE DETAILS MODAL ════ -->
+  <div class="modal-overlay" id="modal-profile-details">
+    <div class="modal" style="max-width: 480px; text-align: left;">
+      <div class="modal-header">
+        <h3 style="margin:0; font-size:1.15rem;">Academic Profile</h3>
+        <button class="btn btn-ghost btn-sm" data-modal-close="modal-profile-details">✕</button>
+      </div>
+      <div id="modal-profile-body" style="padding: 10px 0;">
+        <!-- Filled dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
   <div class="toast-container" id="toast-container"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js"></script>
@@ -197,6 +210,58 @@
       });
       btn.className = 'badge badge-primary search-pill touch-press active';
       filterDirectory();
+    }
+
+    function viewMemberProfile(id) {
+      const member = CLASSORA_DIRECTORY.find(m => m.id === id);
+      if (!member) {
+        showToast('Profile not found', 'error');
+        return;
+      }
+      const body = document.getElementById('modal-profile-body');
+      body.innerHTML = `
+        <div style="text-align:center; margin-bottom:20px;">
+          <div class="user-avatar avatar-xl" style="background:${member.avatarColor}; font-size:2rem; margin:0 auto 12px; color:#fff;">
+            ${member.avatar}
+          </div>
+          <h3 style="margin:0 0 4px; color:var(--gray-900);">${member.name}</h3>
+          <div style="font-size:0.875rem; color:var(--gray-500); margin-bottom:8px;">${member.title}</div>
+          <span class="badge ${member.role === 'Teacher' ? 'badge-primary' : 'badge-success'}">${member.role}</span>
+        </div>
+
+        <div style="background:var(--gray-50); border:1.5px dashed var(--gray-300); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:16px;">
+          <div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; margin-bottom:4px;">Classora ID</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <code class="classora-id" style="font-size:1.05rem; padding:4px 10px;">${member.id}</code>
+            <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${member.id}', 'ID Copied!')">📋 Copy ID</button>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:0.875rem; margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--gray-100); padding-bottom:8px;">
+            <span style="color:var(--gray-500);">Primary Subject(s):</span>
+            <strong style="color:var(--gray-900);">${member.subjects}</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--gray-100); padding-bottom:8px;">
+            <span style="color:var(--gray-500);">Classes / Grades:</span>
+            <strong style="color:var(--gray-900);">${member.classes}</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--gray-100); padding-bottom:8px;">
+            <span style="color:var(--gray-500);">Academic Status:</span>
+            <span style="color:var(--accent-600); font-weight:700;">Verified Active</span>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-secondary btn-full btn-sm" onclick="closeModal('modal-profile-details')">Close</button>
+          ${member.role === 'Teacher' ? `
+            <a href="login.html" class="btn btn-primary btn-full btn-sm" style="justify-content:center;">Request to Join</a>
+          ` : `
+            <button class="btn btn-primary btn-full btn-sm" onclick="copyToClipboard('${member.id}', 'Student ID Copied!'); showToast('Invite link/ID copied!', 'success');">Copy Student ID</button>
+          `}
+        </div>
+      `;
+      openModal('modal-profile-details');
     }
 
     function filterDirectory() {
@@ -240,7 +305,7 @@
       container.innerHTML = matches.map(p => `
         <div class="person-card">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
-            <div style="display:flex; align-items:center; gap:14px;">
+            <div style="display:flex; align-items:center; gap:14px; cursor:pointer;" onclick="viewMemberProfile('${p.id}')">
               <div class="user-avatar avatar-lg" style="background:${p.avatarColor}; font-size:1.3rem;">${p.avatar}</div>
               <div>
                 <h4 style="margin:0 0 2px; color:var(--gray-900); font-size:1.0625rem;">${p.name}</h4>
@@ -264,10 +329,11 @@
           </div>
 
           <div style="display:flex; gap:8px; border-top:1px solid var(--gray-100); padding-top:14px;">
+            <button class="btn btn-secondary btn-sm flex-1 touch-press" onclick="viewMemberProfile('${p.id}')">👁 View Profile</button>
             ${p.role === 'Teacher' ? `
-              <a href="login.html" class="btn btn-primary btn-sm btn-full touch-press">Request to Join Class</a>
+              <a href="login.html" class="btn btn-primary btn-sm flex-1 touch-press" style="text-align:center;">Join Class</a>
             ` : `
-              <button class="btn btn-secondary btn-sm btn-full touch-press" onclick="showToast('Student ID copied to clipboard: ${p.id}', 'success'); copyToClipboard('${p.id}');">Invite by ID</button>
+              <button class="btn btn-primary btn-sm flex-1 touch-press" onclick="showToast('Student ID copied to clipboard: ${p.id}', 'success'); copyToClipboard('${p.id}');">Copy ID</button>
             `}
           </div>
         </div>
