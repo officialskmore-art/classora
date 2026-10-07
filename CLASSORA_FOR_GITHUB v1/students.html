@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -102,13 +102,13 @@
       
       <!-- Top Filters -->
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
-        <div style="display:flex; gap:12px; align-items:center;">
-          <select class="form-input" id="class-filter" style="width:220px; padding:8px 12px;" onchange="filterStudentTable()">
+        <div style="display:flex; gap:12px; align-items:center; flex:1 1 200px; max-width:100%;">
+          <select class="form-input" id="class-filter" style="max-width:100%; width:220px; padding:8px 12px;" onchange="filterStudentTable()">
             <option value="all">All Classrooms</option>
           </select>
         </div>
 
-        <div class="search-input" style="min-width:280px;">
+        <div class="search-input" style="flex: 1 1 220px; max-width: 100%;">
           <span>🔍</span>
           <input type="text" placeholder="Search by name or Classora ID…" id="student-search-input" onkeyup="filterStudentTable()"/>
         </div>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -205,60 +205,71 @@
   async function handleSendJoinRequest(e) {
     e.preventDefault();
     const codeInput = document.getElementById('join-code-input');
-    const code = codeInput.value.trim().toUpperCase();
-
+    const code = (codeInput.value || '').trim().toUpperCase();
     if (!code) return;
-
-    closeModal('modal-join-class');
-    showToast(`Verifying classroom "${code}"…`, 'info');
-
-    const joined = JSON.parse(localStorage.getItem('classora_student_joined_classes') || '[]');
-    if (joined.some(c => c.code === code)) {
-      showToast(`You are already enrolled in classroom ${code}!`, 'warning');
-      return;
+    const btn = document.getElementById('join-submit-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+    try {
+      await ClassoraAuth.submitJoinRequest({ classroomCode: code });
+      closeModal('modal-join-class');
+      codeInput.value = '';
+      showToast('Join request sent! Your teacher will approve shortly. 🎉', 'success', 5000);
+      await loadStudentClassrooms();
+    } catch(err) {
+      showToast(err.message || 'Failed to send join request.', 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Send Join Request'; }
     }
-
-    let teacherName = 'Classora Educator';
-    let className = `Classroom (${code})`;
-    let subject = 'Academics';
-
-    const teacherMatch = typeof CLASSORA_DIRECTORY !== 'undefined' ? CLASSORA_DIRECTORY.find(m => m.id === code || m.id.includes(code)) : null;
-    if (teacherMatch) {
-      teacherName = teacherMatch.name;
-      className = `${teacherMatch.name}'s Classroom`;
-      subject = teacherMatch.subjects.split(',')[0] || 'General';
-    }
-
-    const newClass = {
-      code: code,
-      name: className,
-      teacher: teacherName,
-      subject: subject,
-      status: 'Enrolled',
-      joined_at: new Date().toLocaleDateString()
-    };
-
-    joined.push(newClass);
-    localStorage.setItem('classora_student_joined_classes', JSON.stringify(joined));
-
-    // Persist notification for student
-    const notifs = JSON.parse(localStorage.getItem('classora_notifications') || '[]');
-    notifs.unshift({
-      id: Date.now(),
-      title: 'Classroom Enrolled',
-      body: `You are now enrolled in ${className} (${code}).`,
-      time: 'Just now',
-      read: false
-    });
-    localStorage.setItem('classora_notifications', JSON.stringify(notifs));
-
-    codeInput.value = '';
-    renderStudentClassrooms();
-    showToast(`🎉 Successfully enrolled in "${className}"!`, 'success', 5000);
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    renderStudentClassrooms();
+  async function loadStudentClassrooms() {
+    const classrooms = await ClassoraAuth.fetchEnrolledClassrooms();
+    const badge = document.getElementById('student-class-count');
+    if (badge) badge.textContent = classrooms.length;
+    renderStudentClassroomsDB(classrooms);
+  }
+
+  function renderStudentClassroomsDB(classrooms) {
+    const grid = document.querySelector('.dash-content .grid') || document.getElementById('classrooms-container');
+    if (!grid) return;
+    if (!classrooms || !classrooms.length) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:56px 20px;border:2px dashed var(--gray-200);border-radius:var(--radius-xl);background:var(--gray-50)">
+        <div style="font-size:2.5rem;margin-bottom:8px">&#127979;</div>
+        <h4 style="color:var(--gray-800);margin-bottom:4px">No Enrolled Classrooms</h4>
+        <p style="font-size:0.875rem;color:var(--gray-500);margin-bottom:16px">Enter your teacher's Classroom Code to join.</p>
+        <button class="btn btn-primary btn-sm" onclick="openModal('modal-join-class')">&#43; Join Classroom</button>
+      </div>`;
+      return;
+    }
+    const grads = ['card-grad-1','card-grad-2','card-grad-3','card-grad-4'];
+    grid.innerHTML = classrooms.map((c,i) => {
+      const g = grads[i % grads.length];
+      return `<div class="class-card animate-fade-up">
+        <div class="class-card-header ${g}">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <span class="badge" style="background:rgba(255,255,255,0.25);color:#fff">${c.section||'General'}</span>
+            <span class="badge" style="background:rgba(255,255,255,0.2);color:#fff">Code: ${c.class_code}</span>
+          </div>
+          <h3 style="color:#fff;margin-top:12px;margin-bottom:4px">${c.name}</h3>
+          <div style="font-size:0.85rem;opacity:0.85">${c.subject||'Academic'}</div>
+        </div>
+        <div class="class-card-body">
+          <div class="class-meta-row"><span>Classroom Code</span><strong>${c.class_code}</strong></div>
+          <div class="class-meta-row"><span>Subject</span><strong>${c.subject||'General'}</strong></div>
+          <div style="display:flex;gap:10px;margin-top:auto;padding-top:12px">
+            <a href="homework.html" class="btn btn-primary btn-sm" style="flex:1">View Homework</a>
+            <a href="exams.html" class="btn btn-secondary btn-sm" style="flex:1">Exams</a>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Override renderStudentClassrooms used elsewhere to trigger live reload
+  function renderStudentClassrooms() { loadStudentClassrooms(); }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadStudentClassrooms();
   });
 </script>
 </body>

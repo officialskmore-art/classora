@@ -101,7 +101,7 @@
     <div class="dash-content">
       
       <!-- Homework List -->
-      <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px;">
+      <div id="hw-grid" class="grid" style="grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;">
         <div style="grid-column:1/-1; text-align:center; padding:56px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
           <div style="font-size:2.5rem; margin-bottom:8px;">📚</div>
           <h4 style="color:var(--gray-800); margin-bottom:4px;">No Homework Assigned Yet</h4>
@@ -134,21 +134,21 @@
       </div>
       <div class="form-group">
         <label class="form-label">Instructions & Questions</label>
-        <textarea class="form-input" rows="3" placeholder="Provide detailed instructions or problem sets..." required></textarea>
+        <textarea class="form-input" id="hw-desc" rows="3" placeholder="Provide detailed instructions or problem sets..." required></textarea>
       </div>
       <div class="grid" style="grid-template-columns:1fr 1fr; gap:12px;">
         <div class="form-group">
           <label class="form-label">Due Date</label>
-          <input class="form-input" type="date" required/>
+          <input class="form-input" type="date" id="hw-due" required/>
         </div>
         <div class="form-group">
           <label class="form-label">Total Points</label>
-          <input class="form-input" type="number" value="20" required/>
+          <input class="form-input" type="number" id="hw-points" value="20" min="1" required/>
         </div>
       </div>
       <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
         <button type="button" class="btn btn-ghost" data-modal-close="modal-create-hw">Cancel</button>
-        <button type="submit" class="btn btn-primary">Publish Assignment</button>
+        <button type="submit" class="btn btn-primary" id="hw-submit-btn">Publish Assignment</button>
       </div>
     </form>
   </div>
@@ -159,13 +159,58 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  function handleCreateHw(e) {
-    e.preventDefault();
-    const title = document.getElementById('hw-title').value;
-    const cls = document.getElementById('hw-class').value;
-    closeModal('modal-create-hw');
-    showToast(`Assignment "${title}" published to ${cls}!`, 'success');
+  var hwRealtimeChannel = null;
+
+  function renderHwCards(a) {
+    var g = document.getElementById("hw-grid"); if (!g) return;
+    if (!a || !a.length) { g.innerHTML = "<div style=\"grid-column:1/-1;text-align:center;padding:56px 20px;border:2px dashed #E5E7EB;border-radius:12px;background:#F9FAFB;\"><div style=\"font-size:2.5rem;margin-bottom:8px\">&#128218;</div><h4 style=\"margin-bottom:4px\">No Homework Assigned Yet</h4><p style=\"font-size:0.875rem;color:#6B7280;margin-bottom:16px\">Create assignments and review submissions.</p><button class=\"btn btn-primary btn-sm\" onclick=\"openModal('modal-create-hw')\">+ Assign First Homework</button></div>"; return; }
+    g.innerHTML = a.map(function(item) {
+      var cls = (item.classrooms && item.classrooms.name) ? item.classrooms.name : "N/A";
+      var due = item.due_date ? new Date(item.due_date).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}) : "No due date";
+      var past = item.due_date && new Date(item.due_date) < new Date();
+      return "<div class=\"card animate-fade-up\" style=\"border-left:4px solid " + (past?"#EF4444":"#4F46E5") + "\"><div style=\"display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px\"><span class=\"badge\" style=\"font-size:0.72rem;background:" + (past?"#FEE2E2":"#EEF2FF") + ";color:" + (past?"#B91C1C":"#4338CA") + "\">" + (past?"Overdue":"Active") + "</span><button class=\"btn btn-ghost btn-sm\" onclick=\"deleteHw('"+item.id+"')\" style=\"color:#EF4444;padding:2px 6px;font-size:0.8rem\">Delete</button></div><h4 style=\"color:#111827;margin-bottom:6px;font-size:1rem\">" + item.title + "</h4><p style=\"font-size:0.825rem;color:#4B5563;margin-bottom:12px;line-height:1.5\">" + (item.description||"No instructions.") + "</p><div style=\"font-size:0.8rem;color:#6B7280;border-top:1px solid #F3F4F6;padding-top:10px\">Classroom: " + cls + " | Due: " + due + " | Points: " + (item.total_points||0) + "</div></div>";
+    }).join("");
   }
+
+  async function loadHomework() { var r = await ClassoraAuth.fetchAssignments(); renderHwCards(r); }
+
+  async function deleteHw(id) {
+    if (!confirm("Delete this assignment?")) return;
+    try { await ClassoraAuth.deleteAssignment(id); showToast("Deleted.","success"); await loadHomework(); }
+    catch (e) { showToast(e.message||"Error","error"); }
+  }
+
+  async function handleCreateHw(e) {
+    e.preventDefault();
+    var btn = document.getElementById("hw-submit-btn");
+    btn.disabled = true; btn.textContent = "Publishing...";
+    try {
+      var cls = await ClassoraAuth.fetchClassrooms();
+      await ClassoraAuth.createAssignment({
+        title: document.getElementById("hw-title").value.trim(),
+        classroom_id: document.getElementById("hw-class").value,
+        description: document.getElementById("hw-desc").value.trim(),
+        due_date: document.getElementById("hw-due").value,
+        total_points: parseInt(document.getElementById("hw-points").value)||20
+      });
+      closeModal("modal-create-hw"); showToast("Assignment published!", "success"); e.target.reset(); await loadHomework();
+    } catch (err) { showToast(err.message||"Failed","error"); }
+    finally { btn.disabled=false; btn.textContent="Publish Assignment"; }
+  }
+
+  async function populateHwClassDropdown() {
+    var sel = document.getElementById("hw-class"); if (!sel) return;
+    var cls = await ClassoraAuth.fetchClassrooms();
+    if (!cls.length) { sel.innerHTML = "<option value=\"\" disabled selected>No classrooms yet</option>"; return; }
+    sel.innerHTML = "<option value=\"\" disabled selected>Select classroom</option>";
+    cls.forEach(function(c){var o=document.createElement("option");o.value=c.id;o.textContent=c.name+" ("+c.class_code+")";sel.appendChild(o);});
+  }
+
+  document.addEventListener("DOMContentLoaded", async function() {
+    await loadHomework();
+    await populateHwClassDropdown();
+    hwRealtimeChannel = ClassoraAuth.subscribeToTable("assignments", function() { loadHomework(); });
+  });
 </script>
 </body>
 </html>
