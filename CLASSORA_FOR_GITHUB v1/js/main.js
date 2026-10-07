@@ -32,6 +32,14 @@ function validatePassword(pass) {
   return pass.length >= 8;
 }
 
+function validatePhoneNumber(phone) {
+  if (!phone || !phone.trim()) return true; // Optional by default
+  const cleaned = phone.trim().replace(/[\s\-\(\)\+]/g, '');
+  // Match 10-digit phone or +91 format (last 10 digits)
+  if (/^91[6-9]\d{9}$/.test(cleaned)) return true;
+  return /^[6-9]\d{9}$/.test(cleaned) || /^\d{10}$/.test(cleaned);
+}
+
 function setError(inputId, msg) {
   const el = document.getElementById(inputId);
   if (!el) return;
@@ -560,16 +568,68 @@ window.toggleMobileDrawer = function(forceState) {
   }
 };
 
-/* ─── Desktop Mode Suggestion on Mobile/Tablet ── */
-function initDesktopModeSuggestion() {
-  // Only trigger on mobile or tablet devices (screen width <= 1024px or touch viewport)
-  const isMobileOrTablet = window.innerWidth <= 1024 || (navigator.maxTouchPoints > 0 && window.innerWidth <= 1024);
-  if (!isMobileOrTablet) return;
+/* ─── Standard Board Subjects & Grades (WB & CBSE) ── */
+window.CLASSORA_SUBJECTS = [
+  "Mathematics",
+  "Bengali (বাংলা)",
+  "English",
+  "Hindi (हिंदी)",
+  "General Science",
+  "Physical Science (ভৌত বিজ্ঞান)",
+  "Life Science (জীবন বিজ্ঞান)",
+  "Physics",
+  "Chemistry",
+  "Biology",
+  "Computer Science / IT",
+  "Environmental Studies (EVS)",
+  "History (ইতিহাস)",
+  "Geography (ভূগোল)",
+  "Social Studies (SST)",
+  "Political Science (রাষ্ট্রবিজ্ঞান)",
+  "Economics (অর্থনীতি)",
+  "Accountancy",
+  "Business Studies",
+  "Statistics",
+  "Sociology",
+  "Philosophy",
+  "Sanskrit",
+  "Nutrition",
+  "Psychology",
+  "Others"
+];
 
-  // Check if dismissed in this session
-  if (sessionStorage.getItem('classora_desktop_suggest_dismissed')) return;
+window.CLASSORA_GRADES = [
+  "LKG",
+  "UKG",
+  "Grade 1",
+  "Grade 2",
+  "Grade 3",
+  "Grade 4",
+  "Grade 5",
+  "Grade 6",
+  "Grade 7",
+  "Grade 8",
+  "Grade 9",
+  "Grade 10",
+  "Grade 11",
+  "Grade 12"
+];
 
-  // Avoid duplicate creation
+/* ─── Desktop Mode Suggestion on Smartphone Browsers (Periodic) ── */
+let desktopSuggestionTimer = null;
+const DESKTOP_REMIND_INTERVAL_MS = 180000; // Remind every 3 minutes
+
+function isSmartphoneDevice() {
+  const isNarrow = window.innerWidth <= 850;
+  const isMobileUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const isTouchPortrait = (navigator.maxTouchPoints > 0) && (window.innerHeight >= window.innerWidth);
+  return isNarrow || (isMobileUA && window.innerWidth <= 1024) || isTouchPortrait;
+}
+
+function showDesktopReminder() {
+  if (!isSmartphoneDevice()) return;
+
+  // Don't duplicate if already open
   if (document.getElementById('desktop-suggest-overlay')) return;
 
   const overlay = document.createElement('div');
@@ -579,18 +639,19 @@ function initDesktopModeSuggestion() {
     <div class="desktop-suggest-card" onclick="event.stopPropagation()">
       <button class="desktop-suggest-close" onclick="closeDesktopSuggestion()" aria-label="Close suggestion">✕</button>
       <div class="desktop-suggest-icon-wrap">💻</div>
-      <h3 class="desktop-suggest-title">Recommended: Desktop View Mode</h3>
+      <h3 class="desktop-suggest-title">Enable Desktop View for Best Experience</h3>
       <p class="desktop-suggest-desc">
-        Classora is designed as an interactive academic workstation with comprehensive timetables, gradebooks, and classroom panels. For the optimal experience, we recommend switching to <strong>Desktop View Mode</strong> or opening on a laptop.
+        You are currently viewing Classora on a smartphone screen. Classora is an academic management workstation with multi-column timetables, gradebooks, and analytics designed for desktop view.
       </p>
       <div class="desktop-suggest-tip">
-        <div class="desktop-suggest-tip-title">💡 How to switch in your mobile browser:</div>
+        <div class="desktop-suggest-tip-title">💡 How to enable Desktop Site in your browser:</div>
         <div class="desktop-suggest-tip-body">
-          Tap your browser menu (<strong>⋮</strong> on Android / <strong>⋯</strong> or <strong>Aa</strong> on iPhone) and turn on <strong>"Desktop Site"</strong>.
+          • <strong>Chrome / Android:</strong> Tap top-right menu (<strong>⋮</strong>) ➔ Check <strong>"Desktop site"</strong>.<br/>
+          • <strong>Safari / iPhone:</strong> Tap <strong>"aA"</strong> or <strong>⋯</strong> in search bar ➔ Tap <strong>"Request Desktop Website"</strong>.
         </div>
       </div>
       <div class="desktop-suggest-actions">
-        <button class="btn btn-secondary btn-sm" onclick="closeDesktopSuggestion()">Continue on Mobile</button>
+        <button class="btn btn-secondary btn-sm" onclick="closeDesktopSuggestion()">Remind Me Later (3 min)</button>
         <button class="btn btn-primary btn-sm" onclick="closeDesktopSuggestion(true)">Got It, Thanks!</button>
       </div>
     </div>
@@ -599,18 +660,41 @@ function initDesktopModeSuggestion() {
   overlay.addEventListener('click', () => closeDesktopSuggestion());
   document.body.appendChild(overlay);
 
-  // Smooth entrance after page load
   setTimeout(() => {
     overlay.classList.add('open');
-  }, 750);
+  }, 400);
 }
 
-window.closeDesktopSuggestion = function() {
+function initDesktopModeSuggestion() {
+  if (!isSmartphoneDevice()) return;
+
+  // Initial trigger shortly after page loads
+  setTimeout(() => {
+    showDesktopReminder();
+  }, 1200);
+
+  // Set recurring periodic reminder every few minutes
+  if (desktopSuggestionTimer) clearInterval(desktopSuggestionTimer);
+  desktopSuggestionTimer = setInterval(() => {
+    if (isSmartphoneDevice()) {
+      showDesktopReminder();
+    }
+  }, DESKTOP_REMIND_INTERVAL_MS);
+}
+
+window.closeDesktopSuggestion = function(persistent) {
   const overlay = document.getElementById('desktop-suggest-overlay');
   if (overlay) {
     overlay.classList.remove('open');
     setTimeout(() => overlay.remove(), 350);
   }
-  sessionStorage.setItem('classora_desktop_suggest_dismissed', 'true');
+  
+  // Reschedule next reminder in 3 minutes even if dismissed
+  if (!persistent) {
+    clearTimeout(window._desktopRemindTimeout);
+    window._desktopRemindTimeout = setTimeout(() => {
+      showDesktopReminder();
+    }, DESKTOP_REMIND_INTERVAL_MS);
+  }
 };
 

@@ -66,6 +66,11 @@
         <span class="sidebar-icon">🔔</span> Notifications
         <span class="sidebar-badge">5</span>
       </a>
+
+      <span class="sidebar-section-label">Account</span>
+      <a href="#" class="sidebar-link" onclick="event.preventDefault(); ClassoraAuth.signOut();" style="color:var(--danger-600); font-weight:600;">
+        <span class="sidebar-icon">🚪</span> Log Out
+      </a>
     </nav>
 
     <div class="sidebar-footer">
@@ -99,6 +104,7 @@
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
         <button class="btn btn-primary btn-sm" onclick="saveProfile()">Save Changes</button>
+        <button class="btn btn-secondary btn-sm" style="color:var(--danger-600); border-color:var(--danger-200); background:var(--danger-50);" onclick="ClassoraAuth.signOut()">🚪 Sign Out</button>
       </div>
     </div>
 
@@ -140,6 +146,8 @@
                 <div style="font-size: 0.75rem; color: var(--gray-500);">Status</div>
               </div>
             </div>
+
+            <button class="btn btn-secondary btn-full btn-sm" style="color:var(--danger-600); border-color:var(--danger-200); margin-top:16px; font-weight:600;" onclick="ClassoraAuth.signOut()">🚪 Log Out of Account</button>
           </div>
 
           <div class="card">
@@ -170,8 +178,8 @@
 
             <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="form-group">
-                <label class="form-label" for="prof-phone">Contact Phone</label>
-                <input class="form-input" type="tel" id="prof-phone" placeholder="Contact number"/>
+                <label class="form-label" for="prof-phone">Contact Phone <span style="font-size:0.75rem; color:var(--gray-400); font-weight:400;">(Optional — 10 Digits)</span></label>
+                <input class="form-input" type="tel" id="prof-phone" placeholder="e.g. 9876543210"/>
               </div>
               <div class="form-group">
                 <label class="form-label" for="prof-qual">Highest Qualification</label>
@@ -179,9 +187,77 @@
               </div>
             </div>
 
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label" for="prof-subject">Primary Teaching Subject</label>
+                <select class="form-input" id="prof-subject" onchange="handleTeacherSubjectChange(this)">
+                  <option value="" disabled selected>Select Subject (WB & CBSE Boards)</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Bengali (বাংলা)">Bengali (বাংলা)</option>
+                  <option value="English">English</option>
+                  <option value="Hindi (हिंदी)">Hindi (हिंदी)</option>
+                  <option value="General Science">General Science</option>
+                  <option value="Physical Science (ভৌত বিজ্ঞান)">Physical Science (ভৌত বিজ্ঞান)</option>
+                  <option value="Life Science (জীবন বিজ্ঞান)">Life Science (জীবন বিজ্ঞান)</option>
+                  <option value="Physics">Physics</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Biology">Biology</option>
+                  <option value="Computer Science / IT">Computer Science / IT</option>
+                  <option value="Environmental Studies (EVS)">Environmental Studies (EVS)</option>
+                  <option value="History (ইতিহাস)">History (ইতিহাস)</option>
+                  <option value="Geography (ভূগোল)">Geography (ভূগোল)</option>
+                  <option value="Social Studies (SST)">Social Studies (SST)</option>
+                  <option value="Political Science (রাষ্ট্রবিজ্ঞান)">Political Science (রাষ্ট্রবিজ্ঞান)</option>
+                  <option value="Economics (অর্থনীতি)">Economics (অর্থনীতি)</option>
+                  <option value="Accountancy">Accountancy</option>
+                  <option value="Business Studies">Business Studies</option>
+                  <option value="Statistics">Statistics</option>
+                  <option value="Sociology">Sociology</option>
+                  <option value="Philosophy">Philosophy</option>
+                  <option value="Sanskrit">Sanskrit</option>
+                  <option value="Nutrition">Nutrition</option>
+                  <option value="Psychology">Psychology</option>
+                  <option value="Others">Others (Write your own subject)</option>
+                </select>
+                <input class="form-input" type="text" id="prof-subject-custom" placeholder="Write custom subject name…" style="display:none; margin-top:8px;"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="prof-grades">Grades Taught</label>
+                <select class="form-input" id="prof-grades">
+                  <option value="" disabled selected>Select Grade / Standard</option>
+                  <option value="LKG">LKG</option>
+                  <option value="UKG">UKG</option>
+                  <option value="Class Grade 1">Class Grade 1</option>
+                  <option value="Class Grade 2">Class Grade 2</option>
+                  <option value="Class Grade 3">Class Grade 3</option>
+                  <option value="Class Grade 4">Class Grade 4</option>
+                  <option value="Class Grade 5">Class Grade 5</option>
+                  <option value="Class Grade 6">Class Grade 6</option>
+                  <option value="Class Grade 7">Class Grade 7</option>
+                  <option value="Class Grade 8">Class Grade 8</option>
+                  <option value="Class Grade 9">Class Grade 9</option>
+                  <option value="Class Grade 10">Class Grade 10 (Madhyamik / Secondary)</option>
+                  <option value="Class Grade 11">Class Grade 11th</option>
+                  <option value="Class Grade 12">Class Grade 12th</option>
+                  <option value="Multiple Grades (1-10)">Multiple Grades (1 - 10)</option>
+                  <option value="Senior Grades (11-12)">Senior Grades (11 & 12)</option>
+                  <option value="All Grades (1-12)">All Grades (1 - 12)</option>
+                </select>
+              </div>
+            </div>
+
             <div class="form-group">
               <label class="form-label" for="prof-bio">Educator Bio & Introduction</label>
               <textarea class="form-input" id="prof-bio" rows="3" placeholder="Tell students about your teaching focus and experience..."></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:16px; border-top:1px solid var(--gray-100); flex-wrap:wrap; gap:12px;">
+              <button type="button" class="btn btn-primary" onclick="saveProfile()" style="font-weight:700; padding:10px 24px;">
+                💾 Save Changes
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="ClassoraAuth.signOut()" style="color:var(--danger-600); border-color:var(--danger-200); background:var(--danger-50); font-weight:600;">
+                🚪 Log Out
+              </button>
             </div>
           </div>
 
@@ -315,18 +391,46 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
+  function handleTeacherSubjectChange(select) {
+    const customInput = document.getElementById('prof-subject-custom');
+    if (select.value === 'Others') {
+      customInput.style.display = 'block';
+      customInput.focus();
+    } else {
+      customInput.style.display = 'none';
+      customInput.value = '';
+    }
+  }
+
   async function saveProfile() {
     const fullName = document.getElementById('prof-name').value.trim();
     const phone = document.getElementById('prof-phone').value.trim();
     const qual = document.getElementById('prof-qual').value.trim();
     const bio = document.getElementById('prof-bio').value.trim();
+    
+    // Validate phone number if entered
+    if (phone && !validatePhoneNumber(phone)) {
+      showToast('Please enter a valid 10-digit mobile number.', 'error');
+      document.getElementById('prof-phone').focus();
+      return;
+    }
+
+    const subjSelect = document.getElementById('prof-subject');
+    let subject = subjSelect.value;
+    if (subject === 'Others') {
+      subject = document.getElementById('prof-subject-custom').value.trim() || 'Others';
+    }
+
+    const grade = document.getElementById('prof-grades').value;
 
     showToast('Saving profile to Supabase…', 'info');
     const res = await ClassoraAuth.updateProfile({
       full_name: fullName,
       phone: phone,
       qualification: qual,
-      bio: bio
+      bio: bio,
+      subject: subject,
+      grade: grade
     });
 
     if (res.success) {
@@ -394,6 +498,34 @@
     if (ClassoraAuth.isAdmin()) {
       const dangerCard = document.getElementById('danger-zone-card');
       if (dangerCard) dangerCard.style.display = 'none';
+    }
+    const profile = ClassoraAuth.getActiveProfile();
+    if (profile) {
+      if (profile.subject) {
+        const select = document.getElementById('prof-subject');
+        let matched = false;
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value === profile.subject) {
+            select.selectedIndex = i;
+            matched = true;
+            break;
+          }
+        }
+        if (!matched && profile.subject) {
+          select.value = 'Others';
+          handleTeacherSubjectChange(select);
+          document.getElementById('prof-subject-custom').value = profile.subject;
+        }
+      }
+      if (profile.grade) {
+        const gradeSelect = document.getElementById('prof-grades');
+        for (let i = 0; i < gradeSelect.options.length; i++) {
+          if (gradeSelect.options[i].value === profile.grade) {
+            gradeSelect.selectedIndex = i;
+            break;
+          }
+        }
+      }
     }
   });
 </script>

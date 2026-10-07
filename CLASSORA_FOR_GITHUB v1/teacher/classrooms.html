@@ -193,16 +193,67 @@
       <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 14px;">
         <div class="form-group">
           <label class="form-label">Grade / Standard</label>
-          <input class="form-input" type="text" id="class-grade-input" placeholder="e.g. Grade 12" required/>
+          <select class="form-input" id="class-grade-input" required>
+            <option value="" disabled selected>Select Grade</option>
+            <option value="LKG">LKG</option>
+            <option value="UKG">UKG</option>
+            <option value="Class Grade 1">Class Grade 1</option>
+            <option value="Class Grade 2">Class Grade 2</option>
+            <option value="Class Grade 3">Class Grade 3</option>
+            <option value="Class Grade 4">Class Grade 4</option>
+            <option value="Class Grade 5">Class Grade 5</option>
+            <option value="Class Grade 6">Class Grade 6</option>
+            <option value="Class Grade 7">Class Grade 7</option>
+            <option value="Class Grade 8">Class Grade 8</option>
+            <option value="Class Grade 9">Class Grade 9</option>
+            <option value="Class Grade 10">Class Grade 10 (Madhyamik / Secondary)</option>
+            <option value="Class Grade 11">Class Grade 11th</option>
+            <option value="Class Grade 12">Class Grade 12th</option>
+          </select>
         </div>
         <div class="form-group">
           <label class="form-label">Subject</label>
-          <input class="form-input" type="text" id="class-subject-input" placeholder="e.g. Mathematics" required/>
+          <select class="form-input" id="class-subject-input" required onchange="handleClassSubjectChange(this)">
+            <option value="" disabled selected>Select Subject (WB & CBSE)</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Bengali (বাংলা)">Bengali (বাংলা)</option>
+            <option value="English">English</option>
+            <option value="Hindi (हिंदी)">Hindi (हिंदी)</option>
+            <option value="General Science">General Science</option>
+            <option value="Physical Science (ভৌত বিজ্ঞান)">Physical Science (ভৌত বিজ্ঞান)</option>
+            <option value="Life Science (জীবন বিজ্ঞান)">Life Science (জীবন বিজ্ঞান)</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+            <option value="Computer Science / IT">Computer Science / IT</option>
+            <option value="Environmental Studies (EVS)">Environmental Studies (EVS)</option>
+            <option value="History (ইতিহাস)">History (ইতিহাস)</option>
+            <option value="Geography (ভূগোল)">Geography (ভূগোল)</option>
+            <option value="Social Studies (SST)">Social Studies (SST)</option>
+            <option value="Political Science (রাষ্ট্রবিজ্ঞান)">Political Science (রাষ্ট্রবিজ্ঞান)</option>
+            <option value="Economics (অর্থনীতি)">Economics (অর্থনীতি)</option>
+            <option value="Accountancy">Accountancy</option>
+            <option value="Business Studies">Business Studies</option>
+            <option value="Statistics">Statistics</option>
+            <option value="Sociology">Sociology</option>
+            <option value="Philosophy">Philosophy</option>
+            <option value="Sanskrit">Sanskrit</option>
+            <option value="Nutrition">Nutrition</option>
+            <option value="Psychology">Psychology</option>
+            <option value="Others">Others (Write custom subject)</option>
+          </select>
+          <input class="form-input" type="text" id="class-subject-custom" placeholder="Write custom subject name…" style="display:none; margin-top:8px;"/>
         </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Weekly Schedule</label>
-        <input class="form-input" type="text" id="class-schedule-input" placeholder="e.g. Mon, Wed 10:00 AM" required/>
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="form-group">
+          <label class="form-label">Batch Start Date <span style="font-size:0.75rem; color:var(--gray-400);">(DD/MM/YYYY)</span></label>
+          <input class="form-input" type="date" id="class-start-date" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Weekly Schedule</label>
+          <input class="form-input" type="text" id="class-schedule-input" placeholder="e.g. Mon, Wed 10:00 AM" required/>
+        </div>
       </div>
       <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
         <button type="button" class="btn btn-ghost" data-modal-close="modal-new-class">Cancel</button>
@@ -217,6 +268,19 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
+  function handleClassSubjectChange(select) {
+    const custom = document.getElementById('class-subject-custom');
+    if (select.value === 'Others') {
+      custom.style.display = 'block';
+      custom.required = true;
+      custom.focus();
+    } else {
+      custom.style.display = 'none';
+      custom.required = false;
+      custom.value = '';
+    }
+  }
+
   function searchClasses() {
     const q = document.getElementById('search-class-input').value.toLowerCase();
     document.querySelectorAll('.class-card').forEach(card => {
@@ -245,9 +309,18 @@
   async function createClassroom(e) {
     e.preventDefault();
     const name = document.getElementById('class-name-input').value.trim();
-    const grade = document.getElementById('class-grade-input').value.trim();
-    const subject = document.getElementById('class-subject-input').value.trim();
+    const grade = document.getElementById('class-grade-input').value;
+    const rawDate = document.getElementById('class-start-date').value; // YYYY-MM-DD
+    let formattedDate = '';
+    if (rawDate) {
+      const [y, m, d] = rawDate.split('-');
+      formattedDate = `${d}/${m}/${y}`;
+    }
+
+    const selectSubj = document.getElementById('class-subject-input').value;
+    const subject = (selectSubj === 'Others') ? (document.getElementById('class-subject-custom').value.trim() || 'Others') : selectSubj;
     const sched = document.getElementById('class-schedule-input').value.trim();
+    const fullDesc = `Starts: ${formattedDate} | Schedule: ${sched}`;
 
     showToast('Creating classroom in Supabase…', 'info');
 
@@ -257,7 +330,7 @@
           name: name,
           subject: subject,
           section: grade,
-          description: sched
+          description: fullDesc
         });
         showToast(`Classroom "${name}" created with Code: ${saved.class_code}!`, 'success', 5000);
       } else {

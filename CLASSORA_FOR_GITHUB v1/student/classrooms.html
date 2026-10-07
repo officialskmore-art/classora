@@ -149,12 +149,118 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  function handleSendJoinRequest(e) {
-    e.preventDefault();
-    const code = document.getElementById('join-code-input').value.trim();
-    closeModal('modal-join-class');
-    showToast(`Join request dispatched for "${code}"! You will be enrolled once the teacher approves.`, 'success', 4500);
+  function renderStudentClassrooms() {
+    const container = document.getElementById('student-classes-grid');
+    if (!container) return;
+    const stored = JSON.parse(localStorage.getItem('classora_student_joined_classes') || '[]');
+    
+    if (stored.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
+          <div style="font-size:3rem; margin-bottom:12px;">🏫</div>
+          <h3>No Classrooms Joined</h3>
+          <p style="color:var(--gray-500); max-width:440px; margin:8px auto 20px;">
+            You are not enrolled in any classrooms yet. Enter your educator's Classroom Code or Classora ID to get started.
+          </p>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-join-class')">➕ Join New Classroom</button>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = stored.map(c => `
+      <div class="card class-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+            <div>
+              <span class="badge ${c.status === 'Enrolled' ? 'badge-success' : 'badge-primary'}" style="margin-bottom:6px;">${c.status || 'Enrolled'}</span>
+              <h3 style="margin:0 0 4px; font-size:1.15rem;">${c.name}</h3>
+              <div style="font-size:0.8rem; color:var(--gray-500);">${c.subject || 'General'} • ${c.joined_at || 'Active'}</div>
+            </div>
+            <div class="user-avatar avatar-md" style="background:var(--grad-primary); font-size:1rem; color:#fff;">🏫</div>
+          </div>
+
+          <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 12px; margin-bottom:14px; font-size:0.85rem;">
+            <div style="color:var(--gray-500); font-size:0.75rem;">Classroom Code: <strong>${c.code}</strong></div>
+            <div style="color:var(--gray-700); margin-top:4px;">Instructor: <strong>${c.teacher || 'Classora Educator'}</strong></div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px; border-top:1px solid var(--gray-100); padding-top:12px;">
+          <button class="btn btn-secondary btn-sm flex-1" onclick="showToast('Classroom materials & schedule are synced!', 'info')">View Details</button>
+          <button class="btn btn-ghost btn-sm" style="color:var(--danger-600);" onclick="leaveClassroom('${c.code}')">Leave</button>
+        </div>
+      </div>
+    `).join('');
   }
+
+  function leaveClassroom(code) {
+    if (!confirm(`Are you sure you want to leave classroom ${code}?`)) return;
+    let joined = JSON.parse(localStorage.getItem('classora_student_joined_classes') || '[]');
+    joined = joined.filter(c => c.code !== code);
+    localStorage.setItem('classora_student_joined_classes', JSON.stringify(joined));
+    renderStudentClassrooms();
+    showToast(`Left classroom ${code}`, 'info');
+  }
+
+  async function handleSendJoinRequest(e) {
+    e.preventDefault();
+    const codeInput = document.getElementById('join-code-input');
+    const code = codeInput.value.trim().toUpperCase();
+
+    if (!code) return;
+
+    closeModal('modal-join-class');
+    showToast(`Verifying classroom "${code}"…`, 'info');
+
+    const joined = JSON.parse(localStorage.getItem('classora_student_joined_classes') || '[]');
+    if (joined.some(c => c.code === code)) {
+      showToast(`You are already enrolled in classroom ${code}!`, 'warning');
+      return;
+    }
+
+    let teacherName = 'Classora Educator';
+    let className = `Classroom (${code})`;
+    let subject = 'Academics';
+
+    const teacherMatch = typeof CLASSORA_DIRECTORY !== 'undefined' ? CLASSORA_DIRECTORY.find(m => m.id === code || m.id.includes(code)) : null;
+    if (teacherMatch) {
+      teacherName = teacherMatch.name;
+      className = `${teacherMatch.name}'s Classroom`;
+      subject = teacherMatch.subjects.split(',')[0] || 'General';
+    }
+
+    const newClass = {
+      code: code,
+      name: className,
+      teacher: teacherName,
+      subject: subject,
+      status: 'Enrolled',
+      joined_at: new Date().toLocaleDateString()
+    };
+
+    joined.push(newClass);
+    localStorage.setItem('classora_student_joined_classes', JSON.stringify(joined));
+
+    // Persist notification for student
+    const notifs = JSON.parse(localStorage.getItem('classora_notifications') || '[]');
+    notifs.unshift({
+      id: Date.now(),
+      title: 'Classroom Enrolled',
+      body: `You are now enrolled in ${className} (${code}).`,
+      time: 'Just now',
+      read: false
+    });
+    localStorage.setItem('classora_notifications', JSON.stringify(notifs));
+
+    codeInput.value = '';
+    renderStudentClassrooms();
+    showToast(`🎉 Successfully enrolled in "${className}"!`, 'success', 5000);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderStudentClassrooms();
+  });
 </script>
 </body>
 </html>
