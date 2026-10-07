@@ -297,12 +297,20 @@ async function loadClassoraDirectory() {
   }
 }
 
-// Load on page ready
+// Load on page ready with Realtime profile sync
 if (typeof window !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadClassoraDirectory);
-  } else {
+  function setupDirectoryAndRealtime() {
     loadClassoraDirectory();
+    if (window.ClassoraAuth && typeof ClassoraAuth.subscribeToTable === 'function') {
+      ClassoraAuth.subscribeToTable('profiles', () => {
+        loadClassoraDirectory();
+      });
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupDirectoryAndRealtime);
+  } else {
+    setupDirectoryAndRealtime();
   }
 }
 

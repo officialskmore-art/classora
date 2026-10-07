@@ -164,43 +164,100 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  let pendingCount = 0;
+  var joinRealtimeChannel = null;
+  var allPending = [];
+  var allHistory = [];
+
+  function renderPending(requests) {
+    var container = document.getElementById("tab-pending");
+    var emptyMsg = document.getElementById("no-pending-msg");
+    var count = document.getElementById("pending-count");
+    var badge = document.getElementById("req-badge");
+    if (count) count.textContent = requests.length;
+    if (badge) badge.textContent = requests.length;
+    if (!requests.length) {
+      if (emptyMsg) emptyMsg.style.display = "block";
+      // Remove any existing request cards
+      container.querySelectorAll(".request-card").forEach(function(c){c.remove();});
+      return;
+    }
+    if (emptyMsg) emptyMsg.style.display = "none";
+    container.querySelectorAll(".request-card").forEach(function(c){c.remove();});
+    requests.forEach(function(r) {
+      var profile = r.profiles || {};
+      var classroom = r.classrooms || {};
+      var name = profile.full_name || "Unknown Student";
+      var email = profile.email || "";
+      var cid = profile.classora_id || r.student_id;
+      var clsName = classroom.name || "Unknown Classroom";
+      var clsCode = classroom.class_code || "";
+      var requestedAt = r.created_at ? new Date(r.created_at).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}) : "Recently";
+      var card = document.createElement("div");
+      card.className = "request-card";
+      card.id = "req-" + r.id;
+      card.innerHTML = "<div style=\"flex:1\"><div style=\"display:flex;align-items:center;gap:12px;margin-bottom:8px\"><div class=\"user-avatar avatar-sm\" style=\"background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;font-weight:700;flex-shrink:0\">" + name.charAt(0).toUpperCase() + "</div><div><div style=\"font-weight:700;color:#111827\">" + name + "</div><div style=\"font-size:0.8rem;color:#6B7280\">" + email + " &bull; <code style=\"font-size:0.78rem\">" + cid + "</code></div></div></div><div style=\"font-size:0.875rem;color:#374151\"><strong>Requesting to join:</strong> " + clsName + " <span class=\"badge badge-primary\" style=\"font-size:0.72rem\">" + clsCode + "</span></div><div style=\"font-size:0.78rem;color:#9CA3AF;margin-top:4px\">Requested " + requestedAt + "</div></div><div style=\"display:flex;gap:8px;flex-shrink:0;align-items:center\"><button class=\"btn btn-primary btn-sm\" onclick=\"approveReq('"+r.id+"','"+name.replace("'","&apos;")+"','"+clsName.replace("'","&apos;")+"')\">Approve</button><button class=\"btn btn-ghost btn-sm\" style=\"color:#EF4444\" onclick=\"rejectReq('"+r.id+"','"+name.replace("'","&apos;")+"')\">Decline</button></div>";
+      container.appendChild(card);
+    });
+  }
+
+  function renderHistory(requests) {
+    var tbody = document.querySelector("#tab-history tbody");
+    if (!tbody) return;
+    if (!requests.length) {
+      tbody.innerHTML = "<tr><td colspan=\"5\" style=\"text-align:center;padding:36px;color:#6B7280\">No past enrolment requests recorded yet.</td></tr>"; return;
+    }
+    tbody.innerHTML = requests.map(function(r) {
+      var profile = r.profiles || {};
+      var classroom = r.classrooms || {};
+      var name = profile.full_name || "Unknown";
+      var cid = profile.classora_id || r.student_id;
+      var clsName = classroom.name || "Unknown";
+      var stat = r.status;
+      var color = stat==="approved"?"#059669":"#EF4444";
+      var resolvedAt = r.updated_at ? new Date(r.updated_at).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}) : "-";
+      return "<tr><td><strong>"+name+"</strong></td><td><code>"+cid+"</code></td><td>"+clsName+"</td><td><span style=\"color:"+color+";font-weight:700;text-transform:capitalize\">"+stat+"</span></td><td>"+resolvedAt+"</td></tr>";
+    }).join("");
+  }
+
+  async function loadJoinRequests() {
+    var pending = await ClassoraAuth.fetchJoinRequests({ status: "pending" });
+    var approved = await ClassoraAuth.fetchJoinRequests({ status: "approved" });
+    var rejected = await ClassoraAuth.fetchJoinRequests({ status: "rejected" });
+    allPending = pending;
+    allHistory = approved.concat(rejected).sort(function(a,b){return new Date(b.updated_at||b.created_at)-new Date(a.updated_at||a.created_at);});
+    renderPending(allPending);
+    renderHistory(allHistory);
+  }
+
+  async function approveReq(id, name, cls) {
+    try {
+      await ClassoraAuth.approveJoinRequest(id);
+      showToast(name + " approved and enrolled in " + cls + "!", "success");
+      await loadJoinRequests();
+    } catch(e) { showToast(e.message||"Failed to approve","error"); }
+  }
+
+  async function rejectReq(id, name) {
+    if (!confirm("Decline request from " + name + "?")) return;
+    try {
+      await ClassoraAuth.rejectJoinRequest(id);
+      showToast("Request from " + name + " declined.", "warning");
+      await loadJoinRequests();
+    } catch(e) { showToast(e.message||"Failed to decline","error"); }
+  }
 
   function switchTab(type, el) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById('tab-pending').style.display = type === 'pending' ? 'block' : 'none';
-    document.getElementById('tab-history').style.display = type === 'history' ? 'block' : 'none';
+    document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});
+    el.classList.add("active");
+    document.getElementById("tab-pending").style.display = type==="pending"?"block":"none";
+    document.getElementById("tab-history").style.display = type==="history"?"block":"none";
   }
 
-  function approveRequest(id, name, cls) {
-    const el = document.getElementById(id);
-    if (el) el.remove();
-    pendingCount = Math.max(0, pendingCount - 1);
-    updateCounter();
-    showToast(`${name} has been enrolled in ${cls}!`, 'success');
-  }
-
-  function rejectRequest(id, name) {
-    const el = document.getElementById(id);
-    if (el) el.remove();
-    pendingCount = Math.max(0, pendingCount - 1);
-    updateCounter();
-    showToast(`Request from ${name} declined.`, 'warning');
-  }
-
-  function updateCounter() {
-    document.getElementById('pending-count').textContent = pendingCount;
-    document.getElementById('req-badge').textContent = pendingCount;
-    if (pendingCount === 0) {
-      const emptyMsg = document.getElementById('no-pending-msg');
-      if (emptyMsg) emptyMsg.style.display = 'block';
-    }
-  }
-</script>pendingCount === 0) {
-      document.getElementById('no-pending-msg').style.display = 'block';
-    }
-  }
+  document.addEventListener("DOMContentLoaded", async function() {
+    await loadJoinRequests();
+    // Realtime: refresh on new join requests
+    joinRealtimeChannel = ClassoraAuth.subscribeToTable("join_requests", function() { loadJoinRequests(); });
+  });
 </script>
 </body>
 </html>

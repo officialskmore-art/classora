@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -179,12 +179,62 @@
   function handleSubmitAssignment(e) {
     e.preventDefault();
     closeModal('modal-submit-hw');
-    document.getElementById('task-1').remove();
-    document.getElementById('hw-count').textContent = '0';
-    document.getElementById('hw-badge').textContent = '0';
-    document.getElementById('hw-badge').style.background = 'var(--accent-500)';
     showToast('Assignment submitted successfully! Your teacher has been notified.', 'success', 4000);
+    loadStudentHomework();
   }
+
+  async function loadStudentHomework() {
+    // Fetch assignments from all enrolled classrooms
+    const enrolledClassrooms = await ClassoraAuth.fetchEnrolledClassrooms();
+    let allAssignments = [];
+    for (const cls of enrolledClassrooms) {
+      const hw = await ClassoraAuth.fetchAssignments({ classroomId: cls.id });
+      allAssignments = allAssignments.concat(hw);
+    }
+    // Sort by due date
+    allAssignments.sort((a,b) => new Date(a.due_date||0) - new Date(b.due_date||0));
+    const pending = allAssignments.filter(a => !a.due_date || new Date(a.due_date) >= new Date());
+    const overdue = allAssignments.filter(a => a.due_date && new Date(a.due_date) < new Date());
+    // Update badge
+    const badge = document.getElementById('hw-badge');
+    if (badge) badge.textContent = pending.length;
+    const hwCount = document.getElementById('hw-count');
+    if (hwCount) hwCount.textContent = pending.length;
+    // Render pending
+    const pendingContainer = document.getElementById('hw-pending');
+    if (pendingContainer) {
+      if (!allAssignments.length) {
+        pendingContainer.innerHTML = `<div style="text-align:center;padding:56px 20px;border:2px dashed var(--gray-200);border-radius:var(--radius-xl);background:var(--gray-50)">
+          <div style="font-size:2.5rem;margin-bottom:8px">&#128218;</div>
+          <h4 style="color:var(--gray-800);margin-bottom:4px">No Pending Homework</h4>
+          <p style="font-size:0.875rem;color:var(--gray-500)">You have no homework due. Great job staying up to date!</p>
+        </div>`;
+      } else {
+        pendingContainer.innerHTML = allAssignments.map(a => {
+          const cls = a.classrooms ? a.classrooms.name : 'N/A';
+          const due = a.due_date ? new Date(a.due_date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : 'No due date';
+          const isPast = a.due_date && new Date(a.due_date) < new Date();
+          return `<div class="card animate-fade-up" style="border-left:4px solid ${isPast?'#EF4444':'var(--primary-600)'};margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+              <div><h4 style="color:var(--gray-900);margin-bottom:4px;font-size:1rem">${a.title}</h4><div style="font-size:0.8rem;color:var(--gray-500)">${cls}</div></div>
+              <span class="badge" style="background:${isPast?'#FEE2E2':'#EEF2FF'};color:${isPast?'#B91C1C':'#4338CA'};font-size:0.72rem">${isPast?'Overdue':'Active'}</span>
+            </div>
+            <p style="font-size:0.825rem;color:var(--gray-600);margin-bottom:12px">${a.description||'No instructions provided.'}</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--gray-100);padding-top:10px">
+              <span style="font-size:0.8rem;color:var(--gray-500)">Due: ${due} &bull; ${a.total_points||0} pts</span>
+              <button class="btn btn-primary btn-sm" onclick="openModal('modal-submit-hw')">Turn In</button>
+            </div>
+          </div>`;
+        }).join('');
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadStudentHomework();
+    // Realtime: refresh when assignments change
+    ClassoraAuth.subscribeToTable('assignments', () => loadStudentHomework());
+  });
 </script>
 </body>
 </html>

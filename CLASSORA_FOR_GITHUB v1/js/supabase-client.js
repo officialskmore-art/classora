@@ -1545,6 +1545,318 @@ class ClassoraAuthService {
       }
     }
   }
+
+  // ─── ASSIGNMENTS (Homework) ────────────────────────────────────────────────
+
+  async fetchAssignments({ classroomId = null } = {}) {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    const user = this.getCurrentUser();
+    if (!user) return [];
+    try {
+      let url = `${this.url}/rest/v1/assignments?select=*,classrooms(name,class_code)&order=created_at.desc`;
+      if (classroomId) url += `&classroom_id=eq.${classroomId}`;
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) return await resp.json();
+      return [];
+    } catch (e) { console.warn('fetchAssignments error:', e); return []; }
+  }
+
+  async createAssignment({ title, description, classroom_id, due_date, total_points = 20 }) {
+    const user = this.getCurrentUser();
+    if (!user) throw new Error('Not signed in');
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    const payload = { title, description, classroom_id, due_date, total_points, teacher_id: user.id };
+    const resp = await fetch(`${this.url}/rest/v1/assignments`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json', 'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) { const e = await resp.json(); throw new Error(e.message || 'Failed to create assignment'); }
+    const saved = await resp.json();
+    return saved[0] || payload;
+  }
+
+  async deleteAssignment(id) {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    await fetch(`${this.url}/rest/v1/assignments?id=eq.${id}`, {
+      method: 'DELETE',
+      headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+    });
+  }
+
+  // ─── EXAMS ────────────────────────────────────────────────────────────────
+
+  async fetchExams({ classroomId = null } = {}) {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    const user = this.getCurrentUser();
+    if (!user) return [];
+    try {
+      let url = `${this.url}/rest/v1/exams?select=*,classrooms(name,class_code)&order=exam_date.asc`;
+      if (classroomId) url += `&classroom_id=eq.${classroomId}`;
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) return await resp.json();
+      return [];
+    } catch (e) { console.warn('fetchExams error:', e); return []; }
+  }
+
+  async createExam({ title, classroom_id, exam_date, duration_minutes = 60, total_marks = 100, passing_marks = 40 }) {
+    const user = this.getCurrentUser();
+    if (!user) throw new Error('Not signed in');
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    const payload = { title, classroom_id, exam_date, duration_minutes, total_marks, passing_marks, teacher_id: user.id, status: 'upcoming' };
+    const resp = await fetch(`${this.url}/rest/v1/exams`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json', 'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) { const e = await resp.json(); throw new Error(e.message || 'Failed to create exam'); }
+    const saved = await resp.json();
+    return saved[0] || payload;
+  }
+
+  async deleteExam(id) {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    await fetch(`${this.url}/rest/v1/exams?id=eq.${id}`, {
+      method: 'DELETE',
+      headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+    });
+  }
+
+  // ─── JOIN REQUESTS ────────────────────────────────────────────────────────
+
+  async fetchJoinRequests({ status = 'pending' } = {}) {
+    const user = this.getCurrentUser();
+    if (!user) return [];
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      // Fetch requests for classrooms owned by this teacher
+      const url = `${this.url}/rest/v1/join_requests?select=*,classrooms(name,class_code,teacher_id),profiles(full_name,email,classora_id)&status=eq.${status}&order=created_at.desc`;
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) {
+        const all = await resp.json();
+        // Filter to only this teacher's classrooms
+        return all.filter(r => r.classrooms && r.classrooms.teacher_id === user.id);
+      }
+      return [];
+    } catch (e) { console.warn('fetchJoinRequests error:', e); return []; }
+  }
+
+  async submitJoinRequest({ classroomCode }) {
+    const user = this.getCurrentUser();
+    if (!user) throw new Error('Not signed in');
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    // Find classroom by code
+    const clsResp = await fetch(`${this.url}/rest/v1/classrooms?class_code=eq.${classroomCode}&select=id,name,teacher_id`, {
+      headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+    });
+    if (!clsResp.ok) throw new Error('Classroom not found');
+    const clsList = await clsResp.json();
+    if (!clsList.length) throw new Error('Invalid classroom code. Please check with your teacher.');
+    const classroom = clsList[0];
+    const payload = { student_id: user.id, classroom_id: classroom.id, status: 'pending' };
+    const resp = await fetch(`${this.url}/rest/v1/join_requests`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json', 'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) {
+      const e = await resp.json();
+      if (e.code === '23505') throw new Error('You have already sent a request to join this classroom.');
+      throw new Error(e.message || 'Failed to send join request');
+    }
+    return (await resp.json())[0] || payload;
+  }
+
+  async approveJoinRequest(requestId) {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    // Get the request details first
+    const reqResp = await fetch(`${this.url}/rest/v1/join_requests?id=eq.${requestId}&select=*`, {
+      headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+    });
+    const reqs = await reqResp.json();
+    if (!reqs.length) throw new Error('Request not found');
+    const req = reqs[0];
+    // Update status to approved
+    await fetch(`${this.url}/rest/v1/join_requests?id=eq.${requestId}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: 'approved' })
+    });
+    // Enroll student in classroom_members
+    await fetch(`${this.url}/rest/v1/classroom_members`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify({ classroom_id: req.classroom_id, student_id: req.student_id })
+    });
+    return { success: true };
+  }
+
+  async rejectJoinRequest(requestId) {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    await fetch(`${this.url}/rest/v1/join_requests?id=eq.${requestId}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: 'rejected' })
+    });
+    return { success: true };
+  }
+
+  // ─── STUDENTS (enrolled) ──────────────────────────────────────────────────
+
+  async fetchStudentsForTeacher() {
+    const user = this.getCurrentUser();
+    if (!user) return [];
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      const url = `${this.url}/rest/v1/classroom_members?select=*,classrooms(name,class_code,teacher_id),profiles(full_name,email,classora_id,grade)&classrooms.teacher_id=eq.${user.id}`;
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) {
+        const all = await resp.json();
+        return all.filter(m => m.classrooms && m.classrooms.teacher_id === user.id);
+      }
+      return [];
+    } catch (e) { console.warn('fetchStudentsForTeacher error:', e); return []; }
+  }
+
+  async fetchEnrolledClassrooms() {
+    const user = this.getCurrentUser();
+    if (!user) return [];
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      const url = `${this.url}/rest/v1/classroom_members?student_id=eq.${user.id}&select=*,classrooms(*)`;
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) {
+        const list = await resp.json();
+        return list.map(m => m.classrooms).filter(Boolean);
+      }
+      return [];
+    } catch (e) { return []; }
+  }
+
+  // ─── DIRECTORY SEARCH ────────────────────────────────────────────────────
+
+  async searchDirectory(query = '') {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      let url = `${this.url}/rest/v1/profiles?select=id,full_name,email,role,classora_id,subject,grade,avatar_url&full_name=not.is.null&order=full_name.asc`;
+      if (query.trim()) {
+        const q = encodeURIComponent(query.trim());
+        url += `&or=(full_name.ilike.*${q}*,classora_id.ilike.*${q}*,email.ilike.*${q}*)`;
+      }
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) return await resp.json();
+      return [];
+    } catch (e) { console.warn('searchDirectory error:', e); return []; }
+  }
+
+  // ─── ANNOUNCEMENTS ────────────────────────────────────────────────────────
+
+  async fetchAnnouncements({ classroomId = null } = {}) {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      let url = `${this.url}/rest/v1/announcements?select=*,profiles(full_name)&order=created_at.desc`;
+      if (classroomId) url += `&classroom_id=eq.${classroomId}`;
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) return await resp.json();
+      return [];
+    } catch (e) { return []; }
+  }
+
+  async createAnnouncement({ title, body, classroom_id = null }) {
+    const user = this.getCurrentUser();
+    if (!user) throw new Error('Not signed in');
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    const payload = { title, body, classroom_id, author_id: user.id };
+    const resp = await fetch(`${this.url}/rest/v1/announcements`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json', 'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) { const e = await resp.json(); throw new Error(e.message || 'Failed to post announcement'); }
+    return (await resp.json())[0] || payload;
+  }
+
+  // ─── SUPABASE REALTIME SUBSCRIPTIONS ─────────────────────────────────────
+
+  subscribeToTable(table, callback, filter = null) {
+    if (!this.client) {
+      console.warn('Realtime requires official Supabase JS client.');
+      return null;
+    }
+    try {
+      let channel = this.client.channel(`rt-${table}-${Date.now()}`);
+      const opts = { event: '*', schema: 'public', table };
+      if (filter) opts.filter = filter;
+      channel = channel.on('postgres_changes', opts, payload => {
+        callback(payload);
+      });
+      channel.subscribe(status => {
+        if (status === 'SUBSCRIBED') {
+          console.log(`[Classora Realtime] Subscribed to ${table}`);
+        }
+      });
+      return channel;
+    } catch (e) {
+      console.warn('Realtime subscription error:', e);
+      return null;
+    }
+  }
+
+  unsubscribe(channel) {
+    if (this.client && channel) {
+      try { this.client.removeChannel(channel); } catch (e) {}
+    }
+  }
 }
 
 // Global instance

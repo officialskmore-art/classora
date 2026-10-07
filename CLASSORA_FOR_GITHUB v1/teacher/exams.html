@@ -140,7 +140,7 @@
               <th style="text-align:right;">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="exams-tbody">
             <tr>
               <td colspan="6" style="text-align:center; padding:56px 20px;">
                 <div style="font-size:2.5rem; margin-bottom:8px;">📝</div>
@@ -178,21 +178,21 @@
       <div class="grid" style="grid-template-columns:1fr 1fr; gap:12px;">
         <div class="form-group">
           <label class="form-label">Date</label>
-          <input class="form-input" type="date" required/>
+          <input class="form-input" type="date" id="exam-date" required/>
         </div>
         <div class="form-group">
           <label class="form-label">Duration (Minutes)</label>
-          <input class="form-input" type="number" value="60" required/>
+          <input class="form-input" type="number" id="exam-duration" value="60" required/>
         </div>
       </div>
       <div class="grid" style="grid-template-columns:1fr 1fr; gap:12px;">
         <div class="form-group">
           <label class="form-label">Total Marks</label>
-          <input class="form-input" type="number" value="100" required/>
+          <input class="form-input" type="number" id="exam-total" value="100" required/>
         </div>
         <div class="form-group">
           <label class="form-label">Passing Marks</label>
-          <input class="form-input" type="number" value="40" required/>
+          <input class="form-input" type="number" id="exam-pass" value="40" required/>
         </div>
       </div>
       <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
@@ -208,13 +208,73 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  function handleCreateExam(e) {
-    e.preventDefault();
-    const title = document.getElementById('exam-title').value;
-    const cls = document.getElementById('exam-class').value;
-    closeModal('modal-create-exam');
-    showToast(`Exam "${title}" scheduled for ${cls}! Students have been notified.`, 'success');
+  var examRealtimeChannel = null;
+
+  function renderExamRows(exams) {
+    var tbody = document.getElementById("exams-tbody"); if (!tbody) return;
+    if (!exams || !exams.length) {
+      tbody.innerHTML = "<tr><td colspan=\"6\" style=\"text-align:center;padding:56px 20px\"><div style=\"font-size:2.5rem;margin-bottom:8px\">&#128221;</div><h4 style=\"color:#1F2937;margin-bottom:4px\">No Scheduled Examinations</h4><p style=\"font-size:0.875rem;color:#6B7280;margin-bottom:16px\">Plan tests and record student performance.</p><button class=\"btn btn-primary btn-sm\" onclick=\"openModal('modal-create-exam')\">+ Schedule First Exam</button></td></tr>"; return;
+    }
+    tbody.innerHTML = exams.map(function(ex) {
+      var cls = (ex.classrooms && ex.classrooms.name) ? ex.classrooms.name : "N/A";
+      var dt = ex.exam_date ? new Date(ex.exam_date).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}) : "TBD";
+      var stat = ex.status || "upcoming";
+      var statusColor = stat==="completed"?"#059669":(stat==="ongoing"?"#D97706":"#4F46E5");
+      return "<tr><td><strong>"+ex.title+"</strong></td><td>"+cls+"</td><td>"+dt+" | "+(ex.duration_minutes||60)+" min</td><td>"+(ex.total_marks||100)+" / pass "+(ex.passing_marks||40)+"</td><td><span style=\"background:#EEF2FF;color:"+statusColor+";border-radius:4px;padding:2px 8px;font-size:0.78rem;font-weight:600\">"+stat+"</span></td><td style=\"text-align:right\"><button class=\"btn btn-ghost btn-sm\" onclick=\"deleteExam('"+ex.id+"')\" style=\"color:#EF4444;font-size:0.8rem\">Delete</button></td></tr>";
+    }).join("");
+    updateExamStats(exams);
   }
+
+  function updateExamStats(exams) {
+    var stats = document.querySelectorAll(".card-stat");
+    if (stats.length >= 3) {
+      stats[0].querySelector("div > div:first-child").textContent = exams.length;
+      var now = new Date(); var weekLater = new Date(now.getTime() + 7*24*60*60*1000);
+      var upcoming = exams.filter(function(e){return e.exam_date && new Date(e.exam_date)>=now && new Date(e.exam_date)<=weekLater;}).length;
+      stats[1].querySelector("div > div:first-child").textContent = upcoming;
+      var completed = exams.filter(function(e){return e.status==="completed";}).length;
+      stats[2].querySelector("div > div:first-child").textContent = completed;
+    }
+  }
+
+  async function loadExams() { var r = await ClassoraAuth.fetchExams(); renderExamRows(r); }
+
+  async function deleteExam(id) {
+    if (!confirm("Delete this exam?")) return;
+    try { await ClassoraAuth.deleteExam(id); showToast("Exam removed.","success"); await loadExams(); }
+    catch(e){ showToast(e.message||"Error","error"); }
+  }
+
+  async function handleCreateExam(e) {
+    e.preventDefault();
+    var btn = document.getElementById("exam-submit-btn");
+    btn.disabled = true; btn.textContent = "Scheduling...";
+    try {
+      var title = document.getElementById("exam-title").value.trim();
+      var classroom_id = document.getElementById("exam-class").value;
+      var exam_date = document.getElementById("exam-date").value;
+      var duration_minutes = parseInt(document.getElementById("exam-duration").value)||60;
+      var total_marks = parseInt(document.getElementById("exam-total").value)||100;
+      var passing_marks = parseInt(document.getElementById("exam-pass").value)||40;
+      await ClassoraAuth.createExam({title:title, classroom_id:classroom_id, exam_date:exam_date, duration_minutes:duration_minutes, total_marks:total_marks, passing_marks:passing_marks});
+      closeModal("modal-create-exam"); showToast("Exam scheduled!","success"); e.target.reset(); await loadExams();
+    } catch(err){ showToast(err.message||"Failed","error"); }
+    finally { btn.disabled=false; btn.textContent="Schedule & Notify Students"; }
+  }
+
+  async function populateExamClassDropdown() {
+    var sel = document.getElementById("exam-class"); if (!sel) return;
+    var cls = await ClassoraAuth.fetchClassrooms();
+    if (!cls.length) { sel.innerHTML = "<option value=\"\" disabled selected>No classrooms yet</option>"; return; }
+    sel.innerHTML = "<option value=\"\" disabled selected>Select classroom</option>";
+    cls.forEach(function(c){var o=document.createElement("option");o.value=c.id;o.textContent=c.name+" ("+c.class_code+")";sel.appendChild(o);});
+  }
+
+  document.addEventListener("DOMContentLoaded", async function() {
+    await loadExams();
+    await populateExamClassDropdown();
+    examRealtimeChannel = ClassoraAuth.subscribeToTable("exams", function() { loadExams(); });
+  });
 </script>
 </body>
 </html>

@@ -201,148 +201,115 @@
   <script src="js/supabase-client.js"></script>
   <script src="js/main.js"></script>
   <script>
-    let activeRoleFilter = 'all';
+  var LIVE_DIRECTORY = [];
+  var activeRoleFilter = "all";
+  var searchTimer = null;
 
-    function setDirectoryFilter(role, btn) {
-      activeRoleFilter = role;
-      document.querySelectorAll('.search-pill').forEach(b => {
-        b.className = 'badge badge-gray search-pill touch-press';
-      });
-      btn.className = 'badge badge-primary search-pill touch-press active';
-      filterDirectory();
-    }
+  async function initDirectory() {
+    var container = document.getElementById("directory-cards-container");
+    if (container) container.innerHTML = "<div style=\"grid-column:1/-1;text-align:center;padding:40px;color:#6B7280\">Loading directory...</div>";
+    try {
+      LIVE_DIRECTORY = await ClassoraAuth.searchDirectory("");
+    } catch(e) { LIVE_DIRECTORY = []; }
+    updateCounts();
+    filterDirectory();
+  }
 
-    function viewMemberProfile(id) {
-      const member = CLASSORA_DIRECTORY.find(m => m.id === id);
-      if (!member) {
-        showToast('Profile not found', 'error');
-        return;
-      }
-      const body = document.getElementById('modal-profile-body');
-      body.innerHTML = `
-        <div style="text-align:center; margin-bottom:20px;">
-          <div class="user-avatar avatar-xl" style="background:${member.avatarColor}; font-size:2rem; margin:0 auto 12px; color:#fff;">
-            ${member.avatar}
-          </div>
-          <h3 style="margin:0 0 4px; color:var(--gray-900);">${member.name}</h3>
-          <div style="font-size:0.875rem; color:var(--gray-500); margin-bottom:8px;">${member.title}</div>
-          <span class="badge ${member.role === 'Teacher' ? 'badge-primary' : 'badge-success'}">${member.role}</span>
-        </div>
+  function updateCounts() {
+    var teachers = LIVE_DIRECTORY.filter(function(p){return p.role==="teacher"||p.role==="admin";}).length;
+    var students = LIVE_DIRECTORY.filter(function(p){return p.role==="student";}).length;
+    var countAll = document.getElementById("count-all");
+    var countTch = document.getElementById("count-teachers");
+    var countStd = document.getElementById("count-students");
+    if (countAll) countAll.textContent = LIVE_DIRECTORY.length;
+    if (countTch) countTch.textContent = teachers;
+    if (countStd) countStd.textContent = students;
+  }
 
-        <div style="background:var(--gray-50); border:1.5px dashed var(--gray-300); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:16px;">
-          <div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; margin-bottom:4px;">Classora ID</div>
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <code class="classora-id" style="font-size:1.05rem; padding:4px 10px;">${member.id}</code>
-            <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${member.id}', 'ID Copied!')">📋 Copy ID</button>
-          </div>
-        </div>
+  function setDirectoryFilter(role, btn) {
+    activeRoleFilter = role;
+    document.querySelectorAll(".search-pill").forEach(function(b){b.className="badge badge-gray search-pill touch-press";});
+    btn.className="badge badge-primary search-pill touch-press active";
+    filterDirectory();
+  }
 
-        <div style="display:flex; flex-direction:column; gap:10px; font-size:0.875rem; margin-bottom:20px;">
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--gray-100); padding-bottom:8px;">
-            <span style="color:var(--gray-500);">Primary Subject(s):</span>
-            <strong style="color:var(--gray-900);">${member.subjects}</strong>
-          </div>
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--gray-100); padding-bottom:8px;">
-            <span style="color:var(--gray-500);">Classes / Grades:</span>
-            <strong style="color:var(--gray-900);">${member.classes}</strong>
-          </div>
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--gray-100); padding-bottom:8px;">
-            <span style="color:var(--gray-500);">Academic Status:</span>
-            <span style="color:var(--accent-600); font-weight:700;">Verified Active</span>
-          </div>
-        </div>
-
-        <div style="display:flex; gap:10px;">
-          <button class="btn btn-secondary btn-full btn-sm" onclick="closeModal('modal-profile-details')">Close</button>
-          ${member.role === 'Teacher' ? `
-            <a href="login.html" class="btn btn-primary btn-full btn-sm" style="justify-content:center;">Request to Join</a>
-          ` : `
-            <button class="btn btn-primary btn-full btn-sm" onclick="copyToClipboard('${member.id}', 'Student ID Copied!'); showToast('Invite link/ID copied!', 'success');">Copy Student ID</button>
-          `}
-        </div>
-      `;
-      openModal('modal-profile-details');
-    }
-
-    function filterDirectory() {
-      const q = (document.getElementById('directory-search-input').value || '').trim().toLowerCase();
-      const container = document.getElementById('directory-cards-container');
-
-      const allTeachers = CLASSORA_DIRECTORY.filter(i => i.role === 'Teacher' || i.role === 'Admin');
-      const allStudents = CLASSORA_DIRECTORY.filter(i => i.role === 'Student');
-      const countAllEl = document.getElementById('count-all');
-      const countTchEl = document.getElementById('count-teachers');
-      const countStdEl = document.getElementById('count-students');
-      if (countAllEl) countAllEl.textContent = CLASSORA_DIRECTORY.length;
-      if (countTchEl) countTchEl.textContent = allTeachers.length;
-      if (countStdEl) countStdEl.textContent = allStudents.length;
-
-      const matches = CLASSORA_DIRECTORY.filter(item => {
-        const matchesRole = activeRoleFilter === 'all' || item.role === activeRoleFilter;
-        const matchesText = !q ||
-          item.name.toLowerCase().includes(q) ||
-          item.id.toLowerCase().includes(q) ||
-          item.subjects.toLowerCase().includes(q) ||
-          item.classes.toLowerCase().includes(q);
-        return matchesRole && matchesText;
-      });
-
-      document.getElementById('results-count-text').textContent = `${matches.length} results`;
-      document.getElementById('search-status-label').textContent = q ? `Search results for "${q}"` : (activeRoleFilter === 'all' ? 'All Directory Members' : `${activeRoleFilter}s`);
-
-      if (matches.length === 0) {
-        container.innerHTML = `
-          <div style="grid-column: 1 / -1; text-align:center; padding:60px 20px; background:#fff; border-radius:var(--radius-xl); border:1px solid var(--gray-200);">
-            <div style="font-size:3rem; margin-bottom:12px;">🔍</div>
-            <h3>No results found</h3>
-            <p style="color:var(--gray-500); max-width:440px; margin:0 auto 16px;">We couldn't find anyone matching your search query. Try checking for typos or searching by Classora ID (ADM..., TCH..., or STD...).</p>
-            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('directory-search-input').value=''; filterDirectory();">Clear Search</button>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = matches.map(p => `
-        <div class="person-card">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
-            <div style="display:flex; align-items:center; gap:14px; cursor:pointer;" onclick="viewMemberProfile('${p.id}')">
-              <div class="user-avatar avatar-lg" style="background:${p.avatarColor}; font-size:1.3rem;">${p.avatar}</div>
-              <div>
-                <h4 style="margin:0 0 2px; color:var(--gray-900); font-size:1.0625rem;">${p.name}</h4>
-                <div style="font-size:0.75rem; color:var(--gray-500);">${p.title}</div>
-              </div>
-            </div>
-            <span class="badge ${p.role === 'Teacher' ? 'badge-primary' : 'badge-success'}" style="font-size:0.75rem;">${p.role}</span>
-          </div>
-
-          <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:16px;">
-            <div style="font-size:0.7rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; margin-bottom:4px;">Universal Classora ID</div>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <code class="classora-id" style="font-size:0.95rem; padding:3px 8px;">${p.id}</code>
-              <button class="btn btn-ghost btn-sm touch-press" style="padding:3px 8px; font-size:0.75rem;" onclick="copyToClipboard('${p.id}', '${p.role} ID Copied!')">📋 Copy</button>
-            </div>
-          </div>
-
-          <div style="font-size:0.825rem; color:var(--gray-600); margin-bottom:16px; flex:1; display:flex; flex-direction:column; gap:4px;">
-            <div><strong>Classes:</strong> ${p.classes}</div>
-            <div><strong>Subjects:</strong> ${p.subjects}</div>
-          </div>
-
-          <div style="display:flex; gap:8px; border-top:1px solid var(--gray-100); padding-top:14px;">
-            <button class="btn btn-secondary btn-sm flex-1 touch-press" onclick="viewMemberProfile('${p.id}')">👁 View Profile</button>
-            ${p.role === 'Teacher' ? `
-              <a href="login.html" class="btn btn-primary btn-sm flex-1 touch-press" style="text-align:center;">Join Class</a>
-            ` : `
-              <button class="btn btn-primary btn-sm flex-1 touch-press" onclick="showToast('Student ID copied to clipboard: ${p.id}', 'success'); copyToClipboard('${p.id}');">Copy ID</button>
-            `}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      filterDirectory();
+  function filterDirectory() {
+    var q = (document.getElementById("directory-search-input").value||"").trim().toLowerCase();
+    var container = document.getElementById("directory-cards-container");
+    var matches = LIVE_DIRECTORY.filter(function(p) {
+      var matchRole = activeRoleFilter==="all" || p.role===activeRoleFilter.toLowerCase() || (activeRoleFilter==="Teacher"&&(p.role==="teacher"||p.role==="admin")) || (activeRoleFilter==="Student"&&p.role==="student");
+      var matchText = !q || (p.full_name||"").toLowerCase().includes(q) || (p.classora_id||"").toLowerCase().includes(q) || (p.email||"").toLowerCase().includes(q) || (p.subject||"").toLowerCase().includes(q) || (p.grade||"").toLowerCase().includes(q);
+      return matchRole && matchText;
     });
-  </script>
+    document.getElementById("results-count-text").textContent = matches.length + " results";
+    document.getElementById("search-status-label").textContent = q ? "Results for \""+q+"\"" : (activeRoleFilter==="all"?"All Directory Members":activeRoleFilter+"s");
+    if (!matches.length) {
+      container.innerHTML = "<div style=\"grid-column:1/-1;text-align:center;padding:60px 20px;background:#fff;border-radius:12px;border:1px solid #E5E7EB\"><div style=\"font-size:3rem;margin-bottom:12px\">&#128269;</div><h3>No results found</h3><p style=\"color:#6B7280;max-width:440px;margin:0 auto 16px\">Try a different name or Classora ID.</p><button class=\"btn btn-secondary btn-sm\" onclick=\"document.getElementById('directory-search-input').value='';filterDirectory();\">Clear Search</button></div>"; return;
+    }
+    var gradients = ["linear-gradient(135deg,#4F46E5,#7C3AED)","linear-gradient(135deg,#D97706,#DC2626)","linear-gradient(135deg,#059669,#0D9488)","linear-gradient(135deg,#7C3AED,#DB2777)"];
+    container.innerHTML = matches.map(function(p,i) {
+      var role = p.role||"teacher";
+      var displayRole = role==="admin"?"Teacher (Admin)":(role.charAt(0).toUpperCase()+role.slice(1));
+      var badgeClass = (role==="teacher"||role==="admin")?"badge-primary":"badge-success";
+      var initials = (p.full_name||"?").split(" ").map(function(n){return n.charAt(0);}).join("").toUpperCase().slice(0,2);
+      var grad = gradients[i % gradients.length];
+      var subjects = p.subject || (role==="student"?"—":"Educator");
+      var grades = p.grade || "—";
+      var cid = p.classora_id || "—";
+      return "<div class=\"person-card\"><div style=\"display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px\"><div style=\"display:flex;align-items:center;gap:14px;cursor:pointer\" onclick=\"viewLiveProfile('"+p.id+"')\"><div class=\"user-avatar avatar-lg\" style=\"background:"+grad+";color:#fff;font-size:1.1rem;font-weight:700\">"+initials+"</div><div><h4 style=\"margin:0 0 2px;color:#111827;font-size:1.0625rem\">"+p.full_name+"</h4><div style=\"font-size:0.75rem;color:#6B7280\">"+subjects+"</div></div></div><span class=\"badge "+badgeClass+"\" style=\"font-size:0.75rem\">"+displayRole+"</span></div><div style=\"background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;padding:12px 14px;margin-bottom:16px\"><div style=\"font-size:0.7rem;font-weight:700;color:#6B7280;text-transform:uppercase;margin-bottom:4px\">Classora ID</div><div style=\"display:flex;justify-content:space-between;align-items:center\"><code class=\"classora-id\" style=\"font-size:0.95rem;padding:3px 8px\">"+cid+"</code><button class=\"btn btn-ghost btn-sm touch-press\" style=\"padding:3px 8px;font-size:0.75rem\" onclick=\"copyToClipboard('"+cid+"','ID Copied!')\">Copy</button></div></div><div style=\"font-size:0.825rem;color:#4B5563;margin-bottom:16px;flex:1;display:flex;flex-direction:column;gap:4px\"><div><strong>Grade/Level:</strong> "+grades+"</div><div><strong>Subject:</strong> "+subjects+"</div></div><div style=\"display:flex;gap:8px;border-top:1px solid #F3F4F6;padding-top:14px\">" + ((role==="teacher"||role==="admin") ? "<a href=\"login.html\" class=\"btn btn-primary btn-sm flex-1 touch-press\" style=\"text-align:center\">Join Class</a>" : "<button class=\"btn btn-primary btn-sm flex-1 touch-press\" onclick=\"copyToClipboard('"+cid+"','Student ID Copied!')\">Copy ID</button>") + "</div></div>";
+    }).join("");
+  }
+
+  function viewLiveProfile(id) {
+    var p = LIVE_DIRECTORY.find(function(m){return m.id===id;});
+    if (!p) { showToast("Profile not found","error"); return; }
+    var role = p.role || "teacher";
+    var displayRole = role==="admin"?"Teacher (Admin)":(role.charAt(0).toUpperCase()+role.slice(1));
+    var badgeClass = (role==="teacher"||role==="admin")?"badge-primary":"badge-success";
+    var initials = (p.full_name||"?").split(" ").map(function(n){return n.charAt(0);}).join("").toUpperCase().slice(0,2);
+    var body = document.getElementById("modal-profile-body");
+    body.innerHTML = "<div style=\"text-align:center;margin-bottom:20px\"><div class=\"user-avatar avatar-xl\" style=\"background:linear-gradient(135deg,#4F46E5,#7C3AED);font-size:2rem;margin:0 auto 12px;color:#fff;font-weight:700\">"+initials+"</div><h3 style=\"margin:0 0 4px;color:#111827\">"+p.full_name+"</h3><div style=\"font-size:0.875rem;color:#6B7280;margin-bottom:8px\">"+(p.subject||displayRole)+"</div><span class=\"badge "+badgeClass+"\">"+displayRole+"</span></div><div style=\"background:#F9FAFB;border:1.5px dashed #D1D5DB;border-radius:8px;padding:12px 14px;margin-bottom:16px\"><div style=\"font-size:0.7rem;font-weight:700;color:#6B7280;text-transform:uppercase;margin-bottom:4px\">Classora ID</div><div style=\"display:flex;justify-content:space-between;align-items:center\"><code class=\"classora-id\" style=\"font-size:1.05rem;padding:4px 10px\">"+(p.classora_id||"—")+"</code><button class=\"btn btn-ghost btn-sm\" onclick=\"copyToClipboard('"+p.classora_id+"','ID Copied!')\">Copy ID</button></div></div><div style=\"display:flex;flex-direction:column;gap:10px;font-size:0.875rem;margin-bottom:20px\"><div style=\"display:flex;justify-content:space-between;border-bottom:1px solid #F3F4F6;padding-bottom:8px\"><span style=\"color:#6B7280\">Subject(s):</span><strong>"+( p.subject||"—")+"</strong></div><div style=\"display:flex;justify-content:space-between;border-bottom:1px solid #F3F4F6;padding-bottom:8px\"><span style=\"color:#6B7280\">Grade/Level:</span><strong>"+(p.grade||"—")+"</strong></div><div style=\"display:flex;justify-content:space-between\"><span style=\"color:#6B7280\">Status:</span><span style=\"color:#059669;font-weight:700\">Active</span></div></div><div style=\"display:flex;gap:10px\"><button class=\"btn btn-secondary btn-full btn-sm\" onclick=\"closeModal('modal-profile-details')\">Close</button>"+((role==="teacher"||role==="admin")?"<a href=\"login.html\" class=\"btn btn-primary btn-full btn-sm\" style=\"justify-content:center\">Request to Join</a>":"<button class=\"btn btn-primary btn-full btn-sm\" onclick=\"copyToClipboard('"+p.classora_id+"','Copied!')\">Copy Student ID</button>")+"</div>";
+    openModal("modal-profile-details");
+  }
+
+  var directoryRealtimeChannel = null;
+
+  // Live search with 300ms debounce
+  function onSearchInput() {
+    filterDirectory();
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(async function() {
+      var q = (document.getElementById("directory-search-input").value||"").trim();
+      if (q.length > 0) {
+        try { LIVE_DIRECTORY = await ClassoraAuth.searchDirectory(q); } catch(e) {}
+        updateCounts(); filterDirectory();
+      } else {
+        LIVE_DIRECTORY = await ClassoraAuth.searchDirectory("");
+        updateCounts(); filterDirectory();
+      }
+    }, 300);
+  }
+
+  document.addEventListener("DOMContentLoaded", async function() {
+    var inp = document.getElementById("directory-search-input");
+    if (inp) inp.oninput = onSearchInput;
+    await initDirectory();
+
+    // ─── Realtime Synchronization for Directory Members ───
+    if (window.ClassoraAuth && typeof ClassoraAuth.subscribeToTable === 'function') {
+      directoryRealtimeChannel = ClassoraAuth.subscribeToTable('profiles', async function(payload) {
+        console.log('[Directory Realtime] Profile update received:', payload);
+        var q = (document.getElementById("directory-search-input").value||"").trim();
+        try {
+          LIVE_DIRECTORY = await ClassoraAuth.searchDirectory(q);
+          updateCounts();
+          filterDirectory();
+        } catch(err) {
+          console.warn('Realtime directory refresh error:', err);
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>
