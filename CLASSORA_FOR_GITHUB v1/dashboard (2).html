@@ -145,7 +145,6 @@
     <!-- Top bar -->
     <div class="dash-topbar">
       <div style="display:flex; align-items:center; gap:16px;">
-        <button class="btn btn-icon btn-ghost" id="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;">☰</button>
         <div>
           <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Academic Educator Workspace</div>
           <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Welcome to Classora 👋</div>
@@ -317,17 +316,6 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  // Mobile sidebar toggle
-  const toggle = document.getElementById('sidebar-toggle');
-  if (toggle) {
-    toggle.style.display = 'flex';
-    toggle.addEventListener('click', () => {
-      document.getElementById('sidebar').classList.toggle('open');
-      const ov = document.getElementById('sidebar-overlay');
-      if (ov) ov.style.display = ov.style.display === 'block' ? 'none' : 'block';
-    });
-  }
-
   // Dropdown
   document.getElementById('sidebar-user-menu')?.addEventListener('click', (e) => {
     e.stopPropagation();
