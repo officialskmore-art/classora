@@ -132,7 +132,6 @@
   <main class="dash-main" id="main-content">
     <div class="dash-topbar">
       <div style="display:flex; align-items:center; gap:16px;">
-        <button class="btn btn-icon btn-ghost" id="sidebar-toggle" aria-label="Toggle sidebar" style="display:none;">☰</button>
         <div>
           <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Academic Timetable</div>
           <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Weekly Schedule & Live Sessions</div>
@@ -162,7 +161,8 @@
       </div>
 
       <!-- Weekly Schedule Grid -->
-      <div class="timetable-grid" style="overflow-x:auto;">
+      <div class="timetable-wrapper table-wrapper">
+        <div class="timetable-grid">
         <div></div>
         <div class="schedule-col-header">
           <div style="font-size:0.75rem; color:var(--gray-400);">MON</div>
@@ -215,6 +215,7 @@
         <div class="slot-cell"></div>
         <div class="slot-cell"></div>
         <div class="slot-cell"></div>
+        </div>
       </div>
 
     </div>

@@ -114,6 +114,13 @@
       background-position: center;
       box-shadow: var(--shadow-sm);
     }
+    @media (max-width: 600px) {
+      .setup-container { margin: 20px auto; padding: 0 12px; }
+      .setup-card { padding: 22px 14px; border-radius: var(--radius-lg); }
+      .role-card-grid { grid-template-columns: 1fr; gap: 12px; }
+      .avatar-picker-section { flex-direction: column; text-align: center; gap: 14px; padding: 14px 12px; }
+      header .container { flex-direction: column; gap: 10px; align-items: center; }
+    }
   </style>
 </head>
 <body>

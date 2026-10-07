@@ -502,6 +502,20 @@ function initMobileBottomNav() {
   document.body.insertAdjacentHTML('beforeend', navHtml);
 }
 
+/* ─── Mobile Portal Topbar Brand ────────────── */
+function initMobileTopbarBrand() {
+  const topbar = document.querySelector('.dash-topbar');
+  if (!topbar || topbar.querySelector('.mobile-topbar-brand')) return;
+  const firstDiv = topbar.querySelector(':scope > div:first-child');
+  if (!firstDiv) return;
+  const brand = document.createElement('a');
+  brand.href = '../index.html';
+  brand.className = 'navbar-logo mobile-topbar-brand';
+  brand.title = 'Classora Home';
+  brand.innerHTML = '<div class="logo-icon" style="width:28px; height:28px; font-size:0.8rem; border-radius:8px; margin-right:4px;">C</div>';
+  firstDiv.insertBefore(brand, firstDiv.firstChild);
+}
+
 /* ─── Init ────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initPasswordToggles();
@@ -513,6 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
   animateProgressBars();
   createGlobalSearchModal();
   initMobileBottomNav();
+  initMobileTopbarBrand();
   initDesktopModeSuggestion();
 
   // Attach search triggers
@@ -615,10 +630,7 @@ window.CLASSORA_GRADES = [
   "Grade 12"
 ];
 
-/* ─── Desktop Mode Suggestion on Smartphone Browsers (Periodic) ── */
-let desktopSuggestionTimer = null;
-const DESKTOP_REMIND_INTERVAL_MS = 180000; // Remind every 3 minutes
-
+/* ─── Desktop Mode Suggestion on Smartphone Browsers (First-Time Login Only) ── */
 function isSmartphoneDevice() {
   const isNarrow = window.innerWidth <= 850;
   const isMobileUA = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -626,8 +638,16 @@ function isSmartphoneDevice() {
   return isNarrow || (isMobileUA && window.innerWidth <= 1024) || isTouchPortrait;
 }
 
+function isUserLoggedIn() {
+  const isPortal = window.location.pathname.includes('/teacher/') || window.location.pathname.includes('/student/');
+  const hasSession = localStorage.getItem('classora_user') || localStorage.getItem('classora_session') || localStorage.getItem('classora_profile');
+  return isPortal || !!hasSession;
+}
+
 function showDesktopReminder() {
   if (!isSmartphoneDevice()) return;
+  if (localStorage.getItem('classora_desktop_reminder_seen') === 'true') return;
+  if (!isUserLoggedIn()) return;
 
   // Don't duplicate if already open
   if (document.getElementById('desktop-suggest-overlay')) return;
@@ -641,18 +661,17 @@ function showDesktopReminder() {
       <div class="desktop-suggest-icon-wrap">💻</div>
       <h3 class="desktop-suggest-title">Enable Desktop View for Best Experience</h3>
       <p class="desktop-suggest-desc">
-        You are currently viewing Classora on a smartphone screen. Classora is an academic management workstation with multi-column timetables, gradebooks, and analytics designed for desktop view.
+        You are currently viewing Classora on a smartphone screen. For the complete workstation experience with multi-column timetables, gradebooks, and analytics, enabling Desktop View is recommended.
       </p>
       <div class="desktop-suggest-tip">
         <div class="desktop-suggest-tip-title">💡 How to enable Desktop Site in your browser:</div>
         <div class="desktop-suggest-tip-body">
           • <strong>Chrome / Android:</strong> Tap top-right menu (<strong>⋮</strong>) ➔ Check <strong>"Desktop site"</strong>.<br/>
-          • <strong>Safari / iPhone:</strong> Tap <strong>"aA"</strong> or <strong>⋯</strong> in search bar ➔ Tap <strong>"Request Desktop Website"</strong>.
+          • <strong>Safari / iPhone:</strong> Tap <strong>"aA"</strong> or <strong>⋯</strong> in address bar ➔ Tap <strong>"Request Desktop Website"</strong>.
         </div>
       </div>
-      <div class="desktop-suggest-actions">
-        <button class="btn btn-secondary btn-sm" onclick="closeDesktopSuggestion()">Remind Me Later (3 min)</button>
-        <button class="btn btn-primary btn-sm" onclick="closeDesktopSuggestion(true)">Got It, Thanks!</button>
+      <div class="desktop-suggest-actions" style="margin-top:16px;">
+        <button class="btn btn-primary btn-sm btn-full" onclick="closeDesktopSuggestion()" style="width:100%; justify-content:center;">Got It, Continue</button>
       </div>
     </div>
   `;
@@ -667,34 +686,24 @@ function showDesktopReminder() {
 
 function initDesktopModeSuggestion() {
   if (!isSmartphoneDevice()) return;
+  if (localStorage.getItem('classora_desktop_reminder_seen') === 'true') return;
+  if (!isUserLoggedIn()) return;
 
-  // Initial trigger shortly after page loads
+  // Show only once when user launches the account for the first time
   setTimeout(() => {
     showDesktopReminder();
   }, 1200);
-
-  // Set recurring periodic reminder every few minutes
-  if (desktopSuggestionTimer) clearInterval(desktopSuggestionTimer);
-  desktopSuggestionTimer = setInterval(() => {
-    if (isSmartphoneDevice()) {
-      showDesktopReminder();
-    }
-  }, DESKTOP_REMIND_INTERVAL_MS);
 }
 
-window.closeDesktopSuggestion = function(persistent) {
+window.closeDesktopSuggestion = function() {
+  try {
+    localStorage.setItem('classora_desktop_reminder_seen', 'true');
+  } catch (e) {}
+
   const overlay = document.getElementById('desktop-suggest-overlay');
   if (overlay) {
     overlay.classList.remove('open');
     setTimeout(() => overlay.remove(), 350);
-  }
-  
-  // Reschedule next reminder in 3 minutes even if dismissed
-  if (!persistent) {
-    clearTimeout(window._desktopRemindTimeout);
-    window._desktopRemindTimeout = setTimeout(() => {
-      showDesktopReminder();
-    }, DESKTOP_REMIND_INTERVAL_MS);
   }
 };
 
