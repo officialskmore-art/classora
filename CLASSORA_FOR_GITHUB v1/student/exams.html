@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -138,5 +138,72 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
+<script>
+  async function loadStudentExams() {
+    try {
+      const exams = await ClassoraAuth.fetchExams();
+      const banner = document.querySelector('.dash-content > .card:first-child');
+      if (banner) {
+        if (!exams || !exams.length) {
+          banner.innerHTML = `
+            <div style="font-size:2.5rem; margin-bottom:8px;">📝</div>
+            <h3 style="margin-bottom:6px;">No Upcoming Examinations Scheduled</h3>
+            <p style="color:var(--gray-500); max-width:440px; margin:0 auto;">
+              When your educators schedule quizzes, term tests, or finals, dates and syllabus will be displayed here.
+            </p>
+          `;
+        } else {
+          banner.innerHTML = `
+            <div style="text-align:left;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h4 style="margin:0; color:var(--gray-900);">Scheduled Examinations (${exams.length})</h4>
+                <span class="badge badge-primary">Live Synced</span>
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:14px;">
+                ${exams.map(e => {
+                  const examDate = e.exam_date ? new Date(e.exam_date).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : 'TBD';
+                  const cls = (e.classrooms && e.classrooms.name) ? e.classrooms.name : (e.subject || 'Academic');
+                  return `
+                    <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:16px; box-shadow:var(--shadow-sm);">
+                      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                        <span class="badge badge-primary" style="font-size:0.75rem;">${cls}</span>
+                        <span style="font-size:0.8rem; font-weight:700; color:var(--primary-700);">${examDate}</span>
+                      </div>
+                      <h4 style="margin:0 0 6px; font-size:1rem; color:var(--gray-900);">${e.title}</h4>
+                      <div style="font-size:0.8rem; color:var(--gray-500);">Duration: ${e.duration_minutes || e.duration_mins || 60} mins • Max Marks: ${e.total_marks || 100}</div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to load student exams:', err);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadStudentExams();
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToExams({
+        onInsert: function(newExam) {
+          showToast('New examination scheduled by your teacher! 📝', 'info', 5000);
+          loadStudentExams();
+        },
+        onUpdate: function() { loadStudentExams(); },
+        onDelete: function() { loadStudentExams(); },
+        onReconnect: function() { loadStudentExams(); }
+      });
+    }
+  });
+
+  window.addEventListener('beforeunload', function() {
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel('cr-exams-all');
+    }
+  });
+</script>
 </body>
 </html>

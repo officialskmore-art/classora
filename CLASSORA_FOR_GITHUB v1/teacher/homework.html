@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -209,7 +209,23 @@
   document.addEventListener("DOMContentLoaded", async function() {
     await loadHomework();
     await populateHwClassDropdown();
-    hwRealtimeChannel = ClassoraAuth.subscribeToTable("assignments", function() { loadHomework(); });
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToAssignments({
+        onInsert: function(newHw) {
+          showToast("Assignment updated live.", "info");
+          loadHomework();
+        },
+        onUpdate: function() { loadHomework(); },
+        onDelete: function() { loadHomework(); },
+        onReconnect: function() { loadHomework(); }
+      });
+    }
+  });
+
+  window.addEventListener("beforeunload", function() {
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel("cr-hw-all");
+    }
   });
 </script>
 </body>

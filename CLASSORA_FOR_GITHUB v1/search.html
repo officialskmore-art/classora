@@ -294,21 +294,6 @@
     var inp = document.getElementById("directory-search-input");
     if (inp) inp.oninput = onSearchInput;
     await initDirectory();
-
-    // ─── Realtime Synchronization for Directory Members ───
-    if (window.ClassoraAuth && typeof ClassoraAuth.subscribeToTable === 'function') {
-      directoryRealtimeChannel = ClassoraAuth.subscribeToTable('profiles', async function(payload) {
-        console.log('[Directory Realtime] Profile update received:', payload);
-        var q = (document.getElementById("directory-search-input").value||"").trim();
-        try {
-          LIVE_DIRECTORY = await ClassoraAuth.searchDirectory(q);
-          updateCounts();
-          filterDirectory();
-        } catch(err) {
-          console.warn('Realtime directory refresh error:', err);
-        }
-      });
-    }
   });
 </script>
 </body>

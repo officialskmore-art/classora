@@ -232,8 +232,23 @@
 
   document.addEventListener('DOMContentLoaded', async () => {
     await loadStudentHomework();
-    // Realtime: refresh when assignments change
-    ClassoraAuth.subscribeToTable('assignments', () => loadStudentHomework());
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToAssignments({
+        onInsert: function(newHw) {
+          showToast('New homework assigned by your teacher! 📚', 'info', 5000);
+          loadStudentHomework();
+        },
+        onUpdate: function() { loadStudentHomework(); },
+        onDelete: function() { loadStudentHomework(); },
+        onReconnect: function() { loadStudentHomework(); }
+      });
+    }
+  });
+
+  window.addEventListener('beforeunload', function() {
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel('cr-hw-all');
+    }
   });
 </script>
 </body>

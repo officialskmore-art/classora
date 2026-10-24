@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -159,33 +159,166 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
+  let currentExam = null;
+  let examRoster = [];
+
   function updateRow(input, max) {
     const val = parseFloat(input.value) || 0;
     const row = input.closest('tr');
     const pct = Math.min(100, Math.round((val / max) * 100));
-    row.querySelector('.calc-pct').textContent = pct + '%';
+    const calcEl = row.querySelector('.calc-pct');
+    if (calcEl) calcEl.textContent = pct + '%';
 
     const badge = row.querySelector('.grade-badge');
-    if (pct >= 90) {
-      badge.textContent = 'A+'; badge.className = 'badge badge-success grade-badge';
-    } else if (pct >= 80) {
-      badge.textContent = 'A'; badge.className = 'badge badge-success grade-badge';
-    } else if (pct >= 70) {
-      badge.textContent = 'B'; badge.className = 'badge badge-warning grade-badge';
-    } else {
-      badge.textContent = 'C'; badge.className = 'badge badge-danger grade-badge';
+    if (badge) {
+      if (pct >= 90) {
+        badge.textContent = 'A+'; badge.className = 'badge badge-success grade-badge';
+      } else if (pct >= 80) {
+        badge.textContent = 'A'; badge.className = 'badge badge-success grade-badge';
+      } else if (pct >= 70) {
+        badge.textContent = 'B'; badge.className = 'badge badge-warning grade-badge';
+      } else {
+        badge.textContent = 'C'; badge.className = 'badge badge-danger grade-badge';
+      }
+    }
+  }
+
+  async function loadTeacherExamsDropdown() {
+    const exams = await ClassoraAuth.fetchExams();
+    const sel = document.getElementById('exam-select');
+    if (!sel) return;
+    if (!exams.length) {
+      sel.innerHTML = '<option value="" disabled selected>No exams scheduled yet</option>';
+      return;
+    }
+    sel.innerHTML = '<option value="" disabled selected>Select an active examination</option>' +
+      exams.map(e => `<option value="${e.id}" data-max="${e.total_marks || 100}">${e.title} (${e.total_marks || 100} Marks)</option>`).join('');
+    
+    sel.onchange = async () => {
+      const examId = sel.value;
+      currentExam = exams.find(e => e.id === examId);
+      await loadExamRoster(currentExam);
+    };
+  }
+
+  async function loadExamRoster(exam) {
+    if (!exam) return;
+    const tbody = document.querySelector('.table-wrapper table tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--gray-500);">Loading students & previous marks…</td></tr>';
+
+    try {
+      const students = await ClassoraAuth.fetchStudentsForTeacher();
+      const existingResults = await ClassoraAuth.fetchExamResults({ examId: exam.id });
+      const resultMap = new Map(existingResults.map(r => [r.student_id, r]));
+
+      examRoster = students;
+      const maxMarks = exam.total_marks || 100;
+
+      if (!students.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center; padding:48px 20px;">
+              <div style="font-size:2rem; margin-bottom:8px;">👥</div>
+              <h5 style="color:var(--gray-800); margin-bottom:4px;">No Enrolled Students</h5>
+              <p style="font-size:0.85rem; color:var(--gray-500); margin:0;">Students who join your classroom will appear here for grading.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = students.map(s => {
+        const studentProfile = s.profiles || {};
+        const stName = studentProfile.full_name || 'Student';
+        const stCid = studentProfile.classora_id || s.student_id;
+        const res = resultMap.get(s.student_id) || {};
+        const obt = res.marks_obtained !== undefined ? res.marks_obtained : '';
+        const pct = obt !== '' ? Math.min(100, Math.round((parseFloat(obt) / maxMarks) * 100)) : 0;
+        const grade = res.grade || (pct >= 80 ? 'A' : pct >= 60 ? 'B' : 'C');
+        const remark = res.remarks || '';
+
+        return `
+          <tr data-student-id="${s.student_id}">
+            <td><strong>${stName}</strong></td>
+            <td><code>${stCid}</code></td>
+            <td>${maxMarks}</td>
+            <td>
+              <input type="number" class="form-input score-input" style="width:80px; padding:6px 8px; font-weight:700;" value="${obt}" min="0" max="${maxMarks}" placeholder="0" oninput="updateRow(this, ${maxMarks})"/>
+            </td>
+            <td><strong class="calc-pct" style="color:var(--primary-700);">${obt !== '' ? pct + '%' : '--'}</strong></td>
+            <td><span class="badge ${pct >= 75 ? 'badge-success' : 'badge-primary'} grade-badge">${obt !== '' ? grade : '--'}</span></td>
+            <td>
+              <input type="text" class="form-input remark-input" style="padding:6px 10px; font-size:0.85rem;" placeholder="e.g. Excellent work" value="${remark}"/>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      const badge = document.getElementById('pub-status-badge');
+      if (badge) {
+        badge.textContent = existingResults.length > 0 ? 'Results Published' : 'Awaiting Grading';
+        badge.className = existingResults.length > 0 ? 'badge badge-success' : 'badge badge-gray';
+      }
+    } catch (e) {
+      console.warn('Roster load error:', e);
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--danger-600);">Failed to load roster.</td></tr>';
     }
   }
 
   function saveDraftResults() {
-    showToast('Grades saved as draft.', 'info');
+    showToast('Grades saved locally as draft.', 'info');
   }
 
-  function publishResults() {
-    document.getElementById('pub-status-badge').textContent = 'Published to Students';
-    document.getElementById('pub-status-badge').className = 'badge badge-success';
-    showToast('Results published! Student portals updated and notifications dispatched.', 'success');
+  async function publishResults() {
+    if (!currentExam) {
+      showToast('Please select an active examination first.', 'warning');
+      return;
+    }
+    const rows = document.querySelectorAll('.table-wrapper table tbody tr[data-student-id]');
+    if (!rows.length) {
+      showToast('No students to grade.', 'warning');
+      return;
+    }
+
+    const btn = document.querySelector('button[onclick="publishResults()"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Publishing…'; }
+
+    try {
+      let publishedCount = 0;
+      for (const row of rows) {
+        const studentId = row.dataset.studentId;
+        const scoreInput = row.querySelector('.score-input');
+        const remarkInput = row.querySelector('.remark-input');
+        const gradeBadge = row.querySelector('.grade-badge');
+        const marks = parseFloat(scoreInput.value);
+
+        if (!isNaN(marks)) {
+          await ClassoraAuth.publishExamResult({
+            exam_id: currentExam.id,
+            student_id: studentId,
+            marks_obtained: marks,
+            grade: gradeBadge ? gradeBadge.textContent : null,
+            remarks: remarkInput ? remarkInput.value.trim() : ''
+          });
+          publishedCount++;
+        }
+      }
+
+      document.getElementById('pub-status-badge').textContent = 'Published to Students';
+      document.getElementById('pub-status-badge').className = 'badge badge-success';
+      showToast(`Results published for ${publishedCount} students! Portals updated in realtime. 🚀`, 'success', 5000);
+    } catch (err) {
+      showToast('Error publishing results: ' + err.message, 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = '🚀 Publish Results'; }
+    }
   }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadTeacherExamsDropdown();
+  });
 </script>
 </body>
 </html>

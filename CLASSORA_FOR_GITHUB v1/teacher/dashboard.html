@@ -332,6 +332,30 @@
     el.addEventListener('mouseenter', () => el.style.background = 'var(--gray-50)');
     el.addEventListener('mouseleave', () => el.style.background = '');
   });
+
+  // Realtime KPI card sync
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = ClassoraAuth.getCurrentUser();
+    if (user && ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToJoinRequests({
+        teacherId: user.id,
+        onInsert: () => {
+          showToast('New student join request received! 📩', 'info');
+          ClassoraAuth.syncAuthUI();
+        },
+        onUpdate: () => { ClassoraAuth.syncAuthUI(); },
+        onDelete: () => { ClassoraAuth.syncAuthUI(); },
+        onReconnect: () => { ClassoraAuth.syncAuthUI(); }
+      });
+    }
+  });
+
+  window.addEventListener('beforeunload', () => {
+    const user = ClassoraAuth.getCurrentUser();
+    if (user && ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel('cr-join-reqs-t-' + user.id);
+    }
+  });
 </script>
 </body>
 </html>

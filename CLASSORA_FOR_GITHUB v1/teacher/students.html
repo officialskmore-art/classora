@@ -245,6 +245,29 @@
     closeModal('modal-add-student');
     showToast(`Invitation sent to ${stId} for ${cls}!`, 'success');
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToClassroomMembers({
+        onInsert: () => {
+          showToast('New student enrolled in classroom roster!', 'success');
+          ClassoraAuth.syncAuthUI();
+        },
+        onDelete: () => {
+          ClassoraAuth.syncAuthUI();
+        },
+        onReconnect: () => {
+          ClassoraAuth.syncAuthUI();
+        }
+      });
+    }
+  });
+
+  window.addEventListener('beforeunload', () => {
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel('cr-members');
+    }
+  });
 </script>
 </body>
 </html>

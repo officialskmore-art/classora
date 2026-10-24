@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -273,7 +273,23 @@
   document.addEventListener("DOMContentLoaded", async function() {
     await loadExams();
     await populateExamClassDropdown();
-    examRealtimeChannel = ClassoraAuth.subscribeToTable("exams", function() { loadExams(); });
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToExams({
+        onInsert: function(newExam) {
+          showToast("Exam schedule updated live.", "info");
+          loadExams();
+        },
+        onUpdate: function() { loadExams(); },
+        onDelete: function() { loadExams(); },
+        onReconnect: function() { loadExams(); }
+      });
+    }
+  });
+
+  window.addEventListener("beforeunload", function() {
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel("cr-exams-all");
+    }
   });
 </script>
 </body>

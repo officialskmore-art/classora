@@ -15,6 +15,7 @@ class ClassoraAuthService {
     this.anonKey = SUPABASE_CONFIG.anonKey;
     this.storageKey = 'classora_sb_session';
     this.client = null;
+    this.realtime = new ClassoraRealtimeManager(this);
     this.init();
   }
 
@@ -280,6 +281,9 @@ class ClassoraAuthService {
   // --- Sign Out ---
   async signOut() {
     try {
+      if (this.realtime) {
+        this.realtime.unsubscribeAll();
+      }
       if (this.client) {
         await this.client.auth.signOut();
       }
@@ -316,6 +320,54 @@ class ClassoraAuthService {
           return profile;
         }
       }
+
+      // Profile does not exist in DB yet (e.g. initial OAuth login before trigger ran)
+      // Provision it directly in public.profiles table using current user metadata
+      const user = this.getCurrentUser();
+      const meta = (user && user.user_metadata) || fallbackMeta || {};
+      const isAdminEmail = (user && user.email === 'kaitysnehasish@gmail.com') || fallbackMeta.email === 'kaitysnehasish@gmail.com';
+      const role = isAdminEmail ? 'admin' : (meta.role || fallbackMeta.role || localStorage.getItem('classora_auth_role') || 'student');
+      const fullName = meta.full_name || meta.name || fallbackMeta.full_name || (user && user.email ? user.email.split('@')[0] : 'Classora User');
+      const email = (user && user.email) || fallbackMeta.email || '';
+      const prefix = isAdminEmail ? 'ADM-' : (role === 'student' ? 'STD-' : 'TCH-');
+      const classoraId = isAdminEmail ? 'ADM-001' : prefix + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+      const newProfile = {
+        id: userId,
+        email: email,
+        full_name: fullName,
+        role: role,
+        classora_id: classoraId,
+        avatar_url: meta.avatar_url || meta.picture || null,
+        is_setup_completed: isAdminEmail ? true : Boolean(meta.is_setup_completed || fallbackMeta.is_setup_completed)
+      };
+
+      if (session && session.access_token) {
+        try {
+          const createResp = await fetch(`${this.url}/rest/v1/profiles`, {
+            method: 'POST',
+            headers: {
+              'apikey': this.anonKey,
+              'Authorization': `Bearer ${session.access_token}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'resolution=merge-duplicates,return=representation'
+            },
+            body: JSON.stringify(newProfile)
+          });
+          if (createResp.ok) {
+            const created = await createResp.json();
+            if (created && created[0]) {
+              localStorage.setItem('classora_profile', JSON.stringify(created[0]));
+              return created[0];
+            }
+          }
+        } catch (provErr) {
+          console.warn('Auto-provisioning profile in DB failed:', provErr);
+        }
+      }
+
+      localStorage.setItem('classora_profile', JSON.stringify(newProfile));
+      return newProfile;
     } catch (e) {
       console.warn('Failed to fetch profile from DB:', e);
     }
@@ -1073,6 +1125,9 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     if (path.includes('/teacher/dashboard.html')) {
       const classrooms = await this.fetchClassrooms();
+      const pendingReqs = await this.fetchJoinRequests({ status: 'pending' });
+      const students = await this.fetchStudentsForTeacher();
+      const exams = await this.fetchExams();
 
       // Stats KPI Cards
       const statsGrid = document.querySelector('.stats-grid');
@@ -1081,14 +1136,28 @@ class ClassoraAuthService {
         if (stats.length >= 4) {
           stats[0].querySelector('div > div:first-child').textContent = classrooms.length;
           stats[0].querySelector('div > div:nth-child(2)').textContent = 'Active Classrooms';
-          stats[1].querySelector('div > div:first-child').textContent = '0';
+          stats[1].querySelector('div > div:first-child').textContent = students.length;
           stats[1].querySelector('div > div:nth-child(2)').textContent = 'Active Students';
-          stats[2].querySelector('div > div:first-child').textContent = '0';
+          stats[2].querySelector('div > div:first-child').textContent = pendingReqs.length;
           stats[2].querySelector('div > div:nth-child(2)').textContent = 'Pending Requests';
-          stats[3].querySelector('div > div:first-child').textContent = '0';
+          stats[3].querySelector('div > div:first-child').textContent = exams.length;
           stats[3].querySelector('div > div:nth-child(2)').textContent = 'Upcoming Exams';
         }
       }
+
+      // FIX: Update sidebar badge counts dynamically
+      const classBadge = document.getElementById('class-badge-count');
+      if (classBadge) classBadge.textContent = classrooms.length || '';
+      const joinBadge = document.querySelector('#nav-join .sidebar-badge');
+      if (joinBadge) joinBadge.textContent = pendingReqs.length || '';
+      if (!pendingReqs.length && joinBadge) joinBadge.style.display = 'none';
+      // Fetch unread notification count and update badge
+      try {
+        const notifs = await this.fetchNotifications({ limit: 100 });
+        const unread = notifs.filter(n => !n.is_read).length;
+        const notifBadge = document.querySelector('#nav-notif .sidebar-badge');
+        if (notifBadge) { notifBadge.textContent = unread || ''; if (!unread) notifBadge.style.display = 'none'; }
+      } catch(e) {}
 
       // Clear demo students list
       const studentsList = document.getElementById('students-list');
@@ -1238,22 +1307,57 @@ class ClassoraAuthService {
     // 5. TEACHER STUDENTS (teacher/students.html)
     // ───────────────────────────────────────────
     if (path.includes('/teacher/students.html')) {
+      const students = await this.fetchStudentsForTeacher();
+      const classrooms = await this.fetchClassrooms();
       const filter = document.getElementById('class-filter');
-      if (filter) {
-        filter.innerHTML = '<option value="all">All Classrooms (0)</option>';
+      if (filter && classrooms.length > 0) {
+        filter.innerHTML = '<option value="all">All Classrooms (' + students.length + ')</option>' +
+          classrooms.map(c => `<option value="${c.name}">${c.name} (${c.class_code})</option>`).join('');
       }
       const tbody = document.querySelector('#students-table tbody');
       if (tbody) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" style="text-align:center; padding:56px 20px;">
-              <div style="font-size:2.5rem; margin-bottom:8px;">👥</div>
-              <h4 style="color:var(--gray-800); margin-bottom:4px;">No Students Enrolled Yet</h4>
-              <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:16px;">Share your Classora ID (<strong>${cid}</strong>) with students so they can join your classrooms.</p>
-              <button class="btn btn-secondary btn-sm" onclick="copyToClipboard('${cid}', 'Classora ID Copied!')">📋 Copy Your ID (${cid})</button>
-            </td>
-          </tr>
-        `;
+        if (!students.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align:center; padding:56px 20px;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">👥</div>
+                <h4 style="color:var(--gray-800); margin-bottom:4px;">No Students Enrolled Yet</h4>
+                <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:16px;">Share your Classora ID (<strong>${cid}</strong>) or Class Codes with students so they can join your classrooms.</p>
+                <button class="btn btn-secondary btn-sm" onclick="copyToClipboard('${cid}', 'Classora ID Copied!')">📋 Copy Your ID (${cid})</button>
+              </td>
+            </tr>
+          `;
+        } else {
+          tbody.innerHTML = students.map(s => {
+            const p = s.profiles || {};
+            const c = s.classrooms || {};
+            const name = p.full_name || 'Student';
+            const studentCid = p.classora_id || s.student_id;
+            const clsName = c.name || 'Classroom';
+            const initials = name.charAt(0).toUpperCase();
+            return `
+              <tr data-class="${clsName}" data-search="${name.toLowerCase()} ${studentCid.toLowerCase()}">
+                <td>
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="user-avatar avatar-sm" style="background:var(--grad-primary); color:#fff; font-weight:700;">${initials}</div>
+                    <div>
+                      <strong style="color:var(--gray-900);">${name}</strong>
+                      <div style="font-size:0.75rem; color:var(--gray-500);">${p.email || ''}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><code>${studentCid}</code></td>
+                <td><span class="badge badge-primary">${clsName}</span></td>
+                <td><strong style="color:var(--primary-700);">95%</strong></td>
+                <td><strong style="color:var(--accent-600);">--</strong></td>
+                <td><span class="badge badge-success">Active</span></td>
+                <td style="text-align:right;">
+                  <button class="btn btn-ghost btn-sm" onclick="viewStudentModal('${name.replace("'", "\\'")}', '${studentCid}', '${clsName}', 'Active', '95%')">Inspect</button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
       }
     }
 
@@ -1281,6 +1385,11 @@ class ClassoraAuthService {
       if (container) {
         const classrooms = await this.fetchClassrooms();
         container.innerHTML = '';
+
+        // FIX: Update sidebar classroom badge count
+        const classBadge = document.getElementById('class-badge-count');
+        if (classBadge) { classBadge.textContent = classrooms.length || ''; }
+
         if (classrooms.length === 0) {
           container.innerHTML = `
             <div style="grid-column:1/-1; text-align:center; padding:64px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
@@ -1293,12 +1402,16 @@ class ClassoraAuthService {
             </div>
           `;
         } else {
-          classrooms.forEach(c => {
+          // FIX: Rotate through 4 gradient classes instead of always using card-grad-1
+          const gradients = ['card-grad-1', 'card-grad-2', 'card-grad-3', 'card-grad-4'];
+          classrooms.forEach((c, idx) => {
+            const gradClass = gradients[idx % gradients.length];
             const card = document.createElement('div');
             card.className = 'class-card';
             card.dataset.category = 'active';
+            card.dataset.search = `${c.name} ${c.subject || ''} ${c.section || ''} ${c.class_code}`.toLowerCase();
             card.innerHTML = `
-              <div class="class-card-header card-grad-1">
+              <div class="class-card-header ${gradClass}">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                   <span class="badge" style="background:rgba(255,255,255,0.2); color:#fff;">${c.section || 'General'}</span>
                   <span class="badge" style="background:rgba(255,255,255,0.25); color:#fff;">Code: ${c.class_code}</span>
@@ -1308,11 +1421,7 @@ class ClassoraAuthService {
               </div>
               <div class="class-card-body">
                 <div class="class-meta-row">
-                  <span>👥 Enrolled Students</span>
-                  <strong style="color:var(--gray-900);">0 Students</strong>
-                </div>
-                <div class="class-meta-row">
-                  <span>📝 Description</span>
+                  <span>📅 Details</span>
                   <strong style="color:var(--gray-900);">${c.description || 'Active classroom'}</strong>
                 </div>
                 <div style="display:flex; gap:8px; margin-top:auto; padding-top:12px;">
@@ -1377,18 +1486,18 @@ class ClassoraAuthService {
     // 10. STUDENT WORKSPACE (student/*.html)
     // ───────────────────────────────────────────
     if (path.includes('/student/dashboard.html')) {
-      const classrooms = isAdmin ? await this.fetchClassrooms() : [];
+      const classrooms = isAdmin ? await this.fetchClassrooms() : await this.fetchEnrolledClassrooms();
       const statsGrid = document.querySelector('.stats-grid');
       if (statsGrid) {
         const stats = statsGrid.querySelectorAll('.card-stat');
         if (stats.length >= 2) {
-          stats[0].querySelector('div > div:first-child').textContent = isAdmin ? classrooms.length : '0';
-          stats[0].querySelector('div > div:nth-child(2)').textContent = isAdmin ? 'Available Classrooms' : 'Enrolled Classes';
+          stats[0].querySelector('div > div:first-child').textContent = classrooms.length;
+          stats[0].querySelector('div > div:nth-child(2)').textContent = 'Enrolled Classes';
         }
       }
       const classesCard = document.querySelector('.grid-2 > div:first-child > div:last-child');
       if (classesCard) {
-        if (isAdmin && classrooms.length > 0) {
+        if (classrooms.length > 0) {
           classesCard.innerHTML = `
             <div style="display:flex; flex-direction:column; gap:12px;">
               ${classrooms.slice(0, 3).map(c => `
@@ -1426,7 +1535,8 @@ class ClassoraAuthService {
     if (path.includes('/student/classrooms.html')) {
       const grid = document.querySelector('.dash-content .grid') || document.getElementById('classrooms-container');
       if (grid) {
-        const classrooms = isAdmin ? await this.fetchClassrooms() : [];
+        // FIX: real students must see their enrolled classrooms — was always returning [] for non-admin
+        const classrooms = isAdmin ? await this.fetchClassrooms() : await this.fetchEnrolledClassrooms();
         if (isAdmin && classrooms.length > 0) {
           grid.innerHTML = '';
           classrooms.forEach(c => {
@@ -1564,12 +1674,20 @@ class ClassoraAuthService {
     } catch (e) { console.warn('fetchAssignments error:', e); return []; }
   }
 
-  async createAssignment({ title, description, classroom_id, due_date, total_points = 20 }) {
+  async createAssignment({ title, description, classroom_id, due_date, total_points = 20, max_marks }) {
     const user = this.getCurrentUser();
     if (!user) throw new Error('Not signed in');
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
-    const payload = { title, description, classroom_id, due_date, total_points, teacher_id: user.id };
+    // DB column is max_marks — total_points is an alias for compatibility
+    const payload = {
+      title,
+      description,
+      classroom_id,
+      due_date: due_date || null,
+      max_marks: max_marks || total_points || 20,
+      teacher_id: user.id
+    };
     const resp = await fetch(`${this.url}/rest/v1/assignments`, {
       method: 'POST',
       headers: {
@@ -1610,12 +1728,23 @@ class ClassoraAuthService {
     } catch (e) { console.warn('fetchExams error:', e); return []; }
   }
 
-  async createExam({ title, classroom_id, exam_date, duration_minutes = 60, total_marks = 100, passing_marks = 40 }) {
+  async createExam({ title, classroom_id, exam_date, duration_minutes = 60, duration_mins, total_marks = 100, subject = null, start_time = null }) {
     const user = this.getCurrentUser();
     if (!user) throw new Error('Not signed in');
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
-    const payload = { title, classroom_id, exam_date, duration_minutes, total_marks, passing_marks, teacher_id: user.id, status: 'upcoming' };
+    // DB columns: duration_mins (NOT duration_minutes), total_marks, subject, start_time, exam_date, teacher_id
+    // DB does NOT have: passing_marks, status — those columns don't exist
+    const payload = {
+      title,
+      classroom_id,
+      exam_date: exam_date || null,
+      duration_mins: duration_mins || duration_minutes || 60,
+      total_marks: total_marks || 100,
+      teacher_id: user.id
+    };
+    if (subject) payload.subject = subject;
+    if (start_time) payload.start_time = start_time;
     const resp = await fetch(`${this.url}/rest/v1/exams`, {
       method: 'POST',
       headers: {
@@ -1638,6 +1767,53 @@ class ClassoraAuthService {
     });
   }
 
+  // ─── EXAM RESULTS ──────────────────────────────────────────────────────────
+
+  async fetchExamResults({ studentId = null, examId = null } = {}) {
+    const user = this.getCurrentUser();
+    if (!user) return [];
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      let url = `${this.url}/rest/v1/exam_results?select=*,exams(id,title,subject,total_marks,profiles(full_name))&order=created_at.desc`;
+      if (studentId) url += `&student_id=eq.${studentId}`;
+      else if (examId) url += `&exam_id=eq.${examId}`;
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) return await resp.json();
+      return [];
+    } catch (e) {
+      console.warn('fetchExamResults error:', e);
+      return [];
+    }
+  }
+
+  async publishExamResult({ exam_id, student_id, marks_obtained, grade = null, remarks = '' }) {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    const payload = {
+      exam_id,
+      student_id,
+      marks_obtained,
+      grade,
+      remarks
+    };
+    const resp = await fetch(`${this.url}/rest/v1/exam_results`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json', 'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) {
+      const e = await resp.json().catch(() => ({}));
+      throw new Error(e.message || 'Failed to publish exam result');
+    }
+    return (await resp.json())[0] || payload;
+  }
+
   // ─── JOIN REQUESTS ────────────────────────────────────────────────────────
 
   async fetchJoinRequests({ status = 'pending' } = {}) {
@@ -1647,7 +1823,7 @@ class ClassoraAuthService {
     const token = session ? session.access_token : this.anonKey;
     try {
       // Fetch requests for classrooms owned by this teacher
-      const url = `${this.url}/rest/v1/join_requests?select=*,classrooms(name,class_code,teacher_id),profiles(full_name,email,classora_id)&status=eq.${status}&order=created_at.desc`;
+      const url = `${this.url}/rest/v1/join_requests?select=*,classrooms(name,class_code,teacher_id),profiles!join_requests_student_id_fkey(full_name,email,classora_id)&status=eq.${status}&order=created_at.desc`;
       const resp = await fetch(url, {
         headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
       });
@@ -1663,6 +1839,8 @@ class ClassoraAuthService {
   async submitJoinRequest({ classroomCode }) {
     const user = this.getCurrentUser();
     if (!user) throw new Error('Not signed in');
+    // Ensure student's profile exists in DB before sending foreign-keyed join request
+    await this.fetchAndStoreProfile(user.id, { email: user.email, role: 'student' });
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
     // Find classroom by code
@@ -1673,7 +1851,12 @@ class ClassoraAuthService {
     const clsList = await clsResp.json();
     if (!clsList.length) throw new Error('Invalid classroom code. Please check with your teacher.');
     const classroom = clsList[0];
-    const payload = { student_id: user.id, classroom_id: classroom.id, status: 'pending' };
+    const payload = {
+      student_id: user.id,
+      classroom_id: classroom.id,
+      teacher_id: classroom.teacher_id,
+      status: 'pending'
+    };
     const resp = await fetch(`${this.url}/rest/v1/join_requests`, {
       method: 'POST',
       headers: {
@@ -1710,7 +1893,7 @@ class ClassoraAuthService {
       body: JSON.stringify({ status: 'approved' })
     });
     // Enroll student in classroom_members
-    await fetch(`${this.url}/rest/v1/classroom_members`, {
+    const enrollResp = await fetch(`${this.url}/rest/v1/classroom_members`, {
       method: 'POST',
       headers: {
         'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
@@ -1718,6 +1901,10 @@ class ClassoraAuthService {
       },
       body: JSON.stringify({ classroom_id: req.classroom_id, student_id: req.student_id })
     });
+    if (!enrollResp.ok) {
+      const errBody = await enrollResp.json().catch(() => ({}));
+      console.warn('Enrolment insert response warning:', errBody);
+    }
     return { success: true };
   }
 
@@ -1743,13 +1930,28 @@ class ClassoraAuthService {
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
     try {
-      const url = `${this.url}/rest/v1/classroom_members?select=*,classrooms(name,class_code,teacher_id),profiles(full_name,email,classora_id,grade)&classrooms.teacher_id=eq.${user.id}`;
-      const resp = await fetch(url, {
+      // First fetch classrooms owned by this teacher, then fetch members for those classrooms
+      const clsResp = await fetch(`${this.url}/rest/v1/classrooms?teacher_id=eq.${user.id}&select=id,name,class_code`, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (!clsResp.ok) return [];
+      const myClassrooms = await clsResp.json();
+      if (!myClassrooms.length) return [];
+
+      const classroomIds = myClassrooms.map(c => c.id);
+      const idsParam = classroomIds.map(id => `"${id}"`).join(',');
+      const membersUrl = `${this.url}/rest/v1/classroom_members?classroom_id=in.(${classroomIds.join(',')})&select=*,classrooms(name,class_code,teacher_id),profiles(full_name,email,classora_id,grade,avatar_url)`;
+      const resp = await fetch(membersUrl, {
         headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
       });
       if (resp.ok) {
         const all = await resp.json();
-        return all.filter(m => m.classrooms && m.classrooms.teacher_id === user.id);
+        // Attach classroom name from the myClassrooms map for accuracy
+        return all.map(m => {
+          const cls = myClassrooms.find(c => c.id === m.classroom_id);
+          if (cls && m.classrooms) m.classrooms.teacher_id = user.id;
+          return m;
+        }).filter(m => m.classrooms);
       }
       return [];
     } catch (e) { console.warn('fetchStudentsForTeacher error:', e); return []; }
@@ -1808,12 +2010,18 @@ class ClassoraAuthService {
     } catch (e) { return []; }
   }
 
-  async createAnnouncement({ title, body, classroom_id = null }) {
+  async createAnnouncement({ title, body, content, classroom_id = null }) {
     const user = this.getCurrentUser();
     if (!user) throw new Error('Not signed in');
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
-    const payload = { title, body, classroom_id, author_id: user.id };
+    // DB column is 'content' NOT 'body' — accept both for compatibility
+    const payload = {
+      title,
+      content: content || body || '',
+      classroom_id: classroom_id || null,
+      author_id: user.id
+    };
     const resp = await fetch(`${this.url}/rest/v1/announcements`, {
       method: 'POST',
       headers: {
@@ -1826,36 +2034,323 @@ class ClassoraAuthService {
     return (await resp.json())[0] || payload;
   }
 
+  // ─── NOTIFICATIONS ────────────────────────────────────────────────────────
+
+  async fetchNotifications({ limit = 50 } = {}) {
+    const user = this.getCurrentUser();
+    if (!user) return [];
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      const url = `${this.url}/rest/v1/notifications?user_id=eq.${user.id}&order=created_at.desc&limit=${limit}`;
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) return await resp.json();
+      return [];
+    } catch (e) { console.warn('fetchNotifications error:', e); return []; }
+  }
+
+  async markNotificationRead(notificationId) {
+    const user = this.getCurrentUser();
+    if (!user) return;
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      await fetch(`${this.url}/rest/v1/notifications?id=eq.${notificationId}&user_id=eq.${user.id}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ is_read: true })
+      });
+    } catch (e) { console.warn('markNotificationRead error:', e); }
+  }
+
+  async markAllNotificationsRead() {
+    const user = this.getCurrentUser();
+    if (!user) return;
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      await fetch(`${this.url}/rest/v1/notifications?user_id=eq.${user.id}&is_read=eq.false`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ is_read: true })
+      });
+    } catch (e) { console.warn('markAllNotificationsRead error:', e); }
+  }
+
   // ─── SUPABASE REALTIME SUBSCRIPTIONS ─────────────────────────────────────
 
   subscribeToTable(table, callback, filter = null) {
-    if (!this.client) {
-      console.warn('Realtime requires official Supabase JS client.');
+    return this.realtime.registerChannel({
+      key: `rt-${table}-compat`,
+      table: table,
+      filter: filter,
+      onAny: callback
+    });
+  }
+
+  unsubscribe(channel) {
+    if (typeof channel === 'string') {
+      this.realtime.removeChannel(channel);
+    } else if (channel && channel.topic) {
+      if (this.client) {
+        try { this.client.removeChannel(channel); } catch (e) {}
+      }
+    }
+  }
+}
+
+// ─── PRODUCTION REALTIME SYNCHRONIZATION MANAGER ─────────────────────────────
+class ClassoraRealtimeManager {
+  constructor(authService) {
+    this.auth = authService;
+    this.channels = new Map();
+    this.reconnectHandlers = new Map();
+    this.statusListeners = new Set();
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', () => {
+        console.log('[Classora Realtime] Network restored (online). Triggering reconciliation...');
+        this.reconcileAll();
+      });
+    }
+  }
+
+  getClient() {
+    return this.auth.client;
+  }
+
+  onStatusChange(fn) {
+    this.statusListeners.add(fn);
+    return () => this.statusListeners.delete(fn);
+  }
+
+  _notifyStatus(channelKey, status, err = null) {
+    this.statusListeners.forEach(fn => {
+      try { fn({ channelKey, status, error: err }); } catch (e) {}
+    });
+  }
+
+  getChannel(key) {
+    return this.channels.get(key) || null;
+  }
+
+  reconcileAll() {
+    this.reconnectHandlers.forEach((handler, key) => {
+      try {
+        if (typeof handler === 'function') {
+          console.log(`[Classora Realtime] Reconciling channel data: ${key}`);
+          handler();
+        }
+      } catch (e) {
+        console.warn('[Classora Realtime] Reconcile error for ' + key, e);
+      }
+    });
+  }
+
+  /**
+   * Safely registers or replaces a targeted Realtime channel
+   */
+  registerChannel({ key, table, filter = null, onInsert, onUpdate, onDelete, onAny, onReconnect, onError }) {
+    const client = this.getClient();
+    if (!client) {
+      console.warn('[Classora Realtime] Client not initialized. Cannot subscribe to:', key);
       return null;
     }
+
+    // Remove existing channel with the same key to prevent leaks and duplicate listeners
+    this.removeChannel(key);
+
+    if (typeof onReconnect === 'function') {
+      this.reconnectHandlers.set(key, onReconnect);
+    }
+
     try {
-      let channel = this.client.channel(`rt-${table}-${Date.now()}`);
+      let channel = client.channel(key);
       const opts = { event: '*', schema: 'public', table };
       if (filter) opts.filter = filter;
+
       channel = channel.on('postgres_changes', opts, payload => {
-        callback(payload);
+        const eventType = payload.eventType;
+        if (typeof onAny === 'function') onAny(payload);
+        if (eventType === 'INSERT' && typeof onInsert === 'function') onInsert(payload.new, payload);
+        else if (eventType === 'UPDATE' && typeof onUpdate === 'function') onUpdate(payload.new, payload.old, payload);
+        else if (eventType === 'DELETE' && typeof onDelete === 'function') onDelete(payload.old, payload);
       });
-      channel.subscribe(status => {
+
+      let hasSubscribedBefore = false;
+
+      channel.subscribe((status, err) => {
+        this._notifyStatus(key, status, err);
         if (status === 'SUBSCRIBED') {
-          console.log(`[Classora Realtime] Subscribed to ${table}`);
+          console.log(`[Classora Realtime] Subscribed to ${key} (${table})`);
+          if (hasSubscribedBefore && typeof onReconnect === 'function') {
+            console.log(`[Classora Realtime] Reconnected: ${key}. Reconciling data...`);
+            try { onReconnect(); } catch (recErr) { console.warn('Reconnect reconcile error:', recErr); }
+          }
+          hasSubscribedBefore = true;
+        } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
+          console.warn(`[Classora Realtime] Status: ${status} for channel ${key}`, err);
+          if (typeof onError === 'function') onError(status, err);
         }
       });
+
+      this.channels.set(key, channel);
       return channel;
     } catch (e) {
-      console.warn('Realtime subscription error:', e);
+      console.warn('[Classora Realtime] Subscription creation failed:', e);
       return null;
     }
   }
 
-  unsubscribe(channel) {
-    if (this.client && channel) {
-      try { this.client.removeChannel(channel); } catch (e) {}
+  removeChannel(key) {
+    const channel = this.channels.get(key);
+    if (channel) {
+      const client = this.getClient();
+      if (client) {
+        try { client.removeChannel(channel); } catch (e) {}
+      }
+      this.channels.delete(key);
+      this.reconnectHandlers.delete(key);
+      console.log(`[Classora Realtime] Removed channel: ${key}`);
     }
+  }
+
+  unsubscribeAll() {
+    const client = this.getClient();
+    this.channels.forEach((channel, key) => {
+      if (client) {
+        try { client.removeChannel(channel); } catch (e) {}
+      }
+      console.log(`[Classora Realtime] Cleared channel: ${key}`);
+    });
+    this.channels.clear();
+    this.reconnectHandlers.clear();
+  }
+
+  // --- Targeted Convenience Helpers ---
+
+  subscribeToJoinRequests({ teacherId = null, studentId = null, onInsert, onUpdate, onDelete, onReconnect }) {
+    let filter = null;
+    let key = 'cr-join-reqs';
+    if (teacherId) {
+      filter = `teacher_id=eq.${teacherId}`;
+      key = `cr-join-reqs-t-${teacherId}`;
+    } else if (studentId) {
+      filter = `student_id=eq.${studentId}`;
+      key = `cr-join-reqs-s-${studentId}`;
+    }
+    return this.registerChannel({
+      key,
+      table: 'join_requests',
+      filter,
+      onInsert,
+      onUpdate,
+      onDelete,
+      onReconnect
+    });
+  }
+
+  subscribeToClassroomMembers({ studentId = null, classroomId = null, onInsert, onDelete, onReconnect }) {
+    let filter = null;
+    let key = 'cr-members';
+    if (studentId) {
+      filter = `student_id=eq.${studentId}`;
+      key = `cr-members-s-${studentId}`;
+    } else if (classroomId) {
+      filter = `classroom_id=eq.${classroomId}`;
+      key = `cr-members-c-${classroomId}`;
+    }
+    return this.registerChannel({
+      key,
+      table: 'classroom_members',
+      filter,
+      onInsert,
+      onDelete,
+      onReconnect
+    });
+  }
+
+  subscribeToAssignments({ classroomId = null, onInsert, onUpdate, onDelete, onReconnect }) {
+    const filter = classroomId ? `classroom_id=eq.${classroomId}` : null;
+    const key = classroomId ? `cr-hw-c-${classroomId}` : 'cr-hw-all';
+    return this.registerChannel({
+      key,
+      table: 'assignments',
+      filter,
+      onInsert,
+      onUpdate,
+      onDelete,
+      onReconnect
+    });
+  }
+
+  subscribeToSubmissions({ assignmentId = null, studentId = null, onInsert, onUpdate, onReconnect }) {
+    let filter = null;
+    let key = 'cr-subs';
+    if (assignmentId) {
+      filter = `assignment_id=eq.${assignmentId}`;
+      key = `cr-subs-a-${assignmentId}`;
+    } else if (studentId) {
+      filter = `student_id=eq.${studentId}`;
+      key = `cr-subs-s-${studentId}`;
+    }
+    return this.registerChannel({
+      key,
+      table: 'submissions',
+      filter,
+      onInsert,
+      onUpdate,
+      onReconnect
+    });
+  }
+
+  subscribeToExams({ classroomId = null, onInsert, onUpdate, onDelete, onReconnect }) {
+    const filter = classroomId ? `classroom_id=eq.${classroomId}` : null;
+    const key = classroomId ? `cr-exams-c-${classroomId}` : 'cr-exams-all';
+    return this.registerChannel({
+      key,
+      table: 'exams',
+      filter,
+      onInsert,
+      onUpdate,
+      onDelete,
+      onReconnect
+    });
+  }
+
+  subscribeToResults({ studentId = null, onInsert, onUpdate, onReconnect }) {
+    const filter = studentId ? `student_id=eq.${studentId}` : null;
+    const key = studentId ? `cr-res-s-${studentId}` : 'cr-res-all';
+    return this.registerChannel({
+      key,
+      table: 'exam_results',
+      filter,
+      onInsert,
+      onUpdate,
+      onReconnect
+    });
+  }
+
+  subscribeToNotifications({ userId = null, onInsert, onUpdate, onReconnect }) {
+    if (!userId) return null;
+    const filter = `user_id=eq.${userId}`;
+    const key = `cr-notifs-u-${userId}`;
+    return this.registerChannel({
+      key,
+      table: 'notifications',
+      filter,
+      onInsert,
+      onUpdate,
+      onReconnect
+    });
   }
 }
 

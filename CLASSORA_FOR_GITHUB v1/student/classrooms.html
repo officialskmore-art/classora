@@ -270,6 +270,46 @@
 
   document.addEventListener('DOMContentLoaded', async () => {
     await loadStudentClassrooms();
+
+    const user = ClassoraAuth.getCurrentUser();
+    if (user && ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToClassroomMembers({
+        studentId: user.id,
+        onInsert: async function(newMember) {
+          showToast('You have been enrolled in a classroom! 🎉', 'success', 5000);
+          await loadStudentClassrooms();
+        },
+        onDelete: async function(oldMember) {
+          showToast('Enrolment updated.', 'info');
+          await loadStudentClassrooms();
+        },
+        onReconnect: async function() {
+          await loadStudentClassrooms();
+        }
+      });
+
+      ClassoraAuth.realtime.subscribeToJoinRequests({
+        studentId: user.id,
+        onUpdate: async function(updatedReq) {
+          if (updatedReq.status === 'rejected') {
+            showToast('Your join request was declined by the instructor.', 'warning', 5000);
+          } else if (updatedReq.status === 'approved') {
+            await loadStudentClassrooms();
+          }
+        },
+        onReconnect: async function() {
+          await loadStudentClassrooms();
+        }
+      });
+    }
+  });
+
+  window.addEventListener('beforeunload', function() {
+    const user = ClassoraAuth.getCurrentUser();
+    if (user && ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel('cr-members-s-' + user.id);
+      ClassoraAuth.realtime.removeChannel('cr-join-reqs-s-' + user.id);
+    }
   });
 </script>
 </body>
