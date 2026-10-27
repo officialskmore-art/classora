@@ -15,6 +15,7 @@ class ClassoraAuthService {
     this.anonKey = SUPABASE_CONFIG.anonKey;
     this.storageKey = 'classora_sb_session';
     this.client = null;
+    this.realtime = new ClassoraRealtimeManager(this);
     this.init();
   }
 
@@ -110,7 +111,6 @@ class ClassoraAuthService {
     const user = this.getCurrentUser();
     const profile = this.getActiveProfile();
     if (!user) return false;
-    if (user.email === 'kaitysnehasish@gmail.com') return true;
     return Boolean(profile && profile.role === 'admin');
   }
 
@@ -140,8 +140,7 @@ class ClassoraAuthService {
         const { data, error } = await this.client.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: redirectUrl,
-            queryParams: { access_type: 'offline', prompt: 'consent' }
+            redirectTo: redirectUrl
           }
         });
         if (error) throw error;
@@ -163,7 +162,7 @@ class ClassoraAuthService {
   async signUp({ email, password, fullName, role = 'student', phone = '', subject = '', grade = '' }) {
     const metaData = {
       full_name: fullName,
-      role: email === 'kaitysnehasish@gmail.com' ? 'admin' : role,
+      role: role,
       phone: phone,
       subject: subject,
       grade: grade
@@ -235,7 +234,10 @@ class ClassoraAuthService {
     if (this.client) {
       try {
         const { data, error } = await this.client.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        if (error) {
+          // Do not retry with secondary REST on auth failure (prevents duplicate 400 error - Bug 27)
+          return { success: false, error: error.message };
+        }
 
         this.saveSession(data.session);
         const profile = await this.fetchAndStoreProfile(data.user.id);
@@ -280,6 +282,9 @@ class ClassoraAuthService {
   // --- Sign Out ---
   async signOut() {
     try {
+      if (this.realtime) {
+        this.realtime.unsubscribeAll();
+      }
       if (this.client) {
         await this.client.auth.signOut();
       }
@@ -308,27 +313,69 @@ class ClassoraAuthService {
         const list = await resp.json();
         if (list && list.length > 0) {
           const profile = list[0];
-          if (profile.email === 'kaitysnehasish@gmail.com') {
-            profile.role = 'admin';
-            profile.classora_id = 'ADM-001';
-          }
           localStorage.setItem('classora_profile', JSON.stringify(profile));
           return profile;
         }
       }
+
+      // Profile does not exist in DB yet (e.g. initial OAuth login before trigger ran)
+      const user = this.getCurrentUser();
+      const meta = (user && user.user_metadata) || fallbackMeta || {};
+      const role = meta.role || fallbackMeta.role || localStorage.getItem('classora_auth_role') || 'student';
+      const fullName = meta.full_name || meta.name || fallbackMeta.full_name || (user && user.email ? user.email.split('@')[0] : 'Classora User');
+      const email = (user && user.email) || fallbackMeta.email || '';
+      const prefix = role === 'student' ? 'STD-' : 'TCH-';
+      const classoraId = prefix + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+      const newProfile = {
+        id: userId,
+        email: email,
+        full_name: fullName,
+        role: role,
+        classora_id: classoraId,
+        avatar_url: meta.avatar_url || meta.picture || null,
+        is_setup_completed: Boolean(meta.is_setup_completed || fallbackMeta.is_setup_completed)
+      };
+
+      if (session && session.access_token) {
+        try {
+          const createResp = await fetch(`${this.url}/rest/v1/profiles`, {
+            method: 'POST',
+            headers: {
+              'apikey': this.anonKey,
+              'Authorization': `Bearer ${session.access_token}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'resolution=merge-duplicates,return=representation'
+            },
+            body: JSON.stringify(newProfile)
+          });
+          if (createResp.ok) {
+            const created = await createResp.json();
+            if (created && created[0]) {
+              localStorage.setItem('classora_profile', JSON.stringify(created[0]));
+              return created[0];
+            }
+          }
+        } catch (provErr) {
+          console.warn('Auto-provisioning profile in DB failed:', provErr);
+        }
+      }
+
+      localStorage.setItem('classora_profile', JSON.stringify(newProfile));
+      return newProfile;
     } catch (e) {
       console.warn('Failed to fetch profile from DB:', e);
     }
 
-    const isAdminEmail = fallbackMeta.email === 'kaitysnehasish@gmail.com';
+    const isAdmin = fallbackMeta.role === 'admin';
     const cached = {
       id: userId,
-      role: isAdminEmail ? 'admin' : (fallbackMeta.role || 'teacher'),
+      role: isAdmin ? 'admin' : (fallbackMeta.role || 'teacher'),
       full_name: fallbackMeta.full_name || 'Classora User',
       email: fallbackMeta.email || '',
-      classora_id: isAdminEmail ? 'ADM-001' : (fallbackMeta.role === 'student' ? 'STD-' : 'TCH-') + Math.random().toString(36).substring(2, 8).toUpperCase(),
+      classora_id: isAdmin ? 'ADM-001' : (fallbackMeta.role === 'student' ? 'STD-' : 'TCH-') + Math.random().toString(36).substring(2, 8).toUpperCase(),
       avatar_url: null,
-      is_setup_completed: isAdminEmail ? true : Boolean(fallbackMeta.is_setup_completed)
+      is_setup_completed: isAdmin ? true : Boolean(fallbackMeta.is_setup_completed)
     };
     localStorage.setItem('classora_profile', JSON.stringify(cached));
     return cached;
@@ -338,63 +385,28 @@ class ClassoraAuthService {
     try {
       const p = localStorage.getItem('classora_profile');
       if (p) {
-        const parsed = JSON.parse(p);
-        if (parsed.email === 'kaitysnehasish@gmail.com') {
-          parsed.role = 'admin';
-          parsed.classora_id = 'ADM-001';
-          parsed.is_setup_completed = true;
-        }
-        return parsed;
+        return JSON.parse(p);
       }
 
-      // If user is logged in, synthesize profile immediately so workspace is NEVER treated as logged out
+      // If user is logged in, synthesize profile from session metadata
       const user = this.getCurrentUser();
       if (user) {
-        const isAdmin = user.email === 'kaitysnehasish@gmail.com';
-        const role = isAdmin ? 'admin' : (user.user_metadata?.role || localStorage.getItem('classora_auth_role') || 'teacher');
+        const role = user.user_metadata?.role || localStorage.getItem('classora_auth_role') || 'teacher';
         const synth = {
           id: user.id,
           role: role,
-          full_name: (user.user_metadata && user.user_metadata.full_name) || (isAdmin ? 'Snehasish Kaity' : user.email.split('@')[0]),
+          full_name: (user.user_metadata && user.user_metadata.full_name) || user.email.split('@')[0],
           email: user.email,
-          classora_id: isAdmin ? 'ADM-001' : (role === 'student' ? 'STD-' : 'TCH-') + (user.id || Math.random().toString(36)).slice(0, 6).toUpperCase(),
+          classora_id: (role === 'student' ? 'STD-' : 'TCH-') + (user.id || Math.random().toString(36)).slice(0, 6).toUpperCase(),
           avatar_url: null,
-          is_setup_completed: isAdmin ? true : false
+          is_setup_completed: false
         };
         localStorage.setItem('classora_profile', JSON.stringify(synth));
         if (user.id) this.fetchAndStoreProfile(user.id);
         return synth;
       }
 
-      // Local/portal fallback profile so localhost testing always displays clean defaults
-      const path = (typeof window !== 'undefined' && window.location.pathname) ? window.location.pathname.toLowerCase() : '';
-      if (path.includes('/student/')) {
-        return {
-          id: 'local-student',
-          role: 'student',
-          full_name: 'Student Account',
-          email: 'student@classora.com',
-          phone: '',
-          grade: 'Class Grade 10',
-          classora_id: 'STD-1001',
-          avatar_url: null,
-          is_setup_completed: true
-        };
-      }
-      if (path.includes('/teacher/')) {
-        return {
-          id: 'local-teacher',
-          role: 'teacher',
-          full_name: 'Classora Educator',
-          email: 'teacher@classora.com',
-          phone: '',
-          subject: 'Mathematics',
-          grade: 'All Grades (1-12)',
-          classora_id: 'TCH-1001',
-          avatar_url: null,
-          is_setup_completed: true
-        };
-      }
+      // Unauthenticated visitor: Return null so protected portal pages cannot be accessed (Bug 8 & 9)
       return null;
     } catch (e) {
       return null;
@@ -407,10 +419,6 @@ class ClassoraAuthService {
     const current = this.getActiveProfile() || {};
     const merged = Object.assign({}, current, updates);
     const user = this.getCurrentUser();
-    if (user && user.email === 'kaitysnehasish@gmail.com') {
-      merged.role = 'admin';
-      merged.classora_id = 'ADM-001';
-    }
     localStorage.setItem('classora_profile', JSON.stringify(merged));
 
     // Refresh UI elements
@@ -458,7 +466,7 @@ class ClassoraAuthService {
     const user = this.getCurrentUser();
     if (!user) return { success: false, error: 'User session not found. Please log in.' };
 
-    const isAdmin = user.email === 'kaitysnehasish@gmail.com';
+    const isAdmin = this.isAdmin();
     const finalRole = isAdmin ? 'admin' : (role === 'teacher' ? 'teacher' : 'student');
 
     // Generate unique Classora ID for this role
@@ -547,22 +555,30 @@ class ClassoraAuthService {
     const user = this.getCurrentUser();
     if (!user) return { success: false, error: 'User is not signed in.' };
 
-    if (user.email === 'kaitysnehasish@gmail.com') {
-      return { success: false, error: 'Super Administrator account cannot be deleted.' };
-    }
-
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
 
     try {
-      // 1. Delete profile row from Supabase via authenticated JWT
-      await fetch(`${this.url}/rest/v1/profiles?id=eq.${user.id}`, {
-        method: 'DELETE',
+      // 1. Call SECURITY DEFINER RPC to delete auth.users AND profile (Bug N4)
+      const rpcResp = await fetch(`${this.url}/rest/v1/rpc/delete_user_account`, {
+        method: 'POST',
         headers: {
           'apikey': this.anonKey,
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
+
+      if (!rpcResp.ok) {
+        // Fallback: Delete profile row from Supabase via authenticated JWT
+        await fetch(`${this.url}/rest/v1/profiles?id=eq.${user.id}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': this.anonKey,
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
 
       // 2. Client signout if initialized
       if (this.client) {
@@ -581,6 +597,35 @@ class ClassoraAuthService {
       console.error('Error deleting account:', err);
       return { success: false, error: err.message };
     }
+  }
+
+  // --- Update Password (for email and Google users) (Bug N2) ---
+  async updatePassword(newPassword) {
+    if (this.client) {
+      try {
+        const { data, error } = await this.client.auth.updateUser({ password: newPassword });
+        if (error) return { success: false, error: error.message };
+        return { success: true };
+      } catch (e) {
+        console.warn('updateUser password error:', e);
+      }
+    }
+    const session = this.getLocalSession();
+    if (!session || !session.access_token) return { success: false, error: 'User session not found' };
+    const resp = await fetch(`${this.url}/auth/v1/user`, {
+      method: 'PUT',
+      headers: {
+        'apikey': this.anonKey,
+        'Authorization': `Bearer ${session.access_token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ password: newPassword })
+    });
+    if (!resp.ok) {
+      const err = await resp.json();
+      return { success: false, error: err.msg || err.message || 'Failed to update password' };
+    }
+    return { success: true };
   }
 
   // --- Upload Profile Photo ---
@@ -671,6 +716,40 @@ class ClassoraAuthService {
       throw new Error(dbErr.message || 'Failed to save document metadata');
     }
 
+    const saved = await dbResp.json();
+    return saved[0] || docRecord;
+  }
+
+  // --- Create Text / Document Record without requiring a binary upload ---
+  async createDocument({ title, description = '', category = 'study_material', classroomId = null, fileUrl = '' }) {
+    const user = this.getCurrentUser();
+    if (!user) throw new Error('You must be signed in to create documents.');
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    const docRecord = {
+      title,
+      description,
+      file_url: fileUrl || null,
+      file_type: fileUrl ? fileUrl.split('.').pop().toLowerCase() : 'text',
+      file_size_bytes: 0,
+      category,
+      uploader_id: user.id,
+      classroom_id: (classroomId && classroomId !== 'general' && classroomId !== 'private') ? classroomId : null
+    };
+    const dbResp = await fetch(`${this.url}/rest/v1/documents`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(docRecord)
+    });
+    if (!dbResp.ok) {
+      const dbErr = await dbResp.json();
+      throw new Error(dbErr.message || 'Failed to save note');
+    }
     const saved = await dbResp.json();
     return saved[0] || docRecord;
   }
@@ -768,15 +847,87 @@ class ClassoraAuthService {
     }
   }
 
+  // --- Timetable Sessions ---
+  async fetchSessions({ weekOffset = 0 } = {}) {
+    try {
+      const user = this.getCurrentUser();
+      if (!user) return [];
+      const session = this.getLocalSession();
+      const token = session ? session.access_token : this.anonKey;
+      const resp = await fetch(`${this.url}/rest/v1/sessions?week_offset=eq.${weekOffset}&select=*,classrooms(name,class_code)&order=start_time.asc`, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) return await resp.json();
+      return [];
+    } catch (e) {
+      console.warn('Fetch sessions error:', e);
+      return [];
+    }
+  }
+
+  async createSession({ classroom_id, topic, day_of_week, start_time, week_offset = 0 }) {
+    const user = this.getCurrentUser();
+    if (!user) throw new Error('You must be signed in to schedule a session.');
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    const payload = {
+      teacher_id: user.id,
+      classroom_id,
+      topic,
+      day_of_week,
+      start_time,
+      week_offset
+    };
+    const resp = await fetch(`${this.url}/rest/v1/sessions`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.message || 'Failed to schedule session');
+    }
+    const saved = await resp.json();
+    return saved[0] || payload;
+  }
+
   // --- Universal UI & Workspace Synchronizer ---
   syncAuthUI() {
     const user = this.getCurrentUser();
     const profile = this.getActiveProfile();
-    const isLogged = Boolean(user) || Boolean(profile);
+    const isLogged = Boolean(user) && Boolean(profile);
+    const currentPath = window.location.pathname.toLowerCase();
+    const isTeacherPortal = currentPath.includes('/teacher/');
+    const isStudentPortal = currentPath.includes('/student/');
+    const isPortal = isTeacherPortal || isStudentPortal;
+
+    // 1. Unauthenticated portal protection (Bugs 8 & 9)
+    if (isPortal && !isLogged) {
+      this.clearSession();
+      window.location.replace('../login.html');
+      return;
+    }
 
     if (isLogged && profile) {
       const isAdmin = this.isAdmin();
-      const currentPath = window.location.pathname.toLowerCase();
+
+      // 2. Role enforcement across portals (Bugs 8 & 9)
+      if (isPortal && !isAdmin) {
+        if (isTeacherPortal && profile.role === 'student') {
+          window.location.replace('../student/dashboard.html');
+          return;
+        }
+        if (isStudentPortal && profile.role === 'teacher') {
+          window.location.replace('../teacher/dashboard.html');
+          return;
+        }
+      }
+
       const isSetupPage = currentPath.endsWith('setup-profile.html');
       const isPublicOrAuthPage = isSetupPage ||
         currentPath.endsWith('login.html') ||
@@ -791,14 +942,14 @@ class ClassoraAuthService {
         currentPath.endsWith('/');
 
       // Redirect uncompleted profiles to one-time setup if attempting to access workspaces/portals (only if genuinely logged in)
-      if (user && !isAdmin && profile && profile.is_setup_completed === false && !isPublicOrAuthPage) {
-        const isPortal = currentPath.includes('/teacher/') || currentPath.includes('/student/');
-        window.location.href = isPortal ? '../setup-profile.html' : 'setup-profile.html';
+      if (!isAdmin && profile.is_setup_completed === false && !isPublicOrAuthPage) {
+        window.location.replace(isPortal ? '../setup-profile.html' : 'setup-profile.html');
         return;
       }
 
-      const isTeacherPortal = currentPath.includes('/teacher/');
-      const isStudentPortal = currentPath.includes('/student/');
+      // Update dynamic sidebar badges asynchronously
+      this.updateSidebarBadges({ isTeacherPortal, isStudentPortal, isAdmin });
+
       const fullName = profile.full_name || 'Classora User';
       const firstName = fullName.split(' ')[0];
       const initials = fullName.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2) || firstName.charAt(0);
@@ -830,6 +981,7 @@ class ClassoraAuthService {
           av.style.backgroundSize = 'cover';
           av.style.backgroundPosition = 'center';
           av.style.color = 'transparent';
+          av.textContent = '';
         } else {
           av.style.backgroundImage = 'none';
           av.style.background = isAdmin ? 'linear-gradient(135deg, #F59E0B, #DC2626)' : 'linear-gradient(135deg, #4F46E5, #7C3AED)';
@@ -1064,6 +1216,39 @@ class ClassoraAuthService {
     }
   }
 
+  // --- Dynamic Sidebar Badges Updater (Bugs 4, 14, 20) ---
+  async updateSidebarBadges({ isTeacherPortal, isStudentPortal, isAdmin }) {
+    try {
+      if (isTeacherPortal) {
+        const classrooms = await this.fetchClassrooms();
+        const pending = await this.fetchJoinRequests({ status: 'pending' });
+        const clsBadge = document.querySelector('#nav-classrooms .sidebar-badge');
+        if (clsBadge) clsBadge.textContent = classrooms.length;
+        const joinBadge = document.querySelector('#nav-join .sidebar-badge');
+        if (joinBadge) {
+          joinBadge.textContent = pending.length;
+          joinBadge.style.display = pending.length > 0 ? 'inline-block' : 'none';
+        }
+        const notifBadge = document.querySelector('#nav-notif .sidebar-badge');
+        if (notifBadge) notifBadge.style.display = 'none';
+      } else if (isStudentPortal) {
+        const enrolled = isAdmin ? await this.fetchClassrooms() : await this.fetchEnrolledClassrooms();
+        const assignments = await this.fetchAssignments();
+        const clsBadge = document.querySelector('#nav-classrooms .sidebar-badge') || document.getElementById('student-class-count');
+        if (clsBadge) clsBadge.textContent = enrolled.length;
+        const hwBadge = document.querySelector('#nav-homework .sidebar-badge');
+        if (hwBadge) {
+          hwBadge.textContent = assignments.length;
+          hwBadge.style.display = assignments.length > 0 ? 'inline-block' : 'none';
+        }
+        const notifBadge = document.querySelector('#nav-notif .sidebar-badge');
+        if (notifBadge) notifBadge.style.display = 'none';
+      }
+    } catch (e) {
+      console.warn('Error updating sidebar badges:', e);
+    }
+  }
+
   // --- Completely replaces demo lists with real empty states or live database data across ALL portal pages ---
   async cleanWorkspaceForLoggedInUser({ isAdmin, fullName, firstName, cid, role }) {
     const path = window.location.pathname.toLowerCase();
@@ -1073,53 +1258,107 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     if (path.includes('/teacher/dashboard.html')) {
       const classrooms = await this.fetchClassrooms();
+      const pendingReqs = await this.fetchJoinRequests({ status: 'pending' });
+      const students = await this.fetchStudentsForTeacher();
+      const exams = await this.fetchExams();
 
       // Stats KPI Cards
       const statsGrid = document.querySelector('.stats-grid');
       if (statsGrid) {
         const stats = statsGrid.querySelectorAll('.card-stat');
         if (stats.length >= 4) {
-          stats[0].querySelector('div > div:first-child').textContent = classrooms.length;
-          stats[0].querySelector('div > div:nth-child(2)').textContent = 'Active Classrooms';
-          stats[1].querySelector('div > div:first-child').textContent = '0';
-          stats[1].querySelector('div > div:nth-child(2)').textContent = 'Active Students';
-          stats[2].querySelector('div > div:first-child').textContent = '0';
-          stats[2].querySelector('div > div:nth-child(2)').textContent = 'Pending Requests';
-          stats[3].querySelector('div > div:first-child').textContent = '0';
-          stats[3].querySelector('div > div:nth-child(2)').textContent = 'Upcoming Exams';
+          const s0_1 = stats[0].querySelector('div > div:first-child');
+          const s0_2 = stats[0].querySelector('div > div:nth-child(2)');
+          if (s0_1) s0_1.textContent = classrooms.length;
+          if (s0_2) s0_2.textContent = 'Active Classrooms';
+
+          const s1_1 = stats[1].querySelector('div > div:first-child');
+          const s1_2 = stats[1].querySelector('div > div:nth-child(2)');
+          if (s1_1) s1_1.textContent = students.length;
+          if (s1_2) s1_2.textContent = 'Active Students';
+
+          const s2_1 = stats[2].querySelector('div > div:first-child');
+          const s2_2 = stats[2].querySelector('div > div:nth-child(2)');
+          if (s2_1) s2_1.textContent = pendingReqs.length;
+          if (s2_2) s2_2.textContent = 'Pending Requests';
+
+          const s3_1 = stats[3].querySelector('div > div:first-child');
+          const s3_2 = stats[3].querySelector('div > div:nth-child(2)');
+          if (s3_1) s3_1.textContent = exams.length;
+          if (s3_2) s3_2.textContent = 'Upcoming Exams';
         }
       }
 
-      // Clear demo students list
+      // Render real students list if available, or polite empty state (Bug 20)
       const studentsList = document.getElementById('students-list');
       if (studentsList) {
-        studentsList.innerHTML = `
-          <div style="text-align:center; padding:32px 16px; border:1.5px dashed var(--gray-200); border-radius:var(--radius-lg); margin-top:8px;">
-            <div style="font-size:2rem; margin-bottom:8px;">👥</div>
-            <h5 style="margin-bottom:4px; color:var(--gray-800);">No enrolled students yet</h5>
-            <p style="font-size:0.8rem; color:var(--gray-500); margin-bottom:12px;">Share your unique Classora ID with students to start enrolling.</p>
-            <button class="btn btn-secondary btn-sm" onclick="copyToClipboard('${cid}', 'Classora ID Copied!')">📋 Copy Your ID (${cid})</button>
-          </div>
-        `;
+        if (!students || students.length === 0) {
+          studentsList.innerHTML = `
+            <div style="text-align:center; padding:32px 16px; border:1.5px dashed var(--gray-200); border-radius:var(--radius-lg); margin-top:8px;">
+              <div style="font-size:2rem; margin-bottom:8px;">👥</div>
+              <h5 style="margin-bottom:4px; color:var(--gray-800);">No enrolled students yet</h5>
+              <p style="font-size:0.8rem; color:var(--gray-500); margin-bottom:12px;">Share your unique Classora ID with students to start enrolling.</p>
+              <button class="btn btn-secondary btn-sm" onclick="copyToClipboard('${cid}', 'Classora ID Copied!')">📋 Copy Your ID (${cid})</button>
+            </div>
+          `;
+        } else {
+          studentsList.innerHTML = students.slice(0, 5).map(s => {
+            const p = s.profiles || {};
+            const c = s.classrooms || {};
+            const name = (p.full_name || 'Student');
+            const studentCid = (p.classora_id || s.student_id);
+            const clsName = (c.name || 'Classroom');
+            const initials = name.charAt(0).toUpperCase();
+            return `
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border:1px solid var(--gray-200); border-radius:var(--radius-md); background:#fff; margin-bottom:8px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <div class="user-avatar avatar-sm" style="background:var(--grad-primary); color:#fff; font-weight:700;">${initials}</div>
+                  <div>
+                    <strong style="color:var(--gray-900); font-size:0.875rem;">${name}</strong>
+                    <div style="font-size:0.75rem; color:var(--gray-500);">${clsName} • <code>${studentCid}</code></div>
+                  </div>
+                </div>
+                <span class="badge badge-success">Active</span>
+              </div>
+            `;
+          }).join('') + (students.length > 5 ? `<a href="students.html" class="btn btn-secondary btn-sm btn-full" style="margin-top:6px;">View All ${students.length} Students</a>` : '');
+        }
       }
 
-      // Clear demo exams list
+      // Render real exams if available
       const examsContainer = document.querySelector('.grid-2 > div:nth-child(2) > div:last-child');
       if (examsContainer) {
-        examsContainer.innerHTML = `
-          <div style="text-align:center; padding:32px 16px; border:1.5px dashed var(--gray-200); border-radius:var(--radius-lg); margin-top:8px;">
-            <div style="font-size:2rem; margin-bottom:8px;">📝</div>
-            <h5 style="margin-bottom:4px; color:var(--gray-800);">No upcoming exams</h5>
-            <p style="font-size:0.8rem; color:var(--gray-500); margin-bottom:12px;">Your schedule is clear. Plan and schedule your first assessment.</p>
-            <a href="exams.html" class="btn btn-primary btn-sm">➕ Schedule Exam</a>
-          </div>
-        `;
+        if (!exams || exams.length === 0) {
+          examsContainer.innerHTML = `
+            <div style="text-align:center; padding:32px 16px; border:1.5px dashed var(--gray-200); border-radius:var(--radius-lg); margin-top:8px;">
+              <div style="font-size:2rem; margin-bottom:8px;">📝</div>
+              <h5 style="margin-bottom:4px; color:var(--gray-800);">No upcoming exams</h5>
+              <p style="font-size:0.8rem; color:var(--gray-500); margin-bottom:12px;">Your schedule is clear. Plan and schedule your first assessment.</p>
+              <a href="exams.html" class="btn btn-primary btn-sm">➕ Schedule Exam</a>
+            </div>
+          `;
+        } else {
+          examsContainer.innerHTML = exams.slice(0, 4).map(ex => {
+            const title = (ex.title || 'Exam');
+            const dt = ex.exam_date ? new Date(ex.exam_date).toLocaleDateString() : 'Scheduled';
+            const cls = (ex.classrooms && ex.classrooms.name) || 'Class';
+            return `
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border:1px solid var(--gray-200); border-radius:var(--radius-md); background:#fff; margin-bottom:8px;">
+                <div>
+                  <strong style="color:var(--gray-900); font-size:0.875rem;">${title}</strong>
+                  <div style="font-size:0.75rem; color:var(--gray-500);">${cls} • Date: ${dt}</div>
+                </div>
+                <a href="exams.html" class="btn btn-secondary btn-sm" style="font-size:0.75rem; padding:4px 10px;">Details</a>
+              </div>
+            `;
+          }).join('');
+        }
       }
 
-      // Clear demo classrooms card (lines 356-386)
+      // Render real classrooms card
       const classroomsCard = document.querySelector('.grid-2:nth-of-type(2) > div:first-child > div:last-of-type, .dash-content > .grid-2:last-of-type > div:first-child > div:last-of-type');
       if (classroomsCard) {
-        if (classrooms.length === 0) {
+        if (!classrooms || classrooms.length === 0) {
           classroomsCard.innerHTML = `
             <div style="text-align:center; padding:28px 16px; border:1.5px dashed var(--gray-200); border-radius:var(--radius-lg);">
               <div style="font-size:2rem; margin-bottom:8px;">🏫</div>
@@ -1128,10 +1367,25 @@ class ClassoraAuthService {
               <a href="classrooms.html" class="btn btn-primary btn-sm">+ Create Classroom</a>
             </div>
           `;
+        } else {
+          classroomsCard.innerHTML = `
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              ${classrooms.slice(0, 3).map(c => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border:1px solid var(--gray-200); border-radius:var(--radius-md); background:#fff;">
+                  <div>
+                    <strong style="color:var(--gray-900); font-size:0.875rem;">${c.name}</strong>
+                    <div style="font-size:0.75rem; color:var(--gray-500);">${c.subject || 'Academic'} • Code: <code>${c.class_code}</code></div>
+                  </div>
+                  <a href="students.html?class=${c.class_code}" class="btn btn-secondary btn-sm" style="font-size:0.75rem; padding:4px 10px;">Students</a>
+                </div>
+              `).join('')}
+              <a href="classrooms.html" class="btn btn-primary btn-sm btn-full" style="margin-top:4px;">Manage All Classrooms (${classrooms.length})</a>
+            </div>
+          `;
         }
       }
 
-      // Clear demo notifications (lines 397-436)
+      // Clear demo notifications
       const notifsCard = document.querySelector('.grid-2:nth-of-type(2) > div:last-child > div:last-of-type, .dash-content > .grid-2:last-of-type > div:last-child > div:last-of-type');
       if (notifsCard) {
         notifsCard.innerHTML = `
@@ -1143,10 +1397,13 @@ class ClassoraAuthService {
         `;
       }
 
-      // Super Admin Panel for Snehasish Kaity
+      // Super Admin Panel (SEC-04: dynamic email)
       if (isAdmin && !document.getElementById('admin-super-panel')) {
         const content = document.querySelector('.dash-content');
         if (content) {
+          const userObj = this.getCurrentUser();
+          const profObj = this.getActiveProfile();
+          const adminEmail = (profObj && profObj.email) || (userObj && userObj.email) || 'Administrator';
           const panel = document.createElement('div');
           panel.id = 'admin-super-panel';
           panel.className = 'card animate-fade-up';
@@ -1157,7 +1414,7 @@ class ClassoraAuthService {
                 <span class="badge" style="background:rgba(255,255,255,0.2); color:#fff; margin-bottom:8px; display:inline-block;">👑 ROOT SUPER ADMIN PRIVILEGES</span>
                 <h3 style="color:#fff; margin-bottom:6px;">Administrator Governance Console</h3>
                 <p style="color:rgba(255,255,255,0.8); font-size:0.875rem; max-width:620px; margin:0; line-height:1.6;">
-                  Logged in as Platform Administrator (<strong>kaitysnehasish@gmail.com</strong>). Strict privacy isolation active: students and teachers cannot see confidential data belonging to others.
+                  Logged in as Platform Administrator (<strong>${adminEmail}</strong>). Strict privacy isolation active: students and teachers cannot see confidential data belonging to others.
                 </p>
               </div>
               <div style="display:flex; gap:10px; flex-wrap:wrap;">
@@ -1172,9 +1429,10 @@ class ClassoraAuthService {
     }
 
     // ───────────────────────────────────────────
-    // 2. TEACHER SCHEDULE / CALENDAR (teacher/schedule.html)
+    // 2. TEACHER SCHEDULE / CALENDAR (teacher/schedule.html, student/schedule.html) (Bug 23)
     // ───────────────────────────────────────────
     if (path.includes('/teacher/schedule.html') || path.includes('/student/schedule.html')) {
+      const isStudent = path.includes('/student/');
       // Clear all demo timetable session badges!
       document.querySelectorAll('.timetable-grid .slot-cell').forEach(cell => {
         cell.innerHTML = '';
@@ -1186,7 +1444,11 @@ class ClassoraAuthService {
           const note = document.createElement('div');
           note.id = 'schedule-empty-note';
           note.style.cssText = 'background:var(--gray-50); border:1.5px dashed var(--gray-200); border-radius:var(--radius-lg); padding:16px; margin-bottom:20px; text-align:center; font-size:0.875rem; color:var(--gray-600);';
-          note.innerHTML = `📅 <strong>Your official weekly timetable is clear.</strong> Click <strong>"➕ Schedule Session"</strong> above to schedule live classes or events.`;
+          if (isStudent) {
+            note.innerHTML = `📅 <strong>Your weekly timetable is clear.</strong> No scheduled live sessions or lectures for this week yet.`;
+          } else {
+            note.innerHTML = `📅 <strong>Your official weekly timetable is clear.</strong> Click <strong>"➕ Schedule Session"</strong> above to schedule live classes or events.`;
+          }
           grid.parentNode.insertBefore(note, grid);
         }
       }
@@ -1198,9 +1460,12 @@ class ClassoraAuthService {
     if (path.includes('/teacher/exams.html')) {
       const stats = document.querySelectorAll('.card-stat');
       if (stats.length >= 3) {
-        stats[0].querySelector('div > div:first-child').textContent = '0';
-        stats[1].querySelector('div > div:first-child').textContent = '0';
-        stats[2].querySelector('div > div:first-child').textContent = '0';
+        const s0 = stats[0].querySelector('div > div:first-child');
+        const s1 = stats[1].querySelector('div > div:first-child');
+        const s2 = stats[2].querySelector('div > div:first-child');
+        if (s0) s0.textContent = '0';
+        if (s1) s1.textContent = '0';
+        if (s2) s2.textContent = '0';
       }
       const tbody = document.querySelector('.table-wrapper table tbody');
       if (tbody) {
@@ -1238,22 +1503,57 @@ class ClassoraAuthService {
     // 5. TEACHER STUDENTS (teacher/students.html)
     // ───────────────────────────────────────────
     if (path.includes('/teacher/students.html')) {
+      const students = await this.fetchStudentsForTeacher();
+      const classrooms = await this.fetchClassrooms();
       const filter = document.getElementById('class-filter');
-      if (filter) {
-        filter.innerHTML = '<option value="all">All Classrooms (0)</option>';
+      if (filter && classrooms.length > 0) {
+        filter.innerHTML = '<option value="all">All Classrooms (' + students.length + ')</option>' +
+          classrooms.map(c => `<option value="${c.name}">${c.name} (${c.class_code})</option>`).join('');
       }
       const tbody = document.querySelector('#students-table tbody');
       if (tbody) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" style="text-align:center; padding:56px 20px;">
-              <div style="font-size:2.5rem; margin-bottom:8px;">👥</div>
-              <h4 style="color:var(--gray-800); margin-bottom:4px;">No Students Enrolled Yet</h4>
-              <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:16px;">Share your Classora ID (<strong>${cid}</strong>) with students so they can join your classrooms.</p>
-              <button class="btn btn-secondary btn-sm" onclick="copyToClipboard('${cid}', 'Classora ID Copied!')">📋 Copy Your ID (${cid})</button>
-            </td>
-          </tr>
-        `;
+        if (!students.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align:center; padding:56px 20px;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">👥</div>
+                <h4 style="color:var(--gray-800); margin-bottom:4px;">No Students Enrolled Yet</h4>
+                <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:16px;">Share your Classora ID (<strong>${cid}</strong>) or Class Codes with students so they can join your classrooms.</p>
+                <button class="btn btn-secondary btn-sm" onclick="copyToClipboard('${cid}', 'Classora ID Copied!')">📋 Copy Your ID (${cid})</button>
+              </td>
+            </tr>
+          `;
+        } else {
+          tbody.innerHTML = students.map(s => {
+            const p = s.profiles || {};
+            const c = s.classrooms || {};
+            const name = p.full_name || 'Student';
+            const studentCid = p.classora_id || s.student_id;
+            const clsName = c.name || 'Classroom';
+            const initials = name.charAt(0).toUpperCase();
+            return `
+              <tr data-class="${clsName}" data-search="${name.toLowerCase()} ${studentCid.toLowerCase()}">
+                <td>
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="user-avatar avatar-sm" style="background:var(--grad-primary); color:#fff; font-weight:700;">${initials}</div>
+                    <div>
+                      <strong style="color:var(--gray-900);">${name}</strong>
+                      <div style="font-size:0.75rem; color:var(--gray-500);">${p.email || ''}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><code>${studentCid}</code></td>
+                <td><span class="badge badge-primary">${clsName}</span></td>
+                <td><strong style="color:var(--gray-600);">--</strong></td>
+                <td><strong style="color:var(--accent-600);">--</strong></td>
+                <td><span class="badge badge-success">Active</span></td>
+                <td style="text-align:right;">
+                  <button class="btn btn-ghost btn-sm" onclick="viewStudentModal('${name.replace("'", "\\'")}', '${studentCid}', '${clsName}', 'Active', '--')">Inspect</button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
       }
     }
 
@@ -1377,25 +1677,46 @@ class ClassoraAuthService {
     // 10. STUDENT WORKSPACE (student/*.html)
     // ───────────────────────────────────────────
     if (path.includes('/student/dashboard.html')) {
-      const classrooms = isAdmin ? await this.fetchClassrooms() : [];
+      const classrooms = isAdmin ? await this.fetchClassrooms() : await this.fetchEnrolledClassrooms();
+      const assignments = await this.fetchAssignments();
+      const exams = await this.fetchExams();
+
       const statsGrid = document.querySelector('.stats-grid');
       if (statsGrid) {
         const stats = statsGrid.querySelectorAll('.card-stat');
-        if (stats.length >= 2) {
-          stats[0].querySelector('div > div:first-child').textContent = isAdmin ? classrooms.length : '0';
-          stats[0].querySelector('div > div:nth-child(2)').textContent = isAdmin ? 'Available Classrooms' : 'Enrolled Classes';
+        if (stats.length >= 4) {
+          const s0_1 = stats[0].querySelector('div > div:first-child');
+          const s0_2 = stats[0].querySelector('div > div:nth-child(2)');
+          if (s0_1) s0_1.textContent = classrooms.length;
+          if (s0_2) s0_2.textContent = 'Enrolled Classes';
+
+          const s1_1 = stats[1].querySelector('div > div:first-child');
+          const s1_2 = stats[1].querySelector('div > div:nth-child(2)');
+          if (s1_1) s1_1.textContent = assignments.length;
+          if (s1_2) s1_2.textContent = 'Homework Due';
+
+          const s2_1 = stats[2].querySelector('div > div:first-child');
+          const s2_2 = stats[2].querySelector('div > div:nth-child(2)');
+          if (s2_1) s2_1.textContent = exams.length;
+          if (s2_2) s2_2.textContent = 'Upcoming Exams';
+
+          const s3_1 = stats[3].querySelector('div > div:first-child');
+          const s3_2 = stats[3].querySelector('div > div:nth-child(2)');
+          if (s3_1) s3_1.textContent = '100%';
+          if (s3_2) s3_2.textContent = 'Attendance Rate';
         }
       }
+
       const classesCard = document.querySelector('.grid-2 > div:first-child > div:last-child');
       if (classesCard) {
-        if (isAdmin && classrooms.length > 0) {
+        if (classrooms.length > 0) {
           classesCard.innerHTML = `
             <div style="display:flex; flex-direction:column; gap:12px;">
               ${classrooms.slice(0, 3).map(c => `
                 <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border:1px solid var(--gray-200); border-radius:var(--radius-md); background:#fff;">
                   <div>
-                    <strong style="color:var(--gray-900); font-size:0.9rem;">${c.name}</strong>
-                    <div style="font-size:0.75rem; color:var(--gray-500);">${c.subject || 'Academic'} • Code: ${c.class_code}</div>
+                    <strong style="color:var(--gray-900); font-size:0.9rem;">${(window.escapeHTML ? window.escapeHTML(c.name) : c.name)}</strong>
+                    <div style="font-size:0.75rem; color:var(--gray-500);">${(window.escapeHTML ? window.escapeHTML(c.subject || 'Academic') : (c.subject || 'Academic'))} • Code: <code>${c.class_code}</code></div>
                   </div>
                   <a href="classrooms.html" class="btn btn-secondary btn-sm" style="font-size:0.75rem; padding:4px 10px;">Enter Class</a>
                 </div>
@@ -1414,32 +1735,55 @@ class ClassoraAuthService {
           `;
         }
       }
+
       const examCard = document.querySelector('.grid-2 > div:nth-child(2) > div.card:last-child > div:last-child');
       if (examCard) {
-        examCard.innerHTML = `
-          <div style="text-align:center; padding:24px 16px; border:1.5px dashed var(--gray-200); border-radius:var(--radius-lg);">
-            <p style="font-size:0.85rem; color:var(--gray-500); margin:0;">No upcoming exams scheduled.</p>
-          </div>
-        `;
+        if (exams && exams.length > 0) {
+          examCard.innerHTML = `
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              ${exams.slice(0, 3).map(ex => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; border:1px solid var(--gray-200); border-radius:var(--radius-md); background:#fff;">
+                  <div>
+                    <strong style="color:var(--gray-900); font-size:0.85rem;">${(window.escapeHTML ? window.escapeHTML(ex.title) : ex.title)}</strong>
+                    <div style="font-size:0.75rem; color:var(--gray-500);">${ex.classrooms ? (window.escapeHTML ? window.escapeHTML(ex.classrooms.name) : ex.classrooms.name) : 'Class'} • ${ex.exam_date ? new Date(ex.exam_date).toLocaleDateString() : 'Scheduled'}</div>
+                  </div>
+                  <a href="exams.html" class="btn btn-secondary btn-sm" style="font-size:0.75rem; padding:3px 8px;">View</a>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        } else {
+          examCard.innerHTML = `
+            <div style="text-align:center; padding:24px 16px; border:1.5px dashed var(--gray-200); border-radius:var(--radius-lg);">
+              <p style="font-size:0.85rem; color:var(--gray-500); margin:0;">No upcoming exams scheduled.</p>
+            </div>
+          `;
+        }
       }
     }
-    if (path.includes('/student/classrooms.html')) {
+
+    if (path.includes('/student/classrooms.html') && isAdmin) {
       const grid = document.querySelector('.dash-content .grid') || document.getElementById('classrooms-container');
       if (grid) {
-        const classrooms = isAdmin ? await this.fetchClassrooms() : [];
-        if (isAdmin && classrooms.length > 0) {
+        const classrooms = await this.fetchClassrooms();
+        if (classrooms.length > 0) {
           grid.innerHTML = '';
           classrooms.forEach(c => {
             const card = document.createElement('div');
             card.className = 'class-card';
+            const escName = window.escapeHTML ? window.escapeHTML(c.name) : c.name;
+            const escSub = window.escapeHTML ? window.escapeHTML(c.subject || 'Academic') : (c.subject || 'Academic');
+            const escSec = window.escapeHTML ? window.escapeHTML(c.section || 'General') : (c.section || 'General');
+            const escCode = window.escapeHTML ? window.escapeHTML(c.class_code) : c.class_code;
+            const escDesc = window.escapeHTML ? window.escapeHTML(c.description || 'Active classroom') : (c.description || 'Active classroom');
             card.innerHTML = `
               <div class="class-card-header card-grad-1">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                   <span class="badge" style="background:rgba(255,255,255,0.25); color:#fff;">👑 Admin Student View</span>
-                  <span class="badge" style="background:rgba(255,255,255,0.25); color:#fff;">Code: ${c.class_code}</span>
+                  <span class="badge" style="background:rgba(255,255,255,0.25); color:#fff;">Code: ${escCode}</span>
                 </div>
-                <h3 style="color:#fff; margin-top:12px; margin-bottom:4px;">${c.name}</h3>
-                <div style="font-size:0.85rem; opacity:0.85;">${c.subject || 'Academic'} • ${c.section || 'General'}</div>
+                <h3 style="color:#fff; margin-top:12px; margin-bottom:4px;">${escName}</h3>
+                <div style="font-size:0.85rem; opacity:0.85;">${escSub} • ${escSec}</div>
               </div>
               <div class="class-card-body">
                 <div class="class-meta-row">
@@ -1448,64 +1792,109 @@ class ClassoraAuthService {
                 </div>
                 <div class="class-meta-row">
                   <span>📝 Description</span>
-                  <strong style="color:var(--gray-900);">${c.description || 'Active classroom'}</strong>
+                  <strong style="color:var(--gray-900);">${escDesc}</strong>
                 </div>
                 <div style="display:flex; gap:8px; margin-top:auto; padding-top:12px;">
-                  <a href="homework.html?class=${c.class_code}" class="btn btn-primary btn-sm" style="flex:1;">🎒 View Homework</a>
-                  <a href="exams.html?class=${c.class_code}" class="btn btn-secondary btn-sm" style="flex:1;">📝 Take Exams</a>
+                  <a href="homework.html?class=${escCode}" class="btn btn-primary btn-sm" style="flex:1;">🎒 View Homework</a>
+                  <a href="exams.html?class=${escCode}" class="btn btn-secondary btn-sm" style="flex:1;">📝 Take Exams</a>
                 </div>
               </div>
             `;
             grid.appendChild(card);
           });
-        } else {
+        }
+      }
+    }
+
+    if (path.includes('/student/homework.html')) {
+      const assignments = await this.fetchAssignments();
+      if (!assignments || assignments.length === 0) {
+        const grid = document.querySelector('.dash-content .grid');
+        if (grid) {
           grid.innerHTML = `
             <div style="grid-column:1/-1; text-align:center; padding:56px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
-              <div style="font-size:2.5rem; margin-bottom:8px;">🏫</div>
-              <h4 style="color:var(--gray-800); margin-bottom:4px;">No Enrolled Classrooms</h4>
-              <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:16px;">Enter your teacher's unique Classroom Code to join.</p>
-              <button class="btn btn-primary btn-sm" onclick="openModal('modal-join-class')">➕ Join Classroom</button>
+              <div style="font-size:2.5rem; margin-bottom:8px;">📚</div>
+              <h4 style="color:var(--gray-800); margin-bottom:4px;">No Pending Homework</h4>
+              <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">You have no homework due. Great job staying up to date!</p>
             </div>
           `;
         }
       }
     }
-    if (path.includes('/student/homework.html')) {
-      const grid = document.querySelector('.dash-content .grid');
-      if (grid) {
-        grid.innerHTML = `
-          <div style="grid-column:1/-1; text-align:center; padding:56px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
-            <div style="font-size:2.5rem; margin-bottom:8px;">📚</div>
-            <h4 style="color:var(--gray-800); margin-bottom:4px;">No Pending Homework</h4>
-            <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">You have no homework due. Great job staying up to date!</p>
-          </div>
-        `;
-      }
-    }
+
     if (path.includes('/student/exams.html')) {
-      const tbody = document.querySelector('table tbody');
-      if (tbody) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" style="text-align:center; padding:56px 20px;">
-              <div style="font-size:2.5rem; margin-bottom:8px;">📝</div>
-              <h4 style="color:var(--gray-800); margin-bottom:4px;">No Upcoming Exams</h4>
-              <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">Your exam schedule is completely clear.</p>
-            </td>
-          </tr>
-        `;
+      const exams = await this.fetchExams();
+      if (!exams || exams.length === 0) {
+        const tbody = document.querySelector('table tbody');
+        if (tbody) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align:center; padding:56px 20px;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">📝</div>
+                <h4 style="color:var(--gray-800); margin-bottom:4px;">No Upcoming Exams</h4>
+                <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">Your exam schedule is completely clear.</p>
+              </td>
+            </tr>
+          `;
+        }
       }
     }
+
     if (path.includes('/student/teachers.html')) {
+      const enrolled = await this.fetchEnrolledClassrooms();
       const grid = document.querySelector('.dash-content .grid');
       if (grid) {
-        grid.innerHTML = `
-          <div style="grid-column:1/-1; text-align:center; padding:56px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
-            <div style="font-size:2.5rem; margin-bottom:8px;">🧑‍🏫</div>
-            <h4 style="color:var(--gray-800); margin-bottom:4px;">No Connected Teachers</h4>
-            <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">Teachers will appear here once you enroll in their classes.</p>
-          </div>
-        `;
+        const teachersMap = new Map();
+        enrolled.forEach(c => {
+          if (c.profiles) {
+            teachersMap.set(c.profiles.id || c.teacher_id, {
+              teacher: c.profiles,
+              classroom: c
+            });
+          }
+        });
+        if (teachersMap.size === 0) {
+          grid.innerHTML = `
+            <div style="grid-column:1/-1; text-align:center; padding:56px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
+              <div style="font-size:2.5rem; margin-bottom:8px;">🧑‍🏫</div>
+              <h4 style="color:var(--gray-800); margin-bottom:4px;">No Connected Teachers</h4>
+              <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:16px;">Teachers will appear here once you enroll in their classes.</p>
+              <a href="classrooms.html" class="btn btn-primary btn-sm">➕ Join a Classroom</a>
+            </div>
+          `;
+        } else {
+          grid.innerHTML = Array.from(teachersMap.values()).map(({ teacher, classroom }) => {
+            const tName = window.escapeHTML ? window.escapeHTML(teacher.full_name || 'Classora Educator') : (teacher.full_name || 'Classora Educator');
+            const tSub = window.escapeHTML ? window.escapeHTML(teacher.subject || classroom.subject || 'Educator') : (teacher.subject || classroom.subject || 'Educator');
+            const tCid = window.escapeHTML ? window.escapeHTML(teacher.classora_id || 'TCH') : (teacher.classora_id || 'TCH');
+            const cName = window.escapeHTML ? window.escapeHTML(classroom.name) : classroom.name;
+            const initials = tName.charAt(0).toUpperCase();
+            return `
+              <div class="card animate-fade-up" style="display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                  <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
+                    <div class="user-avatar avatar-lg" style="background:var(--grad-primary); color:#fff; font-weight:700; font-size:1.25rem;">
+                      ${teacher.avatar_url ? `<img src="${teacher.avatar_url}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"/>` : initials}
+                    </div>
+                    <div>
+                      <h4 style="margin:0 0 2px; color:var(--gray-900); font-size:1.05rem;">${tName}</h4>
+                      <div style="font-size:0.8rem; color:var(--primary-600); font-weight:600;">${tSub}</div>
+                      <div style="font-size:0.75rem; color:var(--gray-400); margin-top:2px;">ID: <code>${tCid}</code></div>
+                    </div>
+                  </div>
+                  <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 12px; margin-bottom:14px; font-size:0.85rem;">
+                    <div style="color:var(--gray-500); font-size:0.75rem;">Your Enrolled Class:</div>
+                    <strong style="color:var(--gray-900);">${cName}</strong>
+                  </div>
+                </div>
+                <div style="border-top:1px solid var(--gray-100); padding-top:12px; display:flex; gap:10px;">
+                  <button class="btn btn-primary btn-sm flex-1" onclick="openModal('modal-contact-teacher')">💬 Message Educator</button>
+                  <a href="classrooms.html" class="btn btn-secondary btn-sm">Classroom</a>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
       }
     }
     if (path.includes('/student/results.html')) {
@@ -1569,7 +1958,7 @@ class ClassoraAuthService {
     if (!user) throw new Error('Not signed in');
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
-    const payload = { title, description, classroom_id, due_date, total_points, teacher_id: user.id };
+    const payload = { title, description, classroom_id, due_date, total_points, max_marks: total_points, teacher_id: user.id };
     const resp = await fetch(`${this.url}/rest/v1/assignments`, {
       method: 'POST',
       headers: {
@@ -1590,6 +1979,81 @@ class ClassoraAuthService {
       method: 'DELETE',
       headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
     });
+  }
+
+  // --- Assignment Submissions ---
+  async fetchSubmissions({ assignmentId = null, studentId = null } = {}) {
+    try {
+      const user = this.getCurrentUser();
+      if (!user) return [];
+      const session = this.getLocalSession();
+      const token = session ? session.access_token : this.anonKey;
+      let url = `${this.url}/rest/v1/submissions?select=*`;
+      if (assignmentId) url += `&assignment_id=eq.${assignmentId}`;
+      if (studentId) url += `&student_id=eq.${studentId}`;
+      else if (!this.isAdmin() && user.role !== 'teacher') url += `&student_id=eq.${user.id}`;
+      
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) return await resp.json();
+      return [];
+    } catch(e) {
+      console.warn('fetchSubmissions error:', e);
+      return [];
+    }
+  }
+
+  async submitAssignment({ assignment_id, notes = '', file = null }) {
+    const user = this.getCurrentUser();
+    if (!user) throw new Error('You must be signed in to submit assignments.');
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+
+    let fileUrl = null;
+    if (file) {
+      const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const filePath = `submissions/${user.id}/${Date.now()}_${cleanName}`;
+      const uploadResp = await fetch(`${this.url}/storage/v1/object/documents/${filePath}`, {
+        method: 'POST',
+        headers: {
+          'apikey': this.anonKey,
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': file.type || 'application/octet-stream'
+        },
+        body: file
+      });
+      if (uploadResp.ok) {
+        fileUrl = `${this.url}/storage/v1/object/public/documents/${filePath}`;
+      }
+    }
+
+    const payload = {
+      assignment_id,
+      student_id: user.id,
+      notes,
+      file_url: fileUrl,
+      status: 'submitted',
+      submitted_at: new Date().toISOString()
+    };
+
+    const resp = await fetch(`${this.url}/rest/v1/submissions`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.message || 'Failed to submit assignment');
+    }
+    const saved = await resp.json();
+    return saved[0] || payload;
   }
 
   // ─── EXAMS ────────────────────────────────────────────────────────────────
@@ -1615,7 +2079,7 @@ class ClassoraAuthService {
     if (!user) throw new Error('Not signed in');
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
-    const payload = { title, classroom_id, exam_date, duration_minutes, total_marks, passing_marks, teacher_id: user.id, status: 'upcoming' };
+    const payload = { title, classroom_id, exam_date, duration_minutes, duration_mins: duration_minutes, total_marks, passing_marks, teacher_id: user.id, status: 'upcoming' };
     const resp = await fetch(`${this.url}/rest/v1/exams`, {
       method: 'POST',
       headers: {
@@ -1638,6 +2102,53 @@ class ClassoraAuthService {
     });
   }
 
+  // ─── EXAM RESULTS ──────────────────────────────────────────────────────────
+
+  async fetchExamResults({ studentId = null, examId = null } = {}) {
+    const user = this.getCurrentUser();
+    if (!user) return [];
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    try {
+      let url = `${this.url}/rest/v1/exam_results?select=*,exams(id,title,subject,total_marks,profiles(full_name))&order=created_at.desc`;
+      if (studentId) url += `&student_id=eq.${studentId}`;
+      else if (examId) url += `&exam_id=eq.${examId}`;
+      const resp = await fetch(url, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (resp.ok) return await resp.json();
+      return [];
+    } catch (e) {
+      console.warn('fetchExamResults error:', e);
+      return [];
+    }
+  }
+
+  async publishExamResult({ exam_id, student_id, marks_obtained, grade = null, remarks = '' }) {
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+    const payload = {
+      exam_id,
+      student_id,
+      marks_obtained,
+      grade,
+      remarks
+    };
+    const resp = await fetch(`${this.url}/rest/v1/exam_results`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json', 'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) {
+      const e = await resp.json().catch(() => ({}));
+      throw new Error(e.message || 'Failed to publish exam result');
+    }
+    return (await resp.json())[0] || payload;
+  }
+
   // ─── JOIN REQUESTS ────────────────────────────────────────────────────────
 
   async fetchJoinRequests({ status = 'pending' } = {}) {
@@ -1647,7 +2158,7 @@ class ClassoraAuthService {
     const token = session ? session.access_token : this.anonKey;
     try {
       // Fetch requests for classrooms owned by this teacher
-      const url = `${this.url}/rest/v1/join_requests?select=*,classrooms(name,class_code,teacher_id),profiles(full_name,email,classora_id)&status=eq.${status}&order=created_at.desc`;
+      const url = `${this.url}/rest/v1/join_requests?select=*,classrooms(name,class_code,teacher_id),profiles!join_requests_student_id_fkey(full_name,email,classora_id)&status=eq.${status}&order=created_at.desc`;
       const resp = await fetch(url, {
         headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
       });
@@ -1663,6 +2174,8 @@ class ClassoraAuthService {
   async submitJoinRequest({ classroomCode }) {
     const user = this.getCurrentUser();
     if (!user) throw new Error('Not signed in');
+    // Ensure student's profile exists in DB before sending foreign-keyed join request
+    await this.fetchAndStoreProfile(user.id, { email: user.email, role: 'student' });
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
     // Find classroom by code
@@ -1673,7 +2186,12 @@ class ClassoraAuthService {
     const clsList = await clsResp.json();
     if (!clsList.length) throw new Error('Invalid classroom code. Please check with your teacher.');
     const classroom = clsList[0];
-    const payload = { student_id: user.id, classroom_id: classroom.id, status: 'pending' };
+    const payload = {
+      student_id: user.id,
+      classroom_id: classroom.id,
+      teacher_id: classroom.teacher_id,
+      status: 'pending'
+    };
     const resp = await fetch(`${this.url}/rest/v1/join_requests`, {
       method: 'POST',
       headers: {
@@ -1710,7 +2228,7 @@ class ClassoraAuthService {
       body: JSON.stringify({ status: 'approved' })
     });
     // Enroll student in classroom_members
-    await fetch(`${this.url}/rest/v1/classroom_members`, {
+    const enrollResp = await fetch(`${this.url}/rest/v1/classroom_members`, {
       method: 'POST',
       headers: {
         'apikey': this.anonKey, 'Authorization': `Bearer ${token}`,
@@ -1718,6 +2236,10 @@ class ClassoraAuthService {
       },
       body: JSON.stringify({ classroom_id: req.classroom_id, student_id: req.student_id })
     });
+    if (!enrollResp.ok) {
+      const errBody = await enrollResp.json().catch(() => ({}));
+      console.warn('Enrolment insert response warning:', errBody);
+    }
     return { success: true };
   }
 
@@ -1761,7 +2283,7 @@ class ClassoraAuthService {
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
     try {
-      const url = `${this.url}/rest/v1/classroom_members?student_id=eq.${user.id}&select=*,classrooms(*)`;
+      const url = `${this.url}/rest/v1/classroom_members?student_id=eq.${user.id}&select=*,classrooms(*,profiles:teacher_id(id,full_name,email,classora_id,subject,avatar_url))`;
       const resp = await fetch(url, {
         headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
       });
@@ -1829,33 +2351,255 @@ class ClassoraAuthService {
   // ─── SUPABASE REALTIME SUBSCRIPTIONS ─────────────────────────────────────
 
   subscribeToTable(table, callback, filter = null) {
-    if (!this.client) {
-      console.warn('Realtime requires official Supabase JS client.');
+    return this.realtime.registerChannel({
+      key: `rt-${table}-compat`,
+      table: table,
+      filter: filter,
+      onAny: callback
+    });
+  }
+
+  unsubscribe(channel) {
+    if (typeof channel === 'string') {
+      this.realtime.removeChannel(channel);
+    } else if (channel && channel.topic) {
+      if (this.client) {
+        try { this.client.removeChannel(channel); } catch (e) {}
+      }
+    }
+  }
+}
+
+// ─── PRODUCTION REALTIME SYNCHRONIZATION MANAGER ─────────────────────────────
+class ClassoraRealtimeManager {
+  constructor(authService) {
+    this.auth = authService;
+    this.channels = new Map();
+    this.reconnectHandlers = new Map();
+    this.statusListeners = new Set();
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', () => {
+        console.log('[Classora Realtime] Network restored (online). Triggering reconciliation...');
+        this.reconcileAll();
+      });
+    }
+  }
+
+  getClient() {
+    return this.auth.client;
+  }
+
+  onStatusChange(fn) {
+    this.statusListeners.add(fn);
+    return () => this.statusListeners.delete(fn);
+  }
+
+  _notifyStatus(channelKey, status, err = null) {
+    this.statusListeners.forEach(fn => {
+      try { fn({ channelKey, status, error: err }); } catch (e) {}
+    });
+  }
+
+  getChannel(key) {
+    return this.channels.get(key) || null;
+  }
+
+  reconcileAll() {
+    this.reconnectHandlers.forEach((handler, key) => {
+      try {
+        if (typeof handler === 'function') {
+          console.log(`[Classora Realtime] Reconciling channel data: ${key}`);
+          handler();
+        }
+      } catch (e) {
+        console.warn('[Classora Realtime] Reconcile error for ' + key, e);
+      }
+    });
+  }
+
+  /**
+   * Safely registers or replaces a targeted Realtime channel
+   */
+  registerChannel({ key, table, filter = null, onInsert, onUpdate, onDelete, onAny, onReconnect, onError }) {
+    const client = this.getClient();
+    if (!client) {
+      console.warn('[Classora Realtime] Client not initialized. Cannot subscribe to:', key);
       return null;
     }
+
+    // Remove existing channel with the same key to prevent leaks and duplicate listeners
+    this.removeChannel(key);
+
+    if (typeof onReconnect === 'function') {
+      this.reconnectHandlers.set(key, onReconnect);
+    }
+
     try {
-      let channel = this.client.channel(`rt-${table}-${Date.now()}`);
+      let channel = client.channel(key);
       const opts = { event: '*', schema: 'public', table };
       if (filter) opts.filter = filter;
+
       channel = channel.on('postgres_changes', opts, payload => {
-        callback(payload);
+        const eventType = payload.eventType;
+        if (typeof onAny === 'function') onAny(payload);
+        if (eventType === 'INSERT' && typeof onInsert === 'function') onInsert(payload.new, payload);
+        else if (eventType === 'UPDATE' && typeof onUpdate === 'function') onUpdate(payload.new, payload.old, payload);
+        else if (eventType === 'DELETE' && typeof onDelete === 'function') onDelete(payload.old, payload);
       });
-      channel.subscribe(status => {
+
+      let hasSubscribedBefore = false;
+
+      channel.subscribe((status, err) => {
+        this._notifyStatus(key, status, err);
         if (status === 'SUBSCRIBED') {
-          console.log(`[Classora Realtime] Subscribed to ${table}`);
+          console.log(`[Classora Realtime] Subscribed to ${key} (${table})`);
+          if (hasSubscribedBefore && typeof onReconnect === 'function') {
+            console.log(`[Classora Realtime] Reconnected: ${key}. Reconciling data...`);
+            try { onReconnect(); } catch (recErr) { console.warn('Reconnect reconcile error:', recErr); }
+          }
+          hasSubscribedBefore = true;
+        } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
+          console.warn(`[Classora Realtime] Status: ${status} for channel ${key}`, err);
+          if (typeof onError === 'function') onError(status, err);
         }
       });
+
+      this.channels.set(key, channel);
       return channel;
     } catch (e) {
-      console.warn('Realtime subscription error:', e);
+      console.warn('[Classora Realtime] Subscription creation failed:', e);
       return null;
     }
   }
 
-  unsubscribe(channel) {
-    if (this.client && channel) {
-      try { this.client.removeChannel(channel); } catch (e) {}
+  removeChannel(key) {
+    const channel = this.channels.get(key);
+    if (channel) {
+      const client = this.getClient();
+      if (client) {
+        try { client.removeChannel(channel); } catch (e) {}
+      }
+      this.channels.delete(key);
+      this.reconnectHandlers.delete(key);
+      console.log(`[Classora Realtime] Removed channel: ${key}`);
     }
+  }
+
+  unsubscribeAll() {
+    const client = this.getClient();
+    this.channels.forEach((channel, key) => {
+      if (client) {
+        try { client.removeChannel(channel); } catch (e) {}
+      }
+      console.log(`[Classora Realtime] Cleared channel: ${key}`);
+    });
+    this.channels.clear();
+    this.reconnectHandlers.clear();
+  }
+
+  // --- Targeted Convenience Helpers ---
+
+  subscribeToJoinRequests({ teacherId = null, studentId = null, onInsert, onUpdate, onDelete, onReconnect }) {
+    let filter = null;
+    let key = 'cr-join-reqs';
+    if (teacherId) {
+      filter = `teacher_id=eq.${teacherId}`;
+      key = `cr-join-reqs-t-${teacherId}`;
+    } else if (studentId) {
+      filter = `student_id=eq.${studentId}`;
+      key = `cr-join-reqs-s-${studentId}`;
+    }
+    return this.registerChannel({
+      key,
+      table: 'join_requests',
+      filter,
+      onInsert,
+      onUpdate,
+      onDelete,
+      onReconnect
+    });
+  }
+
+  subscribeToClassroomMembers({ studentId = null, classroomId = null, onInsert, onDelete, onReconnect }) {
+    let filter = null;
+    let key = 'cr-members';
+    if (studentId) {
+      filter = `student_id=eq.${studentId}`;
+      key = `cr-members-s-${studentId}`;
+    } else if (classroomId) {
+      filter = `classroom_id=eq.${classroomId}`;
+      key = `cr-members-c-${classroomId}`;
+    }
+    return this.registerChannel({
+      key,
+      table: 'classroom_members',
+      filter,
+      onInsert,
+      onDelete,
+      onReconnect
+    });
+  }
+
+  subscribeToAssignments({ classroomId = null, onInsert, onUpdate, onDelete, onReconnect }) {
+    const filter = classroomId ? `classroom_id=eq.${classroomId}` : null;
+    const key = classroomId ? `cr-hw-c-${classroomId}` : 'cr-hw-all';
+    return this.registerChannel({
+      key,
+      table: 'assignments',
+      filter,
+      onInsert,
+      onUpdate,
+      onDelete,
+      onReconnect
+    });
+  }
+
+  subscribeToSubmissions({ assignmentId = null, studentId = null, onInsert, onUpdate, onReconnect }) {
+    let filter = null;
+    let key = 'cr-subs';
+    if (assignmentId) {
+      filter = `assignment_id=eq.${assignmentId}`;
+      key = `cr-subs-a-${assignmentId}`;
+    } else if (studentId) {
+      filter = `student_id=eq.${studentId}`;
+      key = `cr-subs-s-${studentId}`;
+    }
+    return this.registerChannel({
+      key,
+      table: 'submissions',
+      filter,
+      onInsert,
+      onUpdate,
+      onReconnect
+    });
+  }
+
+  subscribeToExams({ classroomId = null, onInsert, onUpdate, onDelete, onReconnect }) {
+    const filter = classroomId ? `classroom_id=eq.${classroomId}` : null;
+    const key = classroomId ? `cr-exams-c-${classroomId}` : 'cr-exams-all';
+    return this.registerChannel({
+      key,
+      table: 'exams',
+      filter,
+      onInsert,
+      onUpdate,
+      onDelete,
+      onReconnect
+    });
+  }
+
+  subscribeToResults({ studentId = null, onInsert, onUpdate, onReconnect }) {
+    const filter = studentId ? `student_id=eq.${studentId}` : null;
+    const key = studentId ? `cr-res-s-${studentId}` : 'cr-res-all';
+    return this.registerChannel({
+      key,
+      table: 'exam_results',
+      filter,
+      onInsert,
+      onUpdate,
+      onReconnect
+    });
   }
 }
 

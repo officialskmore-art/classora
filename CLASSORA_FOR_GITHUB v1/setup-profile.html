@@ -155,7 +155,7 @@
         Are you a Teacher or a Student? <span style="color:var(--danger-500); font-weight:700;">*</span>
       </label>
       <div class="role-card-grid" role="radiogroup" aria-label="Select account role">
-        <div class="role-selection-card selected" id="card-teacher" onclick="selectRole('teacher')" tabindex="0" role="radio" aria-checked="true">
+        <div class="role-selection-card" id="card-teacher" onclick="selectRole('teacher')" tabindex="0" role="radio" aria-checked="false">
           <div class="role-check-badge">✓</div>
           <span class="role-icon">🧑‍🏫</span>
           <h4>I am a Teacher</h4>
@@ -169,7 +169,7 @@
           <p>Join teacher classrooms using their Classora ID, turn in homework, and track your exams & results.</p>
         </div>
       </div>
-      <input type="hidden" id="chosen-role" value="teacher"/>
+      <input type="hidden" id="chosen-role" value=""/>
 
       <!-- 2. Avatar Picker -->
       <div class="avatar-picker-section">
@@ -408,24 +408,33 @@
 
   // Pre-fill user data on load
   window.addEventListener('DOMContentLoaded', async () => {
-    // If pre-chosen role in registration/login, honor it first!
-    const savedRole = localStorage.getItem('classora_auth_role');
-    if (savedRole === 'student') {
-      selectRole('student');
-    } else {
-      selectRole('teacher');
-    }
-
     const user = ClassoraAuth.getCurrentUser();
     if (!user) {
       window.location.href = 'login.html';
       return;
     }
 
+    // Check if user already has an existing saved role in database or auth metadata
+    const active = ClassoraAuth.getActiveProfile();
+    const meta = user.user_metadata || {};
+    const existingRole = (active && active.role && active.role !== 'admin') ? active.role : (meta && meta.role);
+
+    if (existingRole === 'student' || existingRole === 'teacher') {
+      selectRole(existingRole);
+    } else {
+      // Clear preselection for fresh signups so user explicitly chooses
+      document.getElementById('card-teacher').classList.remove('selected');
+      document.getElementById('card-student').classList.remove('selected');
+      document.getElementById('card-teacher').setAttribute('aria-checked', 'false');
+      document.getElementById('card-student').setAttribute('aria-checked', 'false');
+      document.getElementById('fields-teacher').style.display = 'none';
+      document.getElementById('fields-student').style.display = 'none';
+      document.getElementById('chosen-role').value = '';
+    }
+
     document.getElementById('setup-email').value = user.email || '';
 
     // Set name from Google metadata or email
-    const meta = user.user_metadata || {};
     const existingName = meta.full_name || meta.name || '';
     if (existingName) {
       document.getElementById('setup-fullname').value = existingName;
@@ -434,11 +443,10 @@
 
     // Check if user already has partial profile in db
     try {
-      const active = ClassoraAuth.getActiveProfile();
       if (active) {
         if (active.full_name) document.getElementById('setup-fullname').value = active.full_name;
         if (active.phone) document.getElementById('setup-phone').value = active.phone;
-        if (active.role && !savedRole) selectRole(active.role);
+        if (active.role && !existingRole) selectRole(active.role);
         
         if (active.subject) {
           const subjSelect = document.getElementById('setup-subject');
@@ -485,6 +493,11 @@
     }
 
     const role = document.getElementById('chosen-role').value;
+    if (!role) {
+      showToast('Please select whether you are a Teacher or a Student.', 'warning');
+      document.getElementById('card-teacher').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
     const fullName = document.getElementById('setup-fullname').value.trim();
     const phone = document.getElementById('setup-phone').value.trim();
     const isTeacher = role === 'teacher';

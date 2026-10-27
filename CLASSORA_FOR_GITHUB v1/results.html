@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -157,5 +157,81 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
+<script>
+  async function loadStudentResults() {
+    const user = ClassoraAuth.getCurrentUser();
+    if (!user) return;
+    try {
+      const results = await ClassoraAuth.fetchExamResults({ studentId: user.id });
+      const tbody = document.querySelector('.table-wrapper table tbody');
+      if (tbody) {
+        if (!results || !results.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align:center; padding:36px; color:var(--gray-500);">
+                No examination scorecards published yet.
+              </td>
+            </tr>
+          `;
+        } else {
+          const totalMax = results.reduce((sum, r) => sum + ((r.exams && r.exams.total_marks) || 100), 0);
+          const totalObtained = results.reduce((sum, r) => sum + (parseFloat(r.marks_obtained) || 0), 0);
+          const cumPct = totalMax > 0 ? Math.round((totalObtained / totalMax) * 100) : 0;
+
+          const stats = document.querySelectorAll('.stats-grid .card-stat');
+          if (stats.length >= 3) {
+            stats[0].querySelector('div > div:first-child').textContent = cumPct + '%';
+            stats[2].querySelector('div > div:first-child').textContent = `${results.length} / ${results.length}`;
+          }
+
+          tbody.innerHTML = results.map(r => {
+            const exam = r.exams || {};
+            const teacher = (exam.profiles && exam.profiles.full_name) || 'Classora Educator';
+            const maxM = exam.total_marks || 100;
+            const obtM = r.marks_obtained || 0;
+            const pct = Math.min(100, Math.round((obtM / maxM) * 100));
+            const grade = r.grade || (pct >= 80 ? 'A' : pct >= 60 ? 'B' : 'C');
+            return `
+              <tr class="animate-fade-up">
+                <td><strong>${exam.title || 'Exam'}</strong><div style="font-size:0.75rem; color:var(--gray-500);">${exam.subject || 'Academic'}</div></td>
+                <td>${teacher}</td>
+                <td>${maxM}</td>
+                <td><strong style="color:var(--primary-700);">${obtM}</strong></td>
+                <td>${pct}%</td>
+                <td><span class="badge ${pct >= 75 ? 'badge-success' : 'badge-primary'}">${grade}</span></td>
+                <td><span style="font-size:0.85rem; color:var(--gray-600);">${r.remarks || 'Evaluated'}</span></td>
+              </tr>
+            `;
+          }).join('');
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to load student results:', err);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadStudentResults();
+    const user = ClassoraAuth.getCurrentUser();
+    if (user && ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToResults({
+        studentId: user.id,
+        onInsert: function(newRes) {
+          showToast('New exam score published! 🏆 Check your report card.', 'success', 6000);
+          loadStudentResults();
+        },
+        onUpdate: function() { loadStudentResults(); },
+        onReconnect: function() { loadStudentResults(); }
+      });
+    }
+  });
+
+  window.addEventListener('beforeunload', function() {
+    const user = ClassoraAuth.getCurrentUser();
+    if (user && ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel('cr-res-s-' + user.id);
+    }
+  });
+</script>
 </body>
 </html>

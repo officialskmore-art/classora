@@ -92,11 +92,11 @@
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
             <div class="form-group" style="margin-bottom:0;">
               <label class="form-label" for="first-name">First name</label>
-              <input class="form-input" type="text" id="first-name" placeholder="Rohan" required/>
+              <input class="form-input" type="text" id="first-name" placeholder="Rohan" maxlength="50" required/>
             </div>
             <div class="form-group" style="margin-bottom:0;">
               <label class="form-label" for="last-name">Last name</label>
-              <input class="form-input" type="text" id="last-name" placeholder="Verma" required/>
+              <input class="form-input" type="text" id="last-name" placeholder="Verma" maxlength="50" required/>
             </div>
           </div>
           <div style="height:16px;"></div>
@@ -199,7 +199,9 @@
       const ln = document.getElementById('last-name').value.trim();
       const em = document.getElementById('reg-email').value.trim();
       if (!fn) return showToast('Please enter your first name','error');
+      if (fn.length > 50) return showToast('First name cannot exceed 50 characters','error');
       if (!ln) return showToast('Please enter your last name','error');
+      if (ln.length > 50) return showToast('Last name cannot exceed 50 characters','error');
       if (!em || !validateEmail(em)) return showToast('Enter a valid email address','error');
     }
     if (n === 3) {
@@ -226,6 +228,13 @@
     const email     = document.getElementById('reg-email').value.trim();
     const password  = document.getElementById('reg-password').value;
     const grade     = document.getElementById('class-level').value;
+
+    if (firstName.length > 50 || lastName.length > 50) {
+      return showToast('First and last names must be under 50 characters', 'warning');
+    }
+    if (!password || password.length < 8) {
+      return showToast('Password must be at least 8 characters long', 'warning');
+    }
 
     const btn = document.getElementById('reg-btn');
     const originalText = btn.textContent;

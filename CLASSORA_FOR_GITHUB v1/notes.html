@@ -171,6 +171,24 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
+  async function populateNoteClassDropdown() {
+    const sel = document.getElementById('note-class');
+    if (!sel) return;
+    try {
+      const classrooms = await ClassoraAuth.fetchClassrooms();
+      if (classrooms && classrooms.length > 0) {
+        classrooms.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = `${c.name} (${c.class_code})`;
+          sel.appendChild(opt);
+        });
+      }
+    } catch (e) {
+      console.warn('Classroom dropdown error:', e);
+    }
+  }
+
   async function handleCreateNote(e) {
     e.preventDefault();
     const title = document.getElementById('note-title').value.trim();
@@ -181,47 +199,30 @@
 
     const btn = document.getElementById('btn-publish-note');
     btn.disabled = true;
-    btn.textContent = 'Uploading to Supabase…';
+    btn.textContent = 'Saving to Supabase…';
 
     try {
-      let fileUrl = '';
       if (file) {
         showToast('Uploading document to Supabase Storage…', 'info');
-        const doc = await ClassoraAuth.uploadDocument(file, {
+        await ClassoraAuth.uploadDocument(file, {
           title: title,
           description: content,
-          category: 'lecture_note'
+          category: 'lecture_note',
+          classroomId: cls
         });
-        fileUrl = doc.file_url;
+      } else {
+        await ClassoraAuth.createDocument({
+          title: title,
+          description: content,
+          category: 'lecture_note',
+          classroomId: cls
+        });
       }
 
       closeModal('modal-create-note');
       showToast(`Document "${title}" saved to Supabase!`, 'success');
-
-      // Append new card live
-      const container = document.getElementById('notes-container');
-      if (container) {
-        const card = document.createElement('div');
-        card.className = 'card animate-fade-up';
-        card.style.cssText = 'display:flex; flex-direction:column; border: 2px solid var(--primary-200);';
-        card.innerHTML = `
-          <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-            <span class="badge badge-primary">${cls}</span>
-            <span style="font-size:0.75rem; color:var(--gray-400);">Just now</span>
-          </div>
-          <h4 style="margin-bottom:8px;">${title}</h4>
-          <p style="font-size:0.875rem; color:var(--gray-600); margin-bottom:16px; flex:1; line-height:1.6;">
-            ${content}
-          </p>
-          <div style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--gray-100); padding-top:14px;">
-            <span class="badge badge-success">${file ? '📎 ' + file.name : '📝 Text Note'}</span>
-            ${fileUrl ? `<a href="${fileUrl}" target="_blank" class="btn btn-ghost btn-sm" style="color:var(--primary-600); font-weight:600;">View / Download</a>` : ''}
-          </div>
-        `;
-        container.insertBefore(card, container.firstChild);
-      }
-
       e.target.reset();
+      await loadUserDocuments();
     } catch (err) {
       showToast('Error: ' + err.message, 'error');
     } finally {
@@ -234,35 +235,50 @@
   async function loadUserDocuments() {
     try {
       const docs = await ClassoraAuth.fetchDocuments();
-      if (docs && docs.length > 0) {
-        const container = document.getElementById('notes-container');
-        docs.forEach(doc => {
-          const card = document.createElement('div');
-          card.className = 'card animate-fade-up';
-          card.style.cssText = 'display:flex; flex-direction:column; border: 1px solid var(--primary-100);';
-          card.innerHTML = `
+      const container = document.getElementById('notes-container');
+      if (!container) return;
+
+      if (!docs || docs.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column:1/-1; text-align:center; padding:56px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
+            <div style="font-size:2.5rem; margin-bottom:8px;">🗒️</div>
+            <h4 style="color:var(--gray-800); margin-bottom:4px;">No Notes Uploaded Yet (0)</h4>
+            <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:16px;">Create your first lecture note or upload study materials.</p>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-create-note')">➕ Upload First Note</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = docs.map(doc => {
+        const dt = new Date(doc.created_at).toLocaleDateString();
+        const hasFile = Boolean(doc.file_url);
+        return `
+          <div class="card animate-fade-up" style="display:flex; flex-direction:column; border: 1px solid var(--primary-100);">
             <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-              <span class="badge badge-primary">Uploaded Document</span>
-              <span style="font-size:0.75rem; color:var(--gray-400);">${new Date(doc.created_at).toLocaleDateString()}</span>
+              <span class="badge badge-primary">${doc.category === 'lecture_note' ? 'Lecture Note' : 'Document'}</span>
+              <span style="font-size:0.75rem; color:var(--gray-400);">${dt}</span>
             </div>
             <h4 style="margin-bottom:8px;">${doc.title}</h4>
             <p style="font-size:0.875rem; color:var(--gray-600); margin-bottom:16px; flex:1; line-height:1.6;">
               ${doc.description || 'Uploaded academic resource.'}
             </p>
             <div style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--gray-100); padding-top:14px;">
-              <span class="badge badge-success">📎 ${doc.file_type ? doc.file_type.toUpperCase() : 'PDF'}</span>
-              <a href="${doc.file_url}" target="_blank" class="btn btn-ghost btn-sm" style="color:var(--primary-600); font-weight:600;">Open Document</a>
+              <span class="badge badge-success">${hasFile ? '📎 ' + (doc.file_type ? doc.file_type.toUpperCase() : 'FILE') : '📝 Text Note'}</span>
+              ${hasFile ? `<a href="${doc.file_url}" target="_blank" class="btn btn-ghost btn-sm" style="color:var(--primary-600); font-weight:600;">Open Document</a>` : ''}
             </div>
-          `;
-          container.insertBefore(card, container.firstChild);
-        });
-      }
+          </div>
+        `;
+      }).join('');
     } catch (e) {
       console.warn('Could not load documents:', e);
     }
   }
 
-  window.addEventListener('DOMContentLoaded', loadUserDocuments);
+  window.addEventListener('DOMContentLoaded', async () => {
+    await populateNoteClassDropdown();
+    await loadUserDocuments();
+  });
 </script>
 </body>
 </html>

@@ -147,6 +147,12 @@
     document.getElementById('register-link').href = role === 'teacher' ? 'register-teacher.html' : 'register-student.html';
   }
 
+  // Support URL query param ?role=student or ?role=teacher
+  const urlRole = new URLSearchParams(window.location.search).get('role');
+  if (urlRole === 'student') {
+    switchRole('student');
+  }
+
   // Email & Password login
   document.getElementById('login-form').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -179,7 +185,7 @@
 
       showToast('Signed in successfully! Redirecting…', 'success');
       const profile = res.profile || ClassoraAuth.getActiveProfile();
-      const isAdmin = email === 'kaitysnehasish@gmail.com';
+      const isAdmin = Boolean(profile && profile.role === 'admin');
 
       if (!isAdmin && profile && profile.is_setup_completed !== true) {
         setTimeout(() => {

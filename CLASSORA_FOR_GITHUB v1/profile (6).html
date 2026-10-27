@@ -303,6 +303,31 @@
                 <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: var(--primary-600);"/>
               </label>
             </div>
+          </div>
+
+          <!-- Security & Password (Bug N2) -->
+          <div class="card" id="security-card">
+            <h4 style="margin-bottom: 6px;">🔐 Security & Password</h4>
+            <p style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 16px;">
+              Update your account password or set a custom password for your Google login.
+            </p>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="new-password">New Password</label>
+                <input class="form-input" type="password" id="new-password" placeholder="At least 8 characters" minlength="8"/>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="confirm-password">Confirm New Password</label>
+                <input class="form-input" type="password" id="confirm-password" placeholder="Re-type new password" minlength="8"/>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="handleUpdatePassword()" id="btn-update-pwd" style="font-weight:600;">
+                Update Password
+              </button>
+            </div>
+          </div>
+
           <!-- Danger Zone: Account Deletion -->
           <div class="card" id="danger-zone-card" style="border: 1.5px solid var(--danger-300, #FCA5A5); background: #FEF2F2;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
@@ -486,6 +511,32 @@
       btn.textContent = orig;
       btn.disabled = false;
       showToast(err.message || 'Error deleting account', 'error');
+    }
+  }
+
+  async function handleUpdatePassword() {
+    const pwd = (document.getElementById('new-password').value || '').trim();
+    const conf = (document.getElementById('confirm-password').value || '').trim();
+    if (!pwd || pwd.length < 8) return showToast('Password must be at least 8 characters long.', 'warning');
+    if (pwd !== conf) return showToast('Passwords do not match.', 'error');
+    const btn = document.getElementById('btn-update-pwd');
+    const oldText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Updating...';
+    try {
+      const res = await ClassoraAuth.updatePassword(pwd);
+      if (res && res.success) {
+        document.getElementById('new-password').value = '';
+        document.getElementById('confirm-password').value = '';
+        showToast('Password updated successfully! 🎉', 'success');
+      } else {
+        showToast((res && res.error) || 'Failed to update password.', 'error');
+      }
+    } catch (e) {
+      showToast(e.message || 'Error updating password.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = oldText;
     }
   }
 

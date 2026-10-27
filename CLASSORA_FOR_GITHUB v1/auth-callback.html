@@ -128,24 +128,18 @@
       // Intended role (default from registration / login selection)
       const intendedRole = localStorage.getItem('classora_auth_role') || (user.user_metadata && user.user_metadata.role) || 'student';
 
-      // 3. Retrieve or create profile — retry up to 3x for DB trigger race condition
-      var profile = null;
-      for (var attempt = 0; attempt < 3; attempt++) {
-        if (attempt > 0) await new Promise(function(r){ setTimeout(r, 1000); });
-        profile = await ClassoraAuth.fetchAndStoreProfile(user.id, {
-          role: intendedRole,
-          full_name: (user.user_metadata && user.user_metadata.full_name) || user.email.split('@')[0],
-          email: user.email
-        });
-        if (profile && profile.id) break;
-      }
+      // 3. Retrieve or create profile
+      let profile = await ClassoraAuth.fetchAndStoreProfile(user.id, {
+        role: intendedRole,
+        full_name: (user.user_metadata && user.user_metadata.full_name) || user.email.split('@')[0],
+        email: user.email
+      });
 
       // Respect privacy: Do not pull external photos automatically
       localStorage.setItem('classora_profile', JSON.stringify(profile));
 
-
       // 4. Check if profile setup is completed
-      const isAdmin = user.email === 'kaitysnehasish@gmail.com';
+      const isAdmin = Boolean(profile && profile.role === 'admin');
       const needsSetup = !isAdmin && (!profile || profile.is_setup_completed !== true);
 
       spinner.style.display = 'none';

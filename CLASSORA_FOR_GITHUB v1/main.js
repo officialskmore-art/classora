@@ -4,6 +4,18 @@
 
 'use strict';
 
+/* ─── Security: HTML Sanitizer / Escaping Utility ────────── */
+function escapeHTML(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+window.escapeHTML = escapeHTML;
+
 /* ─── Toast Notifications ─────────────────── */
 function showToast(message, type = 'success', duration = 3500) {
   const container = document.getElementById('toast-container');
@@ -85,9 +97,16 @@ function initPasswordToggles() {
 function initSidebar() {
   const toggle = document.getElementById('sidebar-toggle');
   const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
+  let overlay = document.getElementById('sidebar-overlay');
 
-  if (!toggle || !sidebar) return;
+  if (!sidebar) return;
+
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'sidebar-overlay';
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+  }
 
   function open() {
     sidebar.classList.add('open');
@@ -100,8 +119,47 @@ function initSidebar() {
     document.body.style.overflow = '';
   }
 
-  toggle.addEventListener('click', () => sidebar.classList.contains('open') ? close() : open());
-  if (overlay) overlay.addEventListener('click', close);
+  if (toggle && !toggle.dataset.sidebarBound) {
+    toggle.dataset.sidebarBound = 'true';
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sidebar.classList.contains('open') ? close() : open();
+    });
+  }
+  if (overlay && !overlay.dataset.sidebarBound) {
+    overlay.dataset.sidebarBound = 'true';
+    overlay.addEventListener('click', close);
+  }
+
+  // Ensure "Log Out" link exists in sidebar across all portal pages (Bug N7)
+  const nav = sidebar.querySelector('.sidebar-nav');
+  if (nav && !sidebar.querySelector('.sidebar-logout-link')) {
+    const logoutSec = document.createElement('span');
+    logoutSec.className = 'sidebar-section-label';
+    logoutSec.style.marginTop = '16px';
+    logoutSec.textContent = 'Account';
+    
+    const logoutLink = document.createElement('a');
+    logoutLink.href = '#';
+    logoutLink.className = 'sidebar-link sidebar-logout-link';
+    logoutLink.style.color = 'var(--danger-600, #DC2626)';
+    logoutLink.innerHTML = '<span class="sidebar-icon">🚪</span> Log Out';
+    logoutLink.onclick = (e) => {
+      e.preventDefault();
+      if (window.ClassoraAuth) window.ClassoraAuth.signOut();
+      else window.location.href = '../login.html';
+    };
+    
+    nav.appendChild(logoutSec);
+    nav.appendChild(logoutLink);
+  }
+
+  // Close sidebar on link click on mobile
+  sidebar.querySelectorAll('.sidebar-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 1024) close();
+    });
+  });
 
   // Mark active link
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -297,20 +355,15 @@ async function loadClassoraDirectory() {
   }
 }
 
-// Load on page ready with Realtime profile sync
+// Load directory on page ready for search modal
 if (typeof window !== 'undefined') {
-  function setupDirectoryAndRealtime() {
+  function setupDirectory() {
     loadClassoraDirectory();
-    if (window.ClassoraAuth && typeof ClassoraAuth.subscribeToTable === 'function') {
-      ClassoraAuth.subscribeToTable('profiles', () => {
-        loadClassoraDirectory();
-      });
-    }
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupDirectoryAndRealtime);
+    document.addEventListener('DOMContentLoaded', setupDirectory);
   } else {
-    setupDirectoryAndRealtime();
+    setupDirectory();
   }
 }
 
@@ -325,7 +378,7 @@ function createGlobalSearchModal() {
       <div class="search-modal-card">
         <div class="search-modal-header">
           <span style="font-size:1.25rem; color:var(--primary-600);">🔍</span>
-          <input type="text" class="search-modal-input" id="global-search-input" placeholder="Search members by name or Classora ID (e.g. ADM..., TCH..., STD...)" autocomplete="off"/>
+          <input type="text" class="search-modal-input" id="global-search-input" placeholder="Search members by name or Classora ID (e.g. TC..., ST...)" autocomplete="off"/>
           <button class="btn btn-ghost btn-sm" id="close-search-btn" style="padding:4px 8px; font-size:1.1rem;" aria-label="Close search">✕</button>
         </div>
 
@@ -510,18 +563,45 @@ function initMobileBottomNav() {
   document.body.insertAdjacentHTML('beforeend', navHtml);
 }
 
-/* ─── Mobile Portal Topbar Brand ────────────── */
+/* ─── Mobile Portal Topbar Brand & Sidebar Toggle ────────────── */
 function initMobileTopbarBrand() {
   const topbar = document.querySelector('.dash-topbar');
   if (!topbar || topbar.querySelector('.mobile-topbar-brand')) return;
   const firstDiv = topbar.querySelector(':scope > div:first-child');
   if (!firstDiv) return;
+
+  // Add hamburger toggle button for mobile (Bug N5)
+  if (!document.getElementById('sidebar-toggle')) {
+    const sidebarToggle = document.createElement('button');
+    sidebarToggle.id = 'sidebar-toggle';
+    sidebarToggle.className = 'btn btn-ghost btn-sm mobile-menu-btn';
+    sidebarToggle.style.cssText = 'font-size:1.4rem; padding:4px 8px; margin-right:6px; line-height:1; color:var(--gray-800);';
+    sidebarToggle.innerHTML = '☰';
+    sidebarToggle.setAttribute('aria-label', 'Open navigation menu');
+    firstDiv.insertBefore(sidebarToggle, firstDiv.firstChild);
+  }
+
   const brand = document.createElement('a');
   brand.href = '../index.html';
   brand.className = 'navbar-logo mobile-topbar-brand';
   brand.title = 'Classora Home';
   brand.innerHTML = '<div class="logo-icon" style="width:28px; height:28px; font-size:0.8rem; border-radius:8px; margin-right:4px;">C</div>';
-  firstDiv.insertBefore(brand, firstDiv.firstChild);
+  const toggle = document.getElementById('sidebar-toggle');
+  if (toggle) {
+    firstDiv.insertBefore(brand, toggle.nextSibling);
+  } else {
+    firstDiv.insertBefore(brand, firstDiv.firstChild);
+  }
+
+  // Ensure sidebar overlay exists
+  if (!document.getElementById('sidebar-overlay')) {
+    const overlay = document.createElement('div');
+    overlay.id = 'sidebar-overlay';
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  initSidebar();
 }
 
 /* ─── Init ────────────────────────────────── */
@@ -693,14 +773,9 @@ function showDesktopReminder() {
 }
 
 function initDesktopModeSuggestion() {
-  if (!isSmartphoneDevice()) return;
-  if (localStorage.getItem('classora_desktop_reminder_seen') === 'true') return;
-  if (!isUserLoggedIn()) return;
-
-  // Show only once when user launches the account for the first time
-  setTimeout(() => {
-    showDesktopReminder();
-  }, 1200);
+  // Bug 19: Disabled automatic desktop popup on mobile.
+  // The layout is fully responsive and optimized for phones.
+  return;
 }
 
 window.closeDesktopSuggestion = function() {

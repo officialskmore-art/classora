@@ -126,7 +126,7 @@
 
             <div style="display: flex; justify-content: space-around; border-top: 1px solid var(--gray-100); padding-top: 16px;">
               <div>
-                <div style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;">0</div>
+                <div style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;" id="student-classes-count">0</div>
                 <div style="font-size: 0.75rem; color: var(--gray-500);">Classes</div>
               </div>
               <div>
@@ -204,6 +204,29 @@
                 <label class="form-label">Guardian Phone</label>
                 <input class="form-input" type="tel" placeholder="Guardian phone number" value=""/>
               </div>
+            </div>
+          </div>
+
+          <!-- Security & Password (Bug N2) -->
+          <div class="card" id="security-card">
+            <h4 style="margin-bottom: 6px;">🔐 Security & Password</h4>
+            <p style="font-size: 0.85rem; color: var(--gray-500); margin-bottom: 16px;">
+              Update your account password or set a custom password for your Google login.
+            </p>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="new-password">New Password</label>
+                <input class="form-input" type="password" id="new-password" placeholder="At least 8 characters" minlength="8"/>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="confirm-password">Confirm New Password</label>
+                <input class="form-input" type="password" id="confirm-password" placeholder="Re-type new password" minlength="8"/>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="handleUpdatePassword()" id="btn-update-pwd" style="font-weight:600;">
+                Update Password
+              </button>
             </div>
           </div>
 
@@ -348,10 +371,43 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
+  async function handleUpdatePassword() {
+    const pwd = (document.getElementById('new-password').value || '').trim();
+    const conf = (document.getElementById('confirm-password').value || '').trim();
+    if (!pwd || pwd.length < 8) return showToast('Password must be at least 8 characters long.', 'warning');
+    if (pwd !== conf) return showToast('Passwords do not match.', 'error');
+    const btn = document.getElementById('btn-update-pwd');
+    const oldText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Updating...';
+    try {
+      const res = await ClassoraAuth.updatePassword(pwd);
+      if (res && res.success) {
+        document.getElementById('new-password').value = '';
+        document.getElementById('confirm-password').value = '';
+        showToast('Password updated successfully! 🎉', 'success');
+      } else {
+        showToast((res && res.error) || 'Failed to update password.', 'error');
+      }
+    } catch (e) {
+      showToast(e.message || 'Error updating password.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = oldText;
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
     if (ClassoraAuth.isAdmin()) {
       const dangerCard = document.getElementById('danger-zone-card');
       if (dangerCard) dangerCard.style.display = 'none';
+    }
+    try {
+      const enrolled = await ClassoraAuth.fetchEnrolledClassrooms();
+      const countEl = document.getElementById('student-classes-count');
+      if (countEl) countEl.textContent = enrolled.length;
+    } catch (e) {
+      console.warn('Error fetching enrolled classrooms count:', e);
     }
   });
 

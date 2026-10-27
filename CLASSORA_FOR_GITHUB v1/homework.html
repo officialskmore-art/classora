@@ -135,7 +135,7 @@
     <form onsubmit="handleSubmitAssignment(event)">
       <div class="form-group">
         <label class="form-label">Assignment</label>
-        <input class="form-input" type="text" placeholder="No pending assignments" disabled style="background:var(--gray-100);"/>
+        <input class="form-input" id="hw-modal-title" type="text" placeholder="Select an assignment" disabled style="background:var(--gray-100); font-weight:600;"/>
       </div>
       <div class="form-group">
         <label class="form-label">Upload Solution File (PDF, Image, DOCX)</label>
@@ -148,7 +148,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">Student Remarks / Note for Teacher</label>
-        <textarea class="form-input" rows="2" placeholder="e.g. Any questions or remarks..."></textarea>
+        <textarea class="form-input" id="hw-modal-remarks" rows="2" placeholder="e.g. Any questions or remarks..."></textarea>
       </div>
       <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
         <button type="button" class="btn btn-ghost" data-modal-close="modal-submit-hw">Cancel</button>
@@ -176,11 +176,48 @@
     }
   }
 
-  function handleSubmitAssignment(e) {
+  let activeAssignmentId = null;
+
+  function openSubmitModal(id, title) {
+    activeAssignmentId = id;
+    const titleInput = document.getElementById('hw-modal-title');
+    if (titleInput) titleInput.value = title;
+    const label = document.getElementById('upload-label');
+    if (label) label.textContent = 'Click to select files from device';
+    const fileInp = document.getElementById('hw-file-input');
+    if (fileInp) fileInp.value = '';
+    const rem = document.getElementById('hw-modal-remarks');
+    if (rem) rem.value = '';
+    openModal('modal-submit-hw');
+  }
+
+  async function handleSubmitAssignment(e) {
     e.preventDefault();
-    closeModal('modal-submit-hw');
-    showToast('Assignment submitted successfully! Your teacher has been notified.', 'success', 4000);
-    loadStudentHomework();
+    if (!activeAssignmentId) {
+      showToast('Please select an assignment to submit', 'error');
+      return;
+    }
+    const fileInput = document.getElementById('hw-file-input');
+    const file = fileInput ? fileInput.files[0] : null;
+    const remarks = document.getElementById('hw-modal-remarks')?.value.trim() || '';
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+
+    try {
+      await ClassoraAuth.submitAssignment({
+        assignment_id: activeAssignmentId,
+        notes: remarks,
+        file: file
+      });
+      closeModal('modal-submit-hw');
+      showToast('Assignment turned in successfully! Your teacher has been notified.', 'success', 5000);
+      await loadStudentHomework();
+    } catch(err) {
+      showToast('Submission error: ' + err.message, 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Turn In Assignment'; }
+    }
   }
 
   async function loadStudentHomework() {
@@ -191,29 +228,40 @@
       const hw = await ClassoraAuth.fetchAssignments({ classroomId: cls.id });
       allAssignments = allAssignments.concat(hw);
     }
-    // Sort by due date
     allAssignments.sort((a,b) => new Date(a.due_date||0) - new Date(b.due_date||0));
-    const pending = allAssignments.filter(a => !a.due_date || new Date(a.due_date) >= new Date());
-    const overdue = allAssignments.filter(a => a.due_date && new Date(a.due_date) < new Date());
-    // Update badge
+
+    // Fetch existing submissions
+    const submissions = await ClassoraAuth.fetchSubmissions();
+    const submittedMap = new Map(submissions.map(s => [s.assignment_id, s]));
+
+    const pending = allAssignments.filter(a => !submittedMap.has(a.id));
+    const completed = allAssignments.filter(a => submittedMap.has(a.id));
+
+    // Update badges and tabs
     const badge = document.getElementById('hw-badge');
     if (badge) badge.textContent = pending.length;
     const hwCount = document.getElementById('hw-count');
     if (hwCount) hwCount.textContent = pending.length;
+    const tabPending = document.querySelector('.tabs .tab:first-child');
+    if (tabPending) tabPending.textContent = `Pending Assignments (${pending.length})`;
+    const tabCompleted = document.querySelector('.tabs .tab:last-child');
+    if (tabCompleted) tabCompleted.textContent = `Completed (${completed.length})`;
+
     // Render pending
     const pendingContainer = document.getElementById('hw-pending');
     if (pendingContainer) {
-      if (!allAssignments.length) {
+      if (!pending.length) {
         pendingContainer.innerHTML = `<div style="text-align:center;padding:56px 20px;border:2px dashed var(--gray-200);border-radius:var(--radius-xl);background:var(--gray-50)">
           <div style="font-size:2.5rem;margin-bottom:8px">&#128218;</div>
           <h4 style="color:var(--gray-800);margin-bottom:4px">No Pending Homework</h4>
-          <p style="font-size:0.875rem;color:var(--gray-500)">You have no homework due. Great job staying up to date!</p>
+          <p style="font-size:0.875rem;color:var(--gray-500)">You have turned in all assignments. Great job staying up to date!</p>
         </div>`;
       } else {
-        pendingContainer.innerHTML = allAssignments.map(a => {
+        pendingContainer.innerHTML = pending.map(a => {
           const cls = a.classrooms ? a.classrooms.name : 'N/A';
           const due = a.due_date ? new Date(a.due_date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : 'No due date';
           const isPast = a.due_date && new Date(a.due_date) < new Date();
+          const pts = a.total_points || a.max_marks || 20;
           return `<div class="card animate-fade-up" style="border-left:4px solid ${isPast?'#EF4444':'var(--primary-600)'};margin-bottom:16px">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
               <div><h4 style="color:var(--gray-900);margin-bottom:4px;font-size:1rem">${a.title}</h4><div style="font-size:0.8rem;color:var(--gray-500)">${cls}</div></div>
@@ -221,8 +269,37 @@
             </div>
             <p style="font-size:0.825rem;color:var(--gray-600);margin-bottom:12px">${a.description||'No instructions provided.'}</p>
             <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--gray-100);padding-top:10px">
-              <span style="font-size:0.8rem;color:var(--gray-500)">Due: ${due} &bull; ${a.total_points||0} pts</span>
-              <button class="btn btn-primary btn-sm" onclick="openModal('modal-submit-hw')">Turn In</button>
+              <span style="font-size:0.8rem;color:var(--gray-500)">Due: ${due} &bull; ${pts} pts</span>
+              <button class="btn btn-primary btn-sm" onclick="openSubmitModal('${a.id}', '${a.title.replace(/'/g, "\\'")}')">Turn In</button>
+            </div>
+          </div>`;
+        }).join('');
+      }
+    }
+
+    // Render completed
+    const completedContainer = document.getElementById('hw-submitted');
+    if (completedContainer) {
+      if (!completed.length) {
+        completedContainer.innerHTML = `<div style="text-align:center;padding:56px 20px;border:2px dashed var(--gray-200);border-radius:var(--radius-xl);background:var(--gray-50)">
+          <div style="font-size:2.5rem;margin-bottom:8px">✅</div>
+          <h4 style="color:var(--gray-800);margin-bottom:4px">No Completed Assignments Yet</h4>
+          <p style="font-size:0.875rem;color:var(--gray-500)">Turn in your tasks to see them tracked here.</p>
+        </div>`;
+      } else {
+        completedContainer.innerHTML = completed.map(a => {
+          const sub = submittedMap.get(a.id);
+          const subDate = sub && sub.submitted_at ? new Date(sub.submitted_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : 'Recently';
+          const cls = a.classrooms ? a.classrooms.name : 'N/A';
+          return `<div class="card animate-fade-up" style="border-left:4px solid #10B981;margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+              <div><h4 style="color:var(--gray-900);margin-bottom:4px;font-size:1rem">${a.title}</h4><div style="font-size:0.8rem;color:var(--gray-500)">${cls}</div></div>
+              <span class="badge" style="background:#D1FAE5;color:#065F46;font-size:0.72rem">✅ Turned In</span>
+            </div>
+            <p style="font-size:0.825rem;color:var(--gray-600);margin-bottom:12px">${a.description||'No instructions provided.'}</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--gray-100);padding-top:10px">
+              <span style="font-size:0.8rem;color:var(--gray-500)">Submitted on: ${subDate}</span>
+              ${sub && sub.file_url ? `<a href="${sub.file_url}" target="_blank" class="btn btn-ghost btn-sm" style="color:var(--primary-600)">View Submission</a>` : '<span style="font-size:0.75rem;color:var(--gray-400)">Text/Online Turn In</span>'}
             </div>
           </div>`;
         }).join('');
@@ -232,8 +309,23 @@
 
   document.addEventListener('DOMContentLoaded', async () => {
     await loadStudentHomework();
-    // Realtime: refresh when assignments change
-    ClassoraAuth.subscribeToTable('assignments', () => loadStudentHomework());
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToAssignments({
+        onInsert: function(newHw) {
+          showToast('New homework assigned by your teacher! 📚', 'info', 5000);
+          loadStudentHomework();
+        },
+        onUpdate: function() { loadStudentHomework(); },
+        onDelete: function() { loadStudentHomework(); },
+        onReconnect: function() { loadStudentHomework(); }
+      });
+    }
+  });
+
+  window.addEventListener('beforeunload', function() {
+    if (ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel('cr-hw-all');
+    }
   });
 </script>
 </body>
