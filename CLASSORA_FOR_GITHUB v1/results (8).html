@@ -254,15 +254,20 @@
         return;
       }
 
+      const rawDraft = localStorage.getItem('classora_results_draft_' + exam.id);
+      let draftData = {};
+      try { draftData = rawDraft ? JSON.parse(rawDraft) : {}; } catch(e){}
+
       tbody.innerHTML = students.map(s => {
         const studentProfile = s.profiles || {};
         const stName = studentProfile.full_name || 'Student';
         const stCid = studentProfile.classora_id || s.student_id;
         const res = resultMap.get(s.student_id) || {};
-        const obt = res.marks_obtained !== undefined ? res.marks_obtained : '';
+        const draft = draftData[s.student_id] || {};
+        const obt = res.marks_obtained !== undefined ? res.marks_obtained : (draft.marks !== undefined ? draft.marks : '');
         const pct = obt !== '' ? Math.min(100, Math.round((parseFloat(obt) / maxMarks) * 100)) : 0;
         const grade = res.grade || (pct >= 80 ? 'A' : pct >= 60 ? 'B' : 'C');
-        const remark = res.remarks || '';
+        const remark = res.remarks || (draft.remarks || '');
 
         return `
           <tr data-student-id="${s.student_id}">
@@ -283,8 +288,8 @@
 
       const badge = document.getElementById('pub-status-badge');
       if (badge) {
-        badge.textContent = existingResults.length > 0 ? 'Results Published' : 'Awaiting Grading';
-        badge.className = existingResults.length > 0 ? 'badge badge-success' : 'badge badge-gray';
+        badge.textContent = existingResults.length > 0 ? 'Results Published' : (rawDraft ? 'Draft Saved Locally' : 'Awaiting Grading');
+        badge.className = existingResults.length > 0 ? 'badge badge-success' : (rawDraft ? 'badge badge-primary' : 'badge badge-gray');
       }
     } catch (e) {
       console.warn('Roster load error:', e);
@@ -293,7 +298,29 @@
   }
 
   function saveDraftResults() {
-    showToast('Grades saved locally as draft.', 'info');
+    if (!currentExam) {
+      showToast('Please select an active examination first.', 'warning');
+      return;
+    }
+    const rows = document.querySelectorAll('.table-wrapper table tbody tr[data-student-id]');
+    if (!rows.length) {
+      showToast('No student entries available to save as draft.', 'warning');
+      return;
+    }
+    const draftData = {};
+    rows.forEach(r => {
+      const sId = r.dataset.studentId;
+      const score = r.querySelector('.score-input')?.value;
+      const rem = r.querySelector('.remark-input')?.value;
+      draftData[sId] = { marks: score, remarks: rem };
+    });
+    localStorage.setItem('classora_results_draft_' + currentExam.id, JSON.stringify(draftData));
+    const badge = document.getElementById('pub-status-badge');
+    if (badge && badge.textContent !== 'Results Published') {
+      badge.textContent = 'Draft Saved Locally';
+      badge.className = 'badge badge-primary';
+    }
+    showToast('Grades and remarks saved locally as draft! 💾', 'success');
   }
 
   function exportResultsCSV() {
@@ -382,6 +409,7 @@
         }
       }
 
+      localStorage.removeItem('classora_results_draft_' + currentExam.id);
       document.getElementById('pub-status-badge').textContent = 'Published to Students';
       document.getElementById('pub-status-badge').className = 'badge badge-success';
       showToast(`Results published for ${publishedCount} students! Portals updated in realtime. 🚀`, 'success', 5000);

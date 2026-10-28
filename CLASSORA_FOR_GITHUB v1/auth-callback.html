@@ -145,23 +145,31 @@
       spinner.style.display = 'none';
       icon.style.display = 'block';
 
+      const isEmailConfirm = params.get('type') === 'signup' || params.get('type') === 'email_change' || window.location.hash.includes('type=signup');
+
+      if (isEmailConfirm) {
+        icon.textContent = '🎉';
+        titleEl.textContent = 'Email Verified Successfully!';
+        descEl.textContent = `Your email address (${user.email}) has been confirmed. Welcome to Classora! Setting up your workspace…`;
+      }
+
       if (needsSetup) {
-        titleEl.textContent = 'Complete Profile Setup';
-        descEl.textContent = `Authenticated as ${user.email}. Taking you to your profile setup to choose Teacher or Student…`;
+        if (!isEmailConfirm) titleEl.textContent = 'Complete Profile Setup';
+        descEl.textContent = isEmailConfirm ? descEl.textContent : `Authenticated as ${user.email}. Taking you to your profile setup to choose Teacher or Student…`;
         setTimeout(() => {
           window.location.href = 'setup-profile.html';
-        }, 800);
+        }, isEmailConfirm ? 1400 : 800);
       } else {
         const targetRole = profile ? profile.role : (isAdmin ? 'teacher' : 'student');
-        titleEl.textContent = 'Welcome to Classora!';
-        descEl.textContent = `Authenticated as ${user.email}. Taking you to your ${targetRole === 'teacher' ? 'Teacher' : 'Student'} Dashboard…`;
+        if (!isEmailConfirm) titleEl.textContent = 'Welcome to Classora!';
+        descEl.textContent = isEmailConfirm ? descEl.textContent : `Authenticated as ${user.email}. Taking you to your ${targetRole === 'teacher' ? 'Teacher' : 'Student'} Dashboard…`;
         setTimeout(() => {
           if (isAdmin || targetRole === 'teacher') {
             window.location.href = 'teacher/dashboard.html';
           } else {
             window.location.href = 'student/dashboard.html';
           }
-        }, 800);
+        }, isEmailConfirm ? 1400 : 800);
       }
 
     } catch (err) {

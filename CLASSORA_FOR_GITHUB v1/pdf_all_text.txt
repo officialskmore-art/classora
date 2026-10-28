@@ -1,0 +1,2962 @@
+﻿[1] Artifact
+[1] Attached [/Top]/Type/Pagination/Subtype/Header
+[1] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[1] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[1] EMC /Artifact
+[1] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[1] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[1] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[1] Pa)-4(g)-3(e )] TJ
+[1] EMC  /Span
+[1] MCID 0/Lang (en-US)
+[1] EMC /Artifact BMC q
+[1] MCID 1/Lang (en-US)
+[1] S)-55(t)-64(u)-54(d)-62(e)-52(n)-54(t)] TJ
+[1] T)-58(e)-52(a)-62(c)-52(h)-62(e)-52(r)-56( )-50(M)-59(a)-54(n)-62(a)-54(g)-62(e)-52(m)-62(e)-52(n)-54(t)-64( )-50(P)-59(l)-54(a)-54(t)-56(f)-56(o)-55(r)-64(m)] TJ
+[1] EMC  /Span
+[1] MCID 2/Lang (en-US)
+[1] VE)-2(RSIO)-3(N 0.5 )] TJ
+[1] REFINED T)-3(HEO)6(RETICAL )-4(BLUE)7(PRINT)] TJ
+[1] EMC  /Span
+[1] MCID 3/Lang (en-US)
+[1] Ad)-4(minis)4(t)-3(ration)] TJ
+[1] ready)5( a)7(cc)-4(ount)-5(,)4( i)6(den)-5(t)-3(ity)-3(,)4( rel)6(a)4(t)-3(ion)-2(s)4(h)-3(ip,)4( a)7(n)-3(d MVP s)-3(t)-3(ruct)-3(u)4(re)] TJ
+[1] EMC  /Span
+[1] MCID 4/Lang (en-US)
+[1] EMC  /Span
+[1] MCID 5/Lang (en-US)
+[1] Do)4(c)-2(um)4(e)4(nt )4(s)-7(tat)5(us:  )] TJ
+[1] P)-3(l)-6(an)-3(ning)-3( )3(docu)-2(m)-3(e)3(nt only)6(. )3(No )4(website)3(/)-3(ap)-2(plic)4(at)-2(i)-8(on code)4( )3(is )4(inc)-8(luded.)] TJ
+[1] EMC  /Span
+[1] MCID 6/Lang (en-US)
+[1] This )6(re)4(f)-3(ined )5(e)3(dition )-7(re)4(s)-8(tru)-2(ctures )5(an)-3(d c)3(larifies )-3(the )4(sup)-3(plie)6(d V)-2(e)3(rsion )3(0)-8(.5 )4(blueprint. )4(It )5(do)-10(e)3(s )3(no)-10(t add e)4(x)4(ter)3(na)-3(l)-6( )] TJ
+[1] re)4(se)3(arch or )4(si)-7(le)6(ntly)-3( )3(inv)-5(e)3(nt produ)-3(ct )3(re)4(qu)-3(ire)5(m)-3(e)-5(nts. Con)-3(f)-3(irmed de)5(cisi)3(ons are)3( )3(se)3(pa)-2(rated fro)-9(m)-3( )3(dec)3(isions )4(tha)-4(t )] TJ
+[1] re)4(m)-3(ain pending.)] TJ
+[1] EMC  /Span
+[1] MCID 7/Lang (en-US)
+[1] Executive Summary)] TJ
+[1] EMC  /Span
+[1] MCID 8/Lang (en-US)
+[1] C)-2(lassora is)3( )3(bei)3(ng)-2( )3(desi)-5(gn)-2(e)3(d first as )3(a te)3(acher)] TJ
+[1] ce)4(ntred )4(aca)-2(demic )3(m)-3(an)-3(ag)-3(e)3(m)-3(e)3(nt platf)-3(orm)-3( )3(f)6(or )3(indiv)-5(idua)-4(l/priv)4(at)-2(e)3( )] TJ
+[1] teache)3(rs )4(an)-3(d the)3(ir )5(stu)-12(dents, )4(with)-3( )3(f)-3(ut)-3(ure )4(e)3(x)4(p)-9(an)-3(sion towa)-3(rd s)3(chools, )5(orga)-3(nisat)-2(ions, te)5(achers, )5(stu)-2(dents, )4(an)-3(d )] TJ
+[1] pa)-2(re)4(nts.)] TJ
+[1] EMC  /Span
+[1] MCID 9/Lang (en-US)
+[1] The)5( )3(ce)4(ntra)-3(l)-6( )3(architectu)-10(ral )4(dec)3(ision )3(is)-7( )3(tha)-4(t Classora ide)4(ntity)-6( )3(an)-3(d au)-2(t)9(hentication are )5(se)3(pa)-2(ra)-10(te. )6(A Classora I)3(D )] TJ
+[1] ide)3(ntif)-4(ie)4(s )3(a per)4(son or)-7( )3(r)-8(e)3(cord )4(inside)3( )3(C)-2(lassora;)-9( )3(it )3(is )4(not a )-7(login )3(cre)5(den)-8(tial, )4(pa)-2(ssword, se)4(curity)-5( )3(toke)3(n, or )5(se)3(cr)-7(e)3(t.)] TJ
+[1] EMC  /Span
+[1] MCID 10/Lang (en-US)
+[1] The)5( )3(current )4(sign)] TJ
+[1] in dir)-5(e)3(ction i)3(s )3(e)3(m)-3(ail )4(
+[1] pa)-2(ss)-8(wo)-2(rd and G)4(oogle)4( )3(sign)] TJ
+[1] in for T)5(e)3(acher )4(an)-3(d )-6(S)4(tu)-3(dent )3(accou)-2(nts. E)5(m)-3(ail )] TJ
+[1] v)-4(e)3(rificat)-2(ion i)3(s )3(m)-3(an)-3(da)-2(t)9(ory)-4(, )3(an)-3(d c)3(ha)-3(ng)-2(ing the )5(login )3(e)3(m)-3(ail )4(re)4(qu)-3(ire)5(s )3(v)-4(e)3(r)-8(ifica)-2(tion.)] TJ
+[1] EMC  /Span
+[1] MCID 11/Lang (en-US)
+[1] The)5( )3(current )4(indep)-8(e)3(nde)-8(nt)] TJ
+[1] teache)3(r )4(m)-3(odel)5( )3(giv)-5(e)3(s )3(e)3(v)-4(e)3(ry)-3( )3(teache)3(r )4(an)-3( )3(ind)-10(e)3(pende)3(nt workspa)-2(ce)4( )-6(au)-4(tom)-4(at)-2(icall)5(y)-4(. )] TJ
+[1] S)4(tu)-3(dents )3(m)-3(ay)-6( )3(re)4(gister )-3(with)-3(ou)-2(t j)3(oining)-2( )3(a cl)5(assroom)-5(, )3(then r)3(e)3(qu)-3(e)3(st ac)-7(ce)4(ss )4(or )3(be)-6( )3(inv)-5(ite)3(d by)-3( )3(a te)3(acher )4(usin)-2(g the )] TJ
+[1] stu)-2(dent )3(C)-2(lassora I)5(D.)] TJ
+[1] EMC /Artifact BMC 0.929 g
+[1] MCID 12
+[1] BDC 64.4 316.23 153.95 14.025 re
+[1] EMC  /Span
+[1] MCID 13/Lang (en-US)
+[1] D)-3(ec)5(is)6(io)-2(n )4(Area)] TJ
+[1] EMC /Artifact BMC 223.95 316.23 164.23 14.025 re
+[1] MCID 14
+[1] BDC 229.15 316.23 153.83 14.025 re
+[1] EMC  /Span
+[1] MCID 15/Lang (en-US)
+[1] Sta)-5(tu)4(s)] TJ
+[1] EMC /Artifact BMC 388.68 316.23 164.12 14.025 re
+[1] MCID 16
+[1] BDC 393.77 316.23 153.93 14.025 re
+[1] EMC  /Span
+[1] MCID 17/Lang (en-US)
+[1] D)-3(ec)5(is)6(io)-2(n )4(/ C)-2(u)4(rr)5(ent)-9( P)-2(o)-4(s)5(ition)] TJ
+[1] EMC /Artifact BMC 0 g
+[1] MCID 18/Lang (en-US)
+[1] Au)4(th)-3(e)5(n)-4(ti)-4(cati)-3(o)-3(n)] TJ
+[1] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[1] MCID 19
+[1] BDC 228.25 297.73 155.63 14 re
+[1] EMC  /Span
+[1] MCID 20/Lang (en-US)
+[1] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[1] MCID 21/Lang (en-US)
+[1] Ema)-3(i)-4(l)4(
+[1] pa)-4(ss)-5(w)10(o)-3(rd)6( an)-3(d)5( Go)-3(o)-3(g)-4(l)4(e)5( si)-4(g)-4(n)] TJ
+[1] i)-4(n)7(; )] TJ
+[1] C)3(l)4(as)-4(so)-5(ra I)6(D i)-4(s n)-3(o)-3(t )4(u)3(sed)7( as a l)6(o)-3(g)-4(i)-4(n)-4( )] TJ
+[1] cr)3(e)5(d)-5(e)5(n)-4(ti)-4(al.)] TJ
+[1] EMC /Artifact BMC 0 g
+[1] MCID 22/Lang (en-US)
+[1] Ema)-3(i)-4(l)4( ve)4(ri)-4(fi)-3(cati)7(o)-3(n)] TJ
+[1] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[1] MCID 23
+[1] BDC 228.25 253.33 155.63 14 re
+[1] EMC  /Span
+[1] MCID 24/Lang (en-US)
+[1] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[1] MCID 25/Lang (en-US)
+[1] Man)-5(d)5(ato)-4(ry for n)-2(e)5(w acc)5(o)-3(u)3(n)-4(ts.)] TJ
+[1] EMC /Artifact BMC 0 g
+[1] MCID 26/Lang (en-US)
+[1] Lo)-3(g)-4(i)6(n)-4( e)8(ma)-4(i)-4(l)4( c)6(h)-4(an)-6(g)-4(e)5(s)] TJ
+[1] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[1] MCID 27
+[1] BDC 228.25 230.83 155.63 14 re
+[1] EMC  /Span
+[1] MCID 28/Lang (en-US)
+[1] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[1] MCID 29/Lang (en-US)
+[1] Al)5(l)4(o)-3(we)4(d)5(, wi)-6(th)-3( ve)4(ri)-4(fi)-3(cati)-3(o)-3(n)-4( r)15(e)5(q)5(u)3(i)-4(re)-5(d)5(.)] TJ
+[1] EMC /Artifact BMC 0 g
+[1] MCID 30/Lang (en-US)
+[1] Te)6(ach)-3(e)5(r )4(wo)-4(rks)-3(p)-5(ace)] TJ
+[1] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[1] MCID 31
+[1] BDC 228.25 208.33 155.63 14 re
+[1] EMC  /Span
+[1] MCID 32/Lang (en-US)
+[1] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[1] MCID 33/Lang (en-US)
+[1] Ev)-2(e)5(ry te)6(ach)-3(e)5(r )4(autom)-3(ati)-6(cal)-5(l)4(y)-3( r)4(e)5(c)-7(e)5(i)-4(v)-3(e)5(s an)-6( )] TJ
+[1] i)-4(n)-4(d)5(e)5(p)-5(e)5(n)-4(d)5(e)5(n)-4(t )4(wo)-4(rks)-3(p)-5(ace)5(.)] TJ
+[1] EMC /Artifact BMC 0 g
+[1] MCID 34/Lang (en-US)
+[1] Stu)4(d)5(e)5(n)-4(t )4(r)-9(e)5(g)-4(i)-4(stra)-3(ti)-4(o)8(n)] TJ
+[1] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[1] MCID 35
+[1] BDC 228.25 174.83 155.63 14 re
+[1] EMC  /Span
+[1] MCID 36/Lang (en-US)
+[1] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[1] MCID 37/Lang (en-US)
+[1] Stu)4(d)5(e)5(n)-4(ts ma)-3(y)-3( r)4(e)5(g)-4(i)-4(ster)3( bef)-7(o)-3(re)5( jo)-5(i)-4(n)7(i)-4(n)7(g)-4( a )] TJ
+[1] cl)7(as)-4(sro)-5(o)-3(m.)] TJ
+[1] EMC /Artifact BMC 0 g
+[1] MCID 38/Lang (en-US)
+[1] C)3(l)4(as)-4(sro)-5(o)-3(m j)-4(o)8(i)-4(n)7(i)-4(n)7(g)] TJ
+[1] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[1] MCID 39
+[1] BDC 228.25 141.42 155.63 13.9 re
+[1] EMC  /Span
+[1] MCID 40/Lang (en-US)
+[1] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[1] MCID 41/Lang (en-US)
+[1] Stu)4(d)5(e)5(n)-4(t)] TJ
+[1] re)5(q)-5(u)3(e)5(ste)-7(d)5( jo)-5(i)-4(n)-4(i)6(n)-4(g)6( plu)5(s te)6(ach)-3(e)5(r )] TJ
+[1] i)-4(n)-4(v)8(i)-4(tati)5(o)-3(n)-4( by)-5( C)6(l)4(as)-4(s)8(o)-3(ra I)6(D.)] TJ
+[1] EMC /Artifact BMC 0 g
+[1] MCID 42/Lang (en-US)
+[1] Mu)5(l)4(ti)-4(p)-5(l)4(e)5( c)-4(l)4(as)-4(sro)-5(o)-3(ms)] TJ
+[1] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[1] MCID 43
+[1] BDC 228.25 107.9 155.63 14 re
+[1] EMC  /Span
+[1] MCID 44/Lang (en-US)
+[1] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[1] MCID 45/Lang (en-US)
+[1] A )3(stud)7(e)5(n)-4(t )4(ma)-4(y)-3( jo)-5(i)-4(n)-4( mu)4(l)4(ti)-4(p)-5(l)16(e)5( c)6(l)4(as)-4(sro)-5(o)-3(ms)-4( )] TJ
+[1] taugh)-7(t )4(b)-5(y)-3( t)4(h)-4(e)5( sam)-4(e)5( t)4(e)5(ach)-3(e)5(r.)] TJ
+[1] EMC /Artifact BMC 0 g
+[1] MCID 46/Lang (en-US)
+[1] Se)4(arch)-2( r)4(e)5(sul)5(t)] TJ
+[1] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[1] MCID 47
+[1] BDC 228.25 74.4 155.63 14 re
+[1] EMC  /Span
+[1] MCID 48/Lang (en-US)
+[1] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[1] MCID 49/Lang (en-US)
+[1] N)-4(am)-4(e)5(, role)6(, cl)7(as)-4(s,)-5( pro)-5(fi)-3(l)4(e)5( ph)-6(o)-3(to)8(, an)-6(d)5( )] TJ
+[1] C)3(l)4(as)-4(so)-5(ra I)6(D.)] TJ
+[1] EMC /Artifact BMC 0 g
+[2] Artifact
+[2] Attached [/Top]/Type/Pagination/Subtype/Header
+[2] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[2] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[2] EMC /Artifact
+[2] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[2] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[2] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[2] Pa)-4(g)-3(e )] TJ
+[2] EMC /Artifact BMC 0.929 g
+[2] BDC 64.4 725.7 153.95 13.9 re
+[2] EMC  /Span
+[2] MCID 1/Lang (en-US)
+[2] D)-3(ec)5(is)6(io)-2(n )4(Area)] TJ
+[2] EMC /Artifact BMC 223.95 725.7 164.23 13.9 re
+[2] BDC 229.15 725.7 153.83 13.9 re
+[2] EMC  /Span
+[2] MCID 3/Lang (en-US)
+[2] Sta)-5(tu)4(s)] TJ
+[2] EMC /Artifact BMC 388.68 725.7 164.12 13.9 re
+[2] BDC 393.77 725.7 153.93 13.9 re
+[2] EMC  /Span
+[2] MCID 5/Lang (en-US)
+[2] D)-3(ec)5(is)6(io)-2(n )4(/ C)-2(u)4(rr)5(ent)-9( P)-2(o)-4(s)5(ition)] TJ
+[2] EMC /Artifact BMC 0 g
+[2] MCID 6/Lang (en-US)
+[2] C)3(l)4(as)-4(so)-5(ra I)6(D v)-2(i)-4(sibi)-7(l)4(i)-4(t)12(y)] TJ
+[2] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[2] BDC 228.25 707.2 155.63 14 re
+[2] EMC  /Span
+[2] MCID 8/Lang (en-US)
+[2] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[2] MCID 9/Lang (en-US)
+[2] V)-3(i)-4(s)8(i)-4(b)-5(l)4(e)5( t)4(o)-3( e)8(v)-3(e)5(ryo)-5(n)-4(e)5(, p)-5(e)5(r )4(th)-3(e)5( c)6(u)3(rr)-9(e)5(n)-4(t )] TJ
+[2] d)5(e)5(cis)-5(i)-4(o)-3(n)-4(.)] TJ
+[2] EMC /Artifact BMC 0 g
+[2] MCID 10/Lang (en-US)
+[2] Pro)-3(g)-4(re)5(ss)-5( mo)-2(d)5(e)5(l)] TJ
+[2] EMC /Artifact BMC 1 0.953 0.839 rg
+[2] MCID 11
+[2] BDC 228.25 673.67 155.63 14 re
+[2] EMC  /Span
+[2] MCID 12/Lang (en-US)
+[2] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[2] MCID 13/Lang (en-US)
+[2] Exa)-3(ct)4( in)-6(p)-5(u)3(ts an)-5(d)5( f)4(o)-3(rmul)6(a are)4( no)-4(t )4(y)-3(e)5(t )] TJ
+[2] d)5(e)5(cide)-3(d)5(.)] TJ
+[2] EMC /Artifact BMC 0 g
+[2] MCID 14/Lang (en-US)
+[2] R)-4(e)5(sul)5(t )4(p)-5(u)3(b)-5(l)4(i)-4(cati)-3(o)-3(n)] TJ
+[2] EMC /Artifact BMC 1 0.953 0.839 rg
+[2] MCID 15
+[2] BDC 228.25 640.17 155.63 14 re
+[2] EMC  /Span
+[2] MCID 16/Lang (en-US)
+[2] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[2] MCID 17/Lang (en-US)
+[2] I)4(mm)-4(e)5(d)5(i)-4(ate)3( vs)-2( t)4(e)5(ach)-3(e)5(r)] TJ
+[2] p)-5(u)3(b)-5(l)4(i)-4(sh)-6(e)5(d)5( )] TJ
+[2] v)-3(i)-4(s)8(i)-4(b)5(i)-4(l)4(i)-4(ty i)-4(s )11(n)-4(o)-3(t )4(y)-3(e)5(t )4(d)5(e)5(cide)-3(d)-5(.)] TJ
+[2] EMC /Artifact BMC 0 g
+[2] EMC  /Span
+[2] MCID 18/Lang (en-US)
+[2] EMC  /Span
+[2] MCID 19/Lang (en-US)
+[2] Purpose of V)-4(ersion )4(0.)3(5)] TJ
+[2] EMC  /Span
+[2] MCID 20/Lang (en-US)
+[2] V)-4(e)3(rsion )3(0.5 )5(is )4(a de)-6(li)4(ber)-6(at)-2(e)3( )3(re)4(se)3(t of the)-6( )3(accou)-2(nt and)-3( )3(au)-4(thentication)-2( )3(conce)4(pt. T)4(he )5(pr)-9(e)3(v)-4(ious de)3(sign m)-2(ad)-2(e)3( )3(the )] TJ
+[2] C)-2(lassora UID )3(itse)4(lf re)6(s)-8(ponsible)4( )3(f)-3(or )3(login, )4(wh)-3(i)-8(ch c)4(re)4(at)-2(e)3(d unn)-3(e)3(ce)4(ssa)-10(ry)-3( )3(tec)4(hnica)-2(l )6(com)-2(ple)5(x)4(it)-8(y)-4(. )3(This )6(v)-4(e)3(rsion )3(ke)4(e)3(ps )] TJ
+[2] the )4(usef)-2(ul Classora I)5(D )-5(wh)-3(il)4(e)3( )3(se)3(pa)-2(rating)-4( )3(ide)3(nti)-10(f)-3(ication from)-6( )3(au)-4(thenti)9(cation.)] TJ
+[2] EMC  /Span
+[2] MCID 21/Lang (en-US)
+[2] The)5( )3(objec)4(tiv)-4(e)3( )3(is)-7( )3(to cr)4(e)-5(at)-2(e)3( )3(a platf)-3(orm)-3( )3(tha)-4(t i)3(s )3(simp)-3(le)6( )3(e)3(nou)-4(gh)-2( )3(f)-3(or )3(the )4(c)-7(urrent proje)6(ct )3(stag)-4(e)3(, )3(s)-8(af)-5(e)3( )3(an)-3(d ma)-3(inta)-3(inab)-3(le)6( )] TJ
+[2] e)3(nou)-4(gh)-2( )3(f)-3(or )3(a se)4(rious prototy)-5(pe, )6(an)-3(d structu)-2(r)10(e)3(d so )5(tha)-4(t fu)-3(tu)-3(re)4( )3(school)] TJ
+[2] le)6(v)-4(e)3(l )6(ad)-2(m)-3(inistration)-2( )3(can be )6(ad)-2(ded )] TJ
+[2] with)-3(ou)-2(t re)6(desi)3(gn)-2(ing the )5(e)3(ntire)-6( )3(produ)-3(ct.)] TJ
+[2] EMC  /Span
+[2] MCID 22/Lang (en-US)
+[2] V)-4(e)3(rsion )3(0.5 )5(sup)-3(e)3(rse)4(de)-6(s )3(the )4(previou)-4(s )3(login )3(de)-6(cisi)3(on in )4(V)-4(e)3(rsion )3(0.4. )-4(Oth)-3(e)3(r )4(produ)-3(ct )3(ide)3(as re)-4(m)-3(ain prov)-5(isional )] TJ
+[2] un)-3(le)6(ss )4(chan)-3(ged )4(by)-5( )3(this docum)-4(e)3(nt or )4(later)4( )3(pl)-7(an)-3(ning)-3( )3(dec)3(isions.)] TJ
+[2] EMC  /Span
+[2] MCID 23/Lang (en-US)
+[2] Product Identity)] TJ
+[2] EMC  /Span
+[2] MCID 24/Lang (en-US)
+[2] B)4(ran)-2(d / produ)-2(ct )3(/)-3( )3(we)-8(bsite )6(/)-3( )3(ap)-2(plic)4(at)-2(ion: Classora)] TJ
+[2] EMC  /Span
+[2] MCID 25/Lang (en-US)
+[2] S)4(pe)-6(ll)6(ing: C)] TJ
+[2] EMC  /Span
+[2] MCID 26/Lang (en-US)
+[2] P)-3(rodu)-3(ct )3(ty)-5(pe: )6(W)-2(e)3(b application / web )4(platf)-4(orm)] TJ
+[2] EMC  /Span
+[2] MCID 27/Lang (en-US)
+[2] C)-2(urrent target: )4(Indiv)-3(i)-8(du)-3(al/)-2(priv)-3(at)-2(e)3( )3(teache)3(rs )4(an)-3(d the)3(ir )5(stu)-2(dents)] TJ
+[2] EMC  /Span
+[2] MCID 28/Lang (en-US)
+[2] Fut)-3(ure )4(ta)-2(rget: )5(S)4(choo)-9(l)-6(s, )4(orga)-3(nisat)-2(ions, te)5(achers, )5(stu)-2(dents, )4(an)-3(d parents)] TJ
+[2] EMC  /Span
+[2] MCID 29/Lang (en-US)
+[2] C)-2(urrent stage: )4(The)5(or)-8(e)3(tical )5(re)4(f)-3(inement be)5(f)-3(o)-9(re)4( )3(e)-5(x)4(e)3(cution)-2( )3(plann)-2(ing)] TJ
+[2] EMC  /Span
+[2] MCID 30/Lang (en-US)
+[2] W)-2(orking pri)3(nciple)6(:)-8( )3(B)-5(uild the)4( )3(simp)-3(le)6(st use)3(f)-12(ul c)4(ore)3( )3(f)-3(irst; )4(k)-7(e)3(e)3(p fu)-4(tu)-3(re)4( )3(e)3(x)4(pa)-2(nsion as a s)-6(e)3(pa)-2(rate )4(lay)-4(e)3(r.)] TJ
+[2] EMC  /Span
+[2] MCID 31/Lang (en-US)
+[2] Product )4(V)-2(isi)-2(on)] TJ
+[2] EMC  /Span
+[2] MCID 32/Lang (en-US)
+[2] C)-2(lassora is)3( )3(a connec)3(t)-9(e)3(d academ)-2(ic )5(m)-3(an)-3(ag)-3(e)3(m)-3(e)3(nt platf)-3(orm)-3( )3(intended )5(to ma)-4(ke)4( )3(the )4(re)-5(lationship be)3(tw)-3(e)3(e)3(n )] TJ
+[2] teache)3(rs )4(an)-3(d students more )4(orga)-3(nised, )5(tran)-3(sparent, and usefu)-5(l.)] TJ
+[2] EMC  /Span
+[2] MCID 33/Lang (en-US)
+[2] A te)4(acher )4(shou)-3(ld )5(be)-6( )3(ab)-2(le)6( )3(to ma)-4(na)-3(ge )4(cl)4(assro)-10(om)-4(s, )4(stu)-2(dents, )4(sche)3(du)-3(le)6(s, )4(e)3(x)4(am)-5(inat)-3(ions, hom)-2(e)3(wo)-2(rk, )5(re)4(sults, )] TJ
+[2] notes, )4(progress, )5(an)-3(d n)-8(otif)-3(ications from)-5( )3(one )4(place)4(. )3(S)4(tu)-3(dents )3(shou)-3(ld )-4(ha)-3(v)-4(e)3( )3(their )6(ow)-2(n dashb)-3(oard conta)-3(ining the )] TJ
+[2] inf)-3(orm)-3(at)-2(ion re)6(le)6(v)-4(an)-3(t to )4(them)-2(.)] TJ
+[2] EMC  /Span
+[2] MCID 34/Lang (en-US)
+[2] C)-2(lassora is)3( )3(not initiall)4(y)-4( )3(intended )5(to be)-4( )3(a comp)-3(le)6(te )5(school)-6( )3(E)4(R)-3(P)-3(. )3(The)5( )-6(f)-3(irst )4(usef)-2(ul version )4(is )4(a te)3(acher)] TJ
+[2] ce)4(ntred )] TJ
+[2] platf)-4(orm)-3( )3(tha)-4(t c)3(an)-3( )3(later)4( )3(grow)-3( )3(into an orga)-2(nisat)-2(ion)] TJ
+[2] le)6(v)-4(e)3(l )6(platf)-4(orm)-3(.)] TJ
+[3] Artifact
+[3] Attached [/Top]/Type/Pagination/Subtype/Header
+[3] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[3] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[3] EMC /Artifact
+[3] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[3] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[3] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[3] Pa)-4(g)-3(e )] TJ
+[3] EMC  /Span
+[3] MCID 0/Lang (en-US)
+[3] Major )3(A)-5(rch)4(i)-6(tectural Principle )] TJ
+[3] Id)4(entity)-4( Is No)3(t Au)4(thent)-4(ication)] TJ
+[3] EMC  /Span
+[3] MCID 1/Lang (en-US)
+[3] Co)4(re )4(p)-3(rin)-2(c)-2(ip)-2(le)4(:)-4( )3( )] TJ
+[3] A Classora I)3(D )3(ide)3(ntif)-4(ie)4(s )3(a p)-9(e)3(rson i)3(nside )5(the)-8( )3(C)-2(lassora syst)-2(e)3(m)-3(. )3(It )5(is )4(not th)-10(e)3( )3(cre)5(dential)-7( )3(used to )] TJ
+[3] sign in.)] TJ
+[3] EMC  /Span
+[3] MCID 2/Lang (en-US)
+[3] C)-2(onceptua)-3(l )6(f)-3(low:)] TJ
+[3] EMC  /Span
+[3] MCID 3/Lang (en-US)
+[3] Au)-3(thentication)-2( )] TJ
+[3] U)-4(se)3(r )4(Accoun)-3(t )] TJ
+[3] C)-2(lassora Prof)-4(il)4(e)3( )] TJ
+[3] R)-3(ole)6( )3(&)-4( )3(P)-3(e)3(rm)-2(i)-8(ssions )] TJ
+[3] C)-2(lassora I)5(D)] TJ
+[3] EMC  /Span
+[3] MCID 4/Lang (en-US)
+[3] Au)-3(thentication)-2( )3(an)-3(swers: )5(
+[3] Are )4(y)-4(ou)-2( )3(re)4(all)3(y)-4( )3(thi)-10(s )3(accou)-2(nt own)-3(e)3(r?)-2(
+[3] EMC  /Span
+[3] MCID 5/Lang (en-US)
+[3] C)-2(lassora I)5(D )3(an)-3(swers)-7(: )3(
+[3] W)-4(hich pe)5(rson or )5(re)-5(c)-7(ord i)3(s )3(this inside)5( )3(C)-2(lass)-7(ora?)-5(
+[3] EMC  /Span
+[3] MCID 6/Lang (en-US)
+[3] R)-3(ole)6( )3(an)-3(swers: )5(
+[3] W)-4(ha)-3(t k)3(ind of user )5(are )5(y)-4(ou)-2(?)-3(
+[3] EMC  /Span
+[3] MCID 7/Lang (en-US)
+[3] P)-3(e)3(rm)-2(issions )4(an)-3(swer: )5(
+[3] W)-4(ha)-3(t are)4( )3(y)-4(ou)-2( )3(all)3(ow)-2(e)3(d to )4(se)3(e)3( )3(or)-8( )3(chan)-3(ge?
+[3] EMC  /Span
+[3] MCID 8/Lang (en-US)
+[3] This )6(se)3(pa)-2(ration)-2( )3(av)-6(oids turning)-3( )3(the )4(C)-2(lassora I)-4(D )3(into a c)3(ust)-2(om)-4( )3(au)-4(thentication)-2( )3(m)-3(e)3(chan)-3(ism )10(an)-3(d k)3(e)3(e)3(ps the)3( )] TJ
+[3] sy)-4(stem compa)-4(tible)5( )3(with)-3( )3(a stan)-3(da)-2(rd aut)-2(henti)10(cation prov)-5(ide)3(r )4(such as S)5(up)-3(ab)-2(ase )4(Au)-3(th.)] TJ
+[3] EMC  /Span
+[3] MCID 9/Lang (en-US)
+[3] Accoun)4(t a)-3(n)-3(d )4(Login Mo)3(del)] TJ
+[3] EMC  /Span
+[3] MCID 10/Lang (en-US)
+[3] P)4(rimary sign)] TJ
+[3] in)6( me)4(thods)] TJ
+[3] EMC  /Span
+[3] MCID 11/Lang (en-US)
+[3] Te)6(acher:)-7( )3(e)3(m)-3(ail )4(
+[3] pa)-2(s)-8(sword)-2( )3(or )3(G)3(oogle)4( )3(sign)] TJ
+[3] i)-8(n.)] TJ
+[3] EMC  /Span
+[3] MCID 12/Lang (en-US)
+[3] S)4(tu)-3(dent: )3(e)3(m)-3(ail )4(
+[3] pa)-2(ssword or )3(G)3(oogle)4( )3(sign)] TJ
+[3] i)-8(n.)] TJ
+[3] EMC  /Span
+[3] MCID 13/Lang (en-US)
+[3] P)-3(arent: fu)-3(tu)-3(re)4( )3(accou)-2(nt; au)-3(thentication)-2( )3(m)-3(e)3(t)9(hod re)4(m)-3(ains to be)5( )3(f)-3(inalize)4(d.)] TJ
+[3] EMC  /Span
+[3] MCID 14/Lang (en-US)
+[3] P)-3(assw)-4(ord r)3(e)3(se)3(t i)3(s )3(ha)-12(ndle)4(d throug)-3(h the )6(au)-4(thentication)-2( )3(sy)-4(stem.)] TJ
+[3] EMC  /Span
+[3] MCID 15/Lang (en-US)
+[3] E)4(m)-3(ail )4(v)-4(e)3(rificat)-2(ion i)3(s )-5(m)-3(an)-3(da)-2(tor)9(y)-4( )3(f)-3(or )3(new account)-2(s.)] TJ
+[3] EMC  /Span
+[3] MCID 16/Lang (en-US)
+[3] Opt)-2(iona)-2(l )6(e)3(m)-3(ail )4(OTP /)-12( )3(pa)-2(sswordle)3(ss )4(re)4(cov)-3(e)3(r)-8(y)-4( )3(m)-3(ay)-6( )3(be )5(consider)4(e)3(d l)-4(at)-2(e)3(r, )4(bu)-3(t i)3(s )3(not re)4(qu)-3(ire)-4(d for the )6(f)-3(irst )4(MV)-5(P)-3(.)] TJ
+[3] EMC  /Span
+[3] MCID 17/Lang (en-US)
+[3] What )5(the )5(Classora )3(ID)-2( doe)4(s not )4(do)] TJ
+[3] EMC  /Span
+[3] MCID 18/Lang (en-US)
+[3] It )5(does)-6( )3(not au)-4(thenticate )4(the )4(user.)] TJ
+[3] EMC  /Span
+[3] MCID 19/Lang (en-US)
+[3] It )5(does)-6( )3(not re)4(plac)-8(e)3( )3(t)-9(he )5(pa)-2(ssword.)] TJ
+[3] EMC  /Span
+[3] MCID 20/Lang (en-US)
+[3] It )5(does)-6( )3(not e)4(x)4(pos)-10(e)3( )3(or)-8( )3(m)-3(ap)-2( )3(dire)4(ctl)3(y)-4( )3(to a hidde)3(n au)-3(thentication)-2( )3(e)3(m)-3(ail )4(in the)4( )3(b)-9(rowser.)] TJ
+[3] EMC  /Span
+[3] MCID 21/Lang (en-US)
+[3] It )5(is)-7( )3(not a se)5(cr)-7(e)3(t.)] TJ
+[3] EMC  /Span
+[3] MCID 22/Lang (en-US)
+[3] It )5(is)-7( )3(not tre)3(at)-2(e)3(d as )3(a )-8(pa)-2(ssword or )3(se)3(curity)-5( )3(toke)3(n.)] TJ
+[3] EMC  /Span
+[3] MCID 23/Lang (en-US)
+[3] What )5(the )5(Classora )3(ID)-2( doe)4(s)] TJ
+[3] EMC  /Span
+[3] MCID 24/Lang (en-US)
+[3] P)-3(rov)-4(ide)3(s )3(a per)4(m)-3(an)-3(e)3(nt Classora)-2( )3(ide)3(ntity)-6(.)] TJ
+[3] EMC  /Span
+[3] MCID 25/Lang (en-US)
+[3] He)5(lps)-6( )3(teache)3(rs)-8( )3(an)-3(d adm)-4(inistrators ide)4(ntif)-4(y)4( )3(a per)4(son.)] TJ
+[3] EMC  /Span
+[3] MCID 26/Lang (en-US)
+[3] C)-2(an)-3( )3(be )5(used for student and teache)3(r )4(r)-8(e)3(cor)-7(ds.)] TJ
+[3] EMC  /Span
+[3] MCID 27/Lang (en-US)
+[3] C)-2(an)-3( )3(be )5(display)-4(e)3(d on )-5(prof)-3(il)4(e)3(s )3(an)-3(d form)-5(al )4(docu)-2(m)-3(e)3(nts.)] TJ
+[3] EMC  /Span
+[3] MCID 28/Lang (en-US)
+[3] C)-2(an)-3( )3(be )5(used i)4(n adm)-5(i)-8(nistrat)-2(ion and se)4(arch workf)-3(lows where)6( )3(ap)-2(propriat)-2(e)3(.)] TJ
+[3] EMC  /Span
+[3] MCID 29/Lang (en-US)
+[3] R)-3(e)3(m)-3(ains stab)-2(le)6( )3(wh)-3(e)-5(n a student c)3(ha)-3(ng)-2(e)3(s )3(te)-6(acher, )5(cl)4(ass, or )-4(cl)4(assr)-10(oom)-4(.)] TJ
+[4] Artifact
+[4] Attached [/Top]/Type/Pagination/Subtype/Header
+[4] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[4] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[4] EMC /Artifact
+[4] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[4] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[4] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[4] Pa)-4(g)-3(e )] TJ
+[4] EMC  /Span
+[4] MCID 0/Lang (en-US)
+[4] Classor)4(a )-3(ID Con)3(cept)] TJ
+[4] EMC  /Span
+[4] MCID 1/Lang (en-US)
+[4] Te)6(acher:)-7( )3(TC
+[4] ran)-12(dom)-4(ize)4(d digits )4(
+[4] ch)-9(ara)-3(cte)4(rs.)] TJ
+[4] EMC  /Span
+[4] MCID 2/Lang (en-US)
+[4] S)4(tu)-3(dent: )3(S)-4(T )6(
+[4] ran)-12(dom)-4(ize)4(d digits )4(
+[4] ch)-9(ara)-3(cte)4(rs.)] TJ
+[4] EMC  /Span
+[4] MCID 3/Lang (en-US)
+[4] P)-3(arent: PT )4(
+[4] ran)-2(dom)-4(ize)4(d digits )4(
+[4] cha)-11(racters )6(\(f)-5(ut)-3(ure; )4(not nec)3(e)3(ssarily part of)-3( )3(MV)-5(P)-3(\).)] TJ
+[4] EMC  /Span
+[4] MCID 4/Lang (en-US)
+[4] E)4(x)4(am)-5(ple)5(s:)] TJ
+[4] EMC  /Span
+[4] MCID 5/Lang (en-US)
+[4] Te)6(acher:)-7( )3(TC583920)4(1)-8(74625)] TJ
+[4] EMC  /Span
+[4] MCID 6/Lang (en-US)
+[4] S)4(tu)-3(dent: )3(S)-4(T7)3(41638)3(2)-8(05914)] TJ
+[4] EMC  /Span
+[4] MCID 7/Lang (en-US)
+[4] Fut)-3(ure )4(P)-3(arent: PT927)-5(46183)3(0512)] TJ
+[4] EMC  /Span
+[4] MCID 8/Lang (en-US)
+[4] The)5( )3(e)-5(x)4(act gene)4(ration)-2( )-6(m)-3(e)3(chan)-3(ism is )4(a te)3(chnical )4(im)-2(ple)5(m)-3(e)3(nta)-4(tion de)-5(cisi)3(on for the )5(e)-5(x)4(e)3(cutio)-11(n stage. )4(The)5( )] TJ
+[4] theore)4(tical )5(r)-8(e)3(qu)-3(ire)5(m)-3(e)3(nts are )6(un)-3(iqueness, )6(p)-9(e)3(rm)-2(an)-3(e)3(nce,)3( )3(non)] TJ
+[4] se)3(qu)-3(e)3(ntia)-3(l )6(gene)3(ration)-2(, )3(an)-3(d )-6(se)3(rv)-3(e)3(r)] TJ
+[4] side)3(/)-3(da)-2(ta)-2(ba)-2(se)] TJ
+[4] side)3( )3(cre)5(at)-2(ion.)] TJ
+[4] EMC  /Span
+[4] MCID 9/Lang (en-US)
+[4] User )3(an)-3(d )4(R)-7(ole Mod)3(el)] TJ
+[4] EMC  /Span
+[4] MCID 10/Lang (en-US)
+[4] S)7(tudent)] TJ
+[4] EMC  /Span
+[4] MCID 11/Lang (en-US)
+[4] Ow)-3(n accoun)-2(t and prof)-3(il)4(e)3(.)] TJ
+[4] EMC  /Span
+[4] MCID 12/Lang (en-US)
+[4] Ow)-3(n pe)4(rm)-2(an)-3(e)3(nt Classora)-2( )3(ID)3(.)] TJ
+[4] EMC  /Span
+[4] MCID 13/Lang (en-US)
+[4] C)-2(an)-3( )3(re)4(qu)-3(e)3(st to )4(join )3(c)-7(lassroom)-2(s.)] TJ
+[4] EMC  /Span
+[4] MCID 14/Lang (en-US)
+[4] C)-2(an)-3( )3(v)-4(ie)4(w au)-4(thorised )5(aca)-2(demic )3(inf)-3(orm)-3(at)-2(ion)9(.)] TJ
+[4] EMC  /Span
+[4] MCID 15/Lang (en-US)
+[4] C)-2(an)-3( )3(ha)-3(v)-4(e)3( )3(m)-3(ultiple)5( )3(c)-7(urrent te)5(achers.)] TJ
+[4] EMC  /Span
+[4] MCID 16/Lang (en-US)
+[4] C)-2(an)-3( )3(re)4(ta)-2(in historic)4(al )-5(teache)3(r/)-2(cl)4(assroom)-5( )3(re)4(l)-6(at)-2(ionships.)] TJ
+[4] EMC  /Span
+[4] MCID 17/Lang (en-US)
+[4] T)6(e)3(ac)4(he)-5(r)] TJ
+[4] EMC  /Span
+[4] MCID 18/Lang (en-US)
+[4] Ow)-3(n accoun)-2(t and prof)-3(il)4(e)3(.)] TJ
+[4] EMC  /Span
+[4] MCID 19/Lang (en-US)
+[4] Ow)-3(n pe)4(rm)-2(an)-3(e)3(nt Classora)-2( )3(ID)3(.)] TJ
+[4] EMC  /Span
+[4] MCID 20/Lang (en-US)
+[4] Au)-3(tom)-4(at)-2(icall)5(y)-4( )3(re)4(ce)4(iv)-3(e)3(s )3(an)-3( )3(indepe)4(ndent te)4(a)-11(cher)4( )3(wo)-2(rkspace)3(.)] TJ
+[4] EMC  /Span
+[4] MCID 21/Lang (en-US)
+[4] C)-2(an)-3( )3(cre)5(at)-2(e)3( )3(an)-3(d ma)-3(na)-3(ge )4(cl)4(assroom)-5(s.)] TJ
+[4] EMC  /Span
+[4] MCID 22/Lang (en-US)
+[4] C)-2(an)-3( )3(m)-3(an)-3(ag)-3(e)3( )3(connecte)5(d students and aca)-2(demic )3(activ)-5(itie)4(s.)] TJ
+[4] EMC  /Span
+[4] MCID 23/Lang (en-US)
+[4] Independent )5(Te)6(ac)4(her)-4( / )5(In)-3(div)-5(idu)-2(al)9( Admin)-3(istrat)3(ion)] TJ
+[4] EMC  /Span
+[4] MCID 24/Lang (en-US)
+[4] A te)4(acher )4(operates)-6( )3(an)-3( )-6(indepe)4(ndent te)4(achin)-2(g )-7(wo)-2(rkspace)3(. )3(In )4(the )4(f)-3(irst )-4(produ)-3(ct, )4(this workspace )5(is )4(the)-8( )3(cl)4(ose)3(st)-9( )] TJ
+[4] e)3(qu)-3(iv)-3(ale)4(nt to an adm)-4(i)10(nistrat)-2(or )3(area for that)-3( )3(teache)3(r
+[4] s )4(ow)-2(n sc)3(ope.)] TJ
+[4] EMC  /Span
+[4] MCID 25/Lang (en-US)
+[4] S)7(chool )3(Ad)-2(min)-3(is)7(tra)4(tion )] TJ
+[4] future)] TJ
+[4] EMC  /Span
+[4] MCID 26/Lang (en-US)
+[4] A fu)-4(tu)-3(re)4( )3(school)] TJ
+[4] le)6(v)-4(e)3(l )6(a)-11(dm)-4(inistrator m)-2(a)7(y)-4( )3(m)-3(an)6(ag)-3(e)3( )3(teache)3(rs, )4(stu)-2(dent)-8(s, )4(pa)-2(re)4(nts, organ)-3(isation)] TJ
+[4] wide )3(se)3(tting)-3(s, )4(an)-3(d )] TJ
+[4] permissions.)] TJ
+[4] EMC  /Span
+[4] MCID 27/Lang (en-US)
+[4] P)4(are)6(nt )] TJ
+[4] futur)-7(e)] TJ
+[4] EMC  /Span
+[4] MCID 28/Lang (en-US)
+[4] A parent acc)3(ou)-2(nt is )5(int)-10(e)3(nded pri)4(m)-3(arily)-2( )3(as a c)-6(ontroll)3(e)3(d v)-2(ie)4(wer )4(of)-3( )3(inf)-13(orm)-3(at)-2(ion for one)3( )3(or )3(m)-3(ore)3( )3(chil)4(dren.)-7( )3(P)-3(arent )] TJ
+[4] v)-4(e)3(rificat)-2(ion and chil)4(d association m)-2(ust)-2( )3(be )5(ha)-3(ndle)4(d e)5(x)4(p)-9(li)4(citl)4(y)-4(.)] TJ
+[5] Artifact
+[5] Attached [/Top]/Type/Pagination/Subtype/Header
+[5] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[5] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[5] EMC /Artifact
+[5] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[5] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[5] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[5] Pa)-4(g)-3(e )] TJ
+[5] EMC  /Span
+[5] MCID 0/Lang (en-US)
+[5] Reg)-4(istration)3( an)4(d )4(O)-5(nb)3(oa)-2(r)-3(ding)] TJ
+[5] EMC  /Span
+[5] MCID 1/Lang (en-US)
+[5] T)6(e)3(ac)4(he)-5(r )4(r)-6(e)3(gi)-2(strat)4(ion)] TJ
+[5] EMC  /Span
+[5] MCID 2/Lang (en-US)
+[5] Te)6(acher )4(cr)-7(e)3(at)-2(e)3(s )3(an)-3( )-6(accou)-2(nt using)-3( )3(e)3(m)-3(ail )4(
+[5] pa)-2(ssword or )3(G)3(oogle)4( )3(si)-7(gn)] TJ
+[5] in.)] TJ
+[5] EMC  /Span
+[5] MCID 3/Lang (en-US)
+[5] The)5( )3(au)-4(thentication)-2( )3(sy)-4(stem cr)3(e)3(at)-2(e)3(s )3(the )4(ac)-10(coun)-2(t i)3(dentity)-4(.)] TJ
+[5] EMC  /Span
+[5] MCID 4/Lang (en-US)
+[5] C)-2(lassora c)3(re)4(at)-2(e)3(s )3(th)-11(e)3( )3(teache)3(r )4(prof)-3(il)-5(e)3(.)] TJ
+[5] EMC  /Span
+[5] MCID 5/Lang (en-US)
+[5] C)-2(lassora assigns a pe)4(rm)-2(an)-3(e)3(nt T)4(e)3(acher )4(C)-2(l)-6(assora)-3( )3(ID)3(.)] TJ
+[5] EMC  /Span
+[5] MCID 6/Lang (en-US)
+[5] Te)6(acher )4(com)-2(ple)5(tes)-6( )-6(prof)-3(il)4(e)3( )3(inf)-3(orm)-3(at)-2(ion.)] TJ
+[5] EMC  /Span
+[5] MCID 7/Lang (en-US)
+[5] An indepe)4(ndent te)4(a)-11(cher)4( )3(wo)-2(rkspace)3( )3(is )-4(cre)-3(at)-2(e)3(d au)-2(tom)-4(at)-2(icall)5(y)-4(.)] TJ
+[5] EMC  /Span
+[5] MCID 8/Lang (en-US)
+[5] S)7(tudent )3(re)4(gi)-2(str)-6(ation)] TJ
+[5] EMC  /Span
+[5] MCID 9/Lang (en-US)
+[5] S)4(tu)-3(dent )3(cre)5(at)-2(e)3(s )3(an)-3( )-6(accou)-2(nt using)-3( )3(e)3(m)-3(ail )4(
+[5] pa)-2(ssword or )3(G)3(oogle)4( )3(si)-7(gn)] TJ
+[5] in.)] TJ
+[5] EMC  /Span
+[5] MCID 10/Lang (en-US)
+[5] The)5( )3(au)-4(thentication)-2( )3(sy)-4(stem cr)3(e)3(at)-2(e)3(s )3(the )4(ac)-10(coun)-2(t i)3(dentity)-4(.)] TJ
+[5] EMC  /Span
+[5] MCID 11/Lang (en-US)
+[5] C)-2(lassora c)3(re)4(at)-2(e)3(s )3(th)-11(e)3( )3(stu)-2(dent )3(prof)-3(il)4(e)3(.)] TJ
+[5] EMC  /Span
+[5] MCID 12/Lang (en-US)
+[5] C)-2(lassora assigns a pe)4(rm)-2(an)-3(e)3(nt S)5(tu)-3(dent )3(C)-2(lassora I)5(D.)] TJ
+[5] EMC  /Span
+[5] MCID 13/Lang (en-US)
+[5] S)4(tu)-3(dent )3(com)-2(ple)5(tes )-3(prof)-3(il)4(e)3( )3(inf)-3(orm)-3(at)-2(ion.)] TJ
+[5] EMC  /Span
+[5] MCID 14/Lang (en-US)
+[5] S)4(tu)-3(dent )3(m)-3(ay)-6( )3(re)4(m)-3(ain)7( )3(un)-3(associat)-2(e)3(d with a te)4(acher.)] TJ
+[5] EMC  /Span
+[5] MCID 15/Lang (en-US)
+[5] S)4(tu)-3(dent )3(can l)3(at)-2(e)3(r )4(r)-8(e)-5(qu)-3(e)3(st to )4(join )3(a cl)5(assro)-10(om)-4(.)] TJ
+[5] EMC  /Span
+[5] MCID 16/Lang (en-US)
+[5] P)4(are)6(nt r)-3(e)3(gi)-2(stra)-4(tion )] TJ
+[5] future)] TJ
+[5] EMC  /Span
+[5] MCID 17/Lang (en-US)
+[5] P)-3(arent onboa)-2(rding sh)9(ou)-2(ld )5(incl)4(ud)-3(e)3( )3(v)-4(e)3(rificat)-2(ion and association)-3( )3(with)-3( )3(a chil)4(d. A )4(stu)-2(dent )3(C)-2(l)-6(assora)-3( )3(ID)3( )3(alone )5(m)-3(ust)-2( )] TJ
+[5] not be )6(tre)3(at)-2(e)3(d as )3(proo)-10(f)-3( )3(of)-3( )3(pa)-2(re)4(nta)-4(l )6(au)-4(thority)-6(.)] TJ
+[5] EMC  /Span
+[5] MCID 18/Lang (en-US)
+[5] Pro)4(fil)-3(e and Accou)5(nt Infor)-5(mation)] TJ
+[5] EMC  /Span
+[5] MCID 19/Lang (en-US)
+[5] A profile)4( )3(is )4(conc)-8(e)3(ptu)-4(all)3(y)-4( )3(se)3(pa)-2(rate )4(f)-3(rom)-3( )3(au)-4(thentication)-2( )3(cre)5(dentials.)] TJ
+[5] EMC  /Span
+[5] MCID 20/Lang (en-US)
+[5] Au)-3(thentication)-2( )3(accou)-2(nt: e)4(m)-3(ail, )5(pa)-2(ssword/s)3(e)3(ssion, )3(an)-3(d au)-2(thentication)-2( )3(stat)-3(e)3(.)] TJ
+[5] EMC  /Span
+[5] MCID 21/Lang (en-US)
+[5] C)-2(lassora profile)5(: )3(na)-12(m)-3(e)3(, )3(C)-2(lassora I)5(D, )4(rol)-5(e)3(, )-5(cl)4(ass, optiona)-3(l )6(phot)-2(o, )-6(an)-3(d other)3( )3(ap)-2(prov)-5(e)3(d i)3(nf)-4(orm)-3(at)-2(ion.)] TJ
+[5] EMC  /Span
+[5] MCID 22/Lang (en-US)
+[5] Acad)-3(e)3(m)-3(ic )5(re)4(lationsh)-11(ips: )4(teache)3(rs, )4(c)-7(lassroom)-2(s, )4(e)3(x)4(am)-5(inat)-3(ions, hom)-2(e)3(wo)-2(rk, )5(re)4(sults, )3(an)-3(d progre)4(ss.)] TJ
+[5] EMC  /Span
+[5] MCID 23/Lang (en-US)
+[5] P)-3(riv)-3(at)-2(e)3(/)-3(conta)-3(ct )3(inf)-3(or)10(m)-3(at)-2(ion: r)3(e)3(stricte)5(d acc)-6(ording to rol)5(e)3( )3(an)-3(d pe)4(r)-8(m)-3(issions.)] TJ
+[5] EMC  /Span
+[5] MCID 24/Lang (en-US)
+[5] Cre)3(d)-3(e)4(ntial )5(rule)3(:)-4( )3( )] TJ
+[5] P)-3(ass)-10(wo)-2(rds )3(are )5(nev)-2(e)3(r )4(pa)-2(rt o)-6(f)-3( )3(the )4(C)-2(lassora profile)5( )3(a)-11(nd are )5(nev)-2(e)3(r )4(stored)-6( )3(as )-8(ordina)-2(ry)-3( )3(prof)-3(il)4(e)3( )] TJ
+[5] da)-2(ta)-2(.)] TJ
+[5] EMC  /Span
+[5] MCID 25/Lang (en-US)
+[5] T)3(ea)-2(cher)] TJ
+[5] St)-3(ud)3(ent Re)-2(lationship)] TJ
+[5] EMC  /Span
+[5] MCID 26/Lang (en-US)
+[5] A student ma)-4(y)-4( )3(ha)-3(v)-4(e)3( )3(m)-3(ultiple)5( )3(teache)3(rs.)] TJ
+[5] EMC  /Span
+[5] MCID 27/Lang (en-US)
+[5] A te)4(acher)-7( )3(m)-3(ay)-6( )3(m)-3(an)-3(a)7(ge )4(m)-3(ultiple)5( )3(cl)4(assroom)-15(s.)] TJ
+[5] EMC  /Span
+[5] MCID 28/Lang (en-US)
+[5] A student ma)-4(y)-4( )3(join )3(m)-3(ultiple)5( )3(cl)4(assroom)-5(s )3(ta)-2(ug)-4(ht by)-4( )3(the )4(sam)-5(e)3( )3(teache)3(r.)] TJ
+[5] EMC  /Span
+[5] MCID 29/Lang (en-US)
+[5] A cl)6(assroom)-5( )3(ha)-3(s )3(a te)-5(acher/ow)-5(ner )5(in the)4( )3(init)-9(ial )4(indepe)4(ndent)] TJ
+[5] teach)-9(e)3(r )4(m)-3(odel)5(.)] TJ
+[5] EMC  /Span
+[5] MCID 30/Lang (en-US)
+[5] S)4(tu)-3(dents )3(re)4(qu)-3(e)3(st me)-7(m)-3(bers)3(hip rather )5(tha)-4(n be)4(com)-2(ing m)-2(e)3(m)-3(bers)3( )3(simp)-3(ly by)-4( )3(se)3(arching)-3(.)] TJ
+[6] Artifact
+[6] Attached [/Top]/Type/Pagination/Subtype/Header
+[6] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[6] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[6] EMC /Artifact
+[6] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[6] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[6] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[6] Pa)-4(g)-3(e )] TJ
+[6] EMC  /Span
+[6] MCID 0/Lang (en-US)
+[6] Te)6(achers)-7( )3(can also )4(in)-9(v)-4(ite)3( )3(stu)-2(dents )3(by)-5( )3(se)3(arching)-3( )3(f)-3(or )3(a Classora)-3( )3(ID)3(.)] TJ
+[6] EMC  /Span
+[6] MCID 1/Lang (en-US)
+[6] Te)6(acher)-7( )3(ap)-2(prov)-5(al )4(cre)-3(at)-2(e)3(s )3(the )4(activ)-5(e)3( )3(cl)4(assro)-10(om)-4( )3(re)4(lationship.)] TJ
+[6] EMC  /Span
+[6] MCID 2/Lang (en-US)
+[6] The)5( )3(sam)-5(e)3( )3(stu)-2(dent )3(ca)-10(n hold )5(only)-3( )3(one )4(activ)-5(e)3( )-6(m)-3(e)3(m)-3(bers)3(hip in )4(the )4(sa)-11(m)-3(e)3( )3(cl)4(assroom)-5( )3(at)-2( )3(a tim)-2(e)3(.)] TJ
+[6] EMC  /Span
+[6] MCID 3/Lang (en-US)
+[6] L)5(e)3(av)-6(ing a cl)6(assroom)-5( )-6(e)3(nds activ)-4(e)3( )3(m)-3(e)3(m)-3(bers)3(hip but)-2( )3(pres)3(e)3(rv)-3(e)3(s )3(re)-5(le)6(v)-14(an)-3(t historic)4(al )4(re)4(cords.)] TJ
+[6] EMC  /Span
+[6] MCID 4/Lang (en-US)
+[6] C)-2(ha)-3(ng)-2(ing te)3(acher )4(does )5(not chan)-2(ge )4(the )4(stu)-12(dent
+[6] s )4(C)-2(lassora I)5(D.)] TJ
+[6] EMC  /Span
+[6] MCID 5/Lang (en-US)
+[6] Search)4( and Dir)4(ectory)] TJ
+[6] EMC  /Span
+[6] MCID 6/Lang (en-US)
+[6] S)4(e)3(arch is )5(f)-3(or )3(discov)-3(e)3(ry)-13(, )3(not priv)-3(at)-2(e)] TJ
+[6] da)-2(ta)-2( )3(acce)3(ss.)] TJ
+[6] EMC  /Span
+[6] MCID 7/Lang (en-US)
+[6] Te)6(achers)-7( )3(m)-3(ay)-6( )3(se)3(arch fo)-2(r )4(li)4(m)-3(ite)3(d te)4(acher/s)-11(tu)-3(dent )3(inf)-3(orm)-3(at)-2(ion wh)7(e)3(re)4( )3(produ)-3(ct )3(rule)4(s)-8( )3(all)3(o)-9(w it.)] TJ
+[6] EMC  /Span
+[6] MCID 8/Lang (en-US)
+[6] S)4(tu)-3(dents )3(m)-3(ay)-6( )3(se)3(arch fo)-2(r )4(li)4(m)-3(ite)3(d i)3(nf)-4(orm)-3(at)-2(ion where)5( )3(produ)-3(ct )3(rule)-5(s )3(all)3(ow)-2( )3(it.)] TJ
+[6] EMC  /Span
+[6] MCID 9/Lang (en-US)
+[6] A basic )4(se)3(arch)-10( )3(re)4(sult)-9( )3(m)-3(ay)-6( )3(show)-3( )3(na)-3(m)-3(e)3(, )3(rol)3(e)3(, )3(cl)4(ass, profile)-4( )3(phot)-2(o, and Classora ID)3(.)] TJ
+[6] EMC  /Span
+[6] MCID 10/Lang (en-US)
+[6] C)-2(lassora I)5(D )3(is)-7( )3(curren)-7(tly)-2( )3(intended )5(to be)4( )3(v)-4(isib)-7(le)6( )3(to e)5(v)-4(e)3(ry)-3(one, )5(p)-9(e)3(r )4(the )-5(proje)3(ct )3(dec)3(ision.)] TJ
+[6] EMC  /Span
+[6] MCID 11/Lang (en-US)
+[6] S)4(e)3(arch)-10( )3(m)-3(ust)-2( )3(not e)4(x)4(p)-9(ose)3( )3(gra)-2(des, )6(re)4(sults,)-9( )3(pr)-9(iv)-3(at)-2(e)3( )3(notes, )4(pa)-2(re)4(nt/)-5(conta)-3(ct )3(inf)-3(orm)-3(at)-2(ion, or )6(p)9(riv)-3(at)-2(e)3( )3(wo)-2(rkspace)3( )] TJ
+[6] da)-2(ta)-2(.)] TJ
+[6] EMC  /Span
+[6] MCID 12/Lang (en-US)
+[6] Finding)-2( )3(a Classora)-3( )3(I)-6(D )3(does )5(not gran)-3(t acce)-3(ss )4(to the )6(accou)-2(nt.)] TJ
+[6] EMC  /Span
+[6] MCID 13/Lang (en-US)
+[6] Acad)5(emic)-7( )-2(Modu)4(le)-3(s )] TJ
+[6] P)-2(rovisional )4(Cor)4(e)] TJ
+[6] EMC  /Span
+[6] MCID 14/Lang (en-US)
+[6] Dash)-2(boa)-3(rd)] TJ
+[6] EMC  /Span
+[6] MCID 15/Lang (en-US)
+[6] P)-3(rof)-2(il)4(e)] TJ
+[6] EMC  /Span
+[6] MCID 16/Lang (en-US)
+[6] C)-2(lasse)4(s )3(/)-3( )3(C)-2(lassroom)-2(s)] TJ
+[6] EMC  /Span
+[6] MCID 17/Lang (en-US)
+[6] S)4(tu)-3(dents)] TJ
+[6] EMC  /Span
+[6] MCID 18/Lang (en-US)
+[6] Te)6(achers)] TJ
+[6] EMC  /Span
+[6] MCID 19/Lang (en-US)
+[6] S)4(chedule)-3( )3(/)-3( )3(C)-2(ale)4(nda)-4(r)] TJ
+[6] EMC  /Span
+[6] MCID 20/Lang (en-US)
+[6] E)4(x)4(am)-5(inat)-3(ions)] TJ
+[6] EMC  /Span
+[6] MCID 21/Lang (en-US)
+[6] Homework)] TJ
+[6] EMC  /Span
+[6] MCID 22/Lang (en-US)
+[6] R)-3(e)3(sults)] TJ
+[6] EMC  /Span
+[6] MCID 23/Lang (en-US)
+[6] P)-3(rogress)] TJ
+[6] EMC  /Span
+[6] MCID 24/Lang (en-US)
+[6] Note)3(s)] TJ
+[6] EMC  /Span
+[6] MCID 25/Lang (en-US)
+[6] Notifica)-2(tions)] TJ
+[6] EMC  /Span
+[6] MCID 26/Lang (en-US)
+[6] Down)-3(loads / form)-5(al )4(docu)-2(m)-3(e)3(nts)] TJ
+[6] EMC  /Span
+[6] MCID 27/Lang (en-US)
+[6] The)5(se)3( )3(m)-3(odu)-3(le)6(s )3(r)-8(e)3(m)-3(ain conce)4(ptu)-4(all)3(y)-4( )3(v)-4(alid, )4(bu)-3(t e)5(x)4(act MV)-4(P)-3( )3(bou)-3(nda)-4(ri)11(e)3(s )3(stil)3(l)-6( )3(re)4(qu)-3(ire)5( )3(f)-3(inal )-5(co)-8(nf)-4(irma)-4(tion.)] TJ
+[6] EMC  /Span
+[6] MCID 28/Lang (en-US)
+[6] Pro)4(gre)-2(ss a)-5(nd)3( Res)-2(ults)] TJ
+[6] EMC  /Span
+[6] MCID 29/Lang (en-US)
+[6] R)-3(e)3(sults are)4( )3(stor)-9(e)3(d e)-3(x)-5(am)-5(inat)-3(ion)] TJ
+[6] e)3(x)4(am)-5(ina)7(tion.)] TJ
+[6] EMC  /Span
+[6] MCID 30/Lang (en-US)
+[6] The)5( )3(sy)-4(stem ma)-4(y)-4( )3(calculate )6(tota)-3(ls)3(, )3(av)-6(e)3(rag)-2(e)3(s, )-5(an)-3(d pe)4(rce)5(nta)-4(ges )5(wh)-3(e)3(r)-8(e)3( )3(ap)-2(propriat)-2(e)3(.)] TJ
+[6] EMC  /Span
+[6] MCID 31/Lang (en-US)
+[6] P)-3(rogress)3( )3(shou)-3(ld )5(be )5(b)-9(ased )3(on un)-2(derl)6(y)-4(ing acad)-3(e)3(m)-3(ic/a)-3(ctiv)-3(it)10(y)-4( )3(da)-2(ta)-2( )3(r)10(at)-2(her )5(tha)-4(n one)3( )3(arbitra)-3(ry)-3( )3(m)-3(an)-3(u)7(all)3(y)-4( )3(ty)-5(ped )] TJ
+[6] score)5(.)] TJ
+[7] Artifact
+[7] Attached [/Top]/Type/Pagination/Subtype/Header
+[7] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[7] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[7] EMC /Artifact
+[7] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[7] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[7] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[7] Pa)-4(g)-3(e )] TJ
+[7] EMC  /Span
+[7] MCID 0/Lang (en-US)
+[7] P)-3(ossibl)3(e)3( )3(f)-3(actors incl)-3(ud)-3(e)3( )3(at)-2(tendan)-3(ce)4(, )3(cl)4(ass)-10( )3(tests, )5(hom)-5(e)3(wo)-2(rk/a)-3(ssignm)-5(e)3(nts, and)-2( )3(im)-2(prov)-5(e)13(m)-3(e)3(nt.)] TJ
+[7] EMC  /Span
+[7] MCID 1/Lang (en-US)
+[7] Te)6(achers)-7( )3(shou)-3(ld )5(be )-3(ab)-2(le)6( )3(to re)6(v)-4(ie)4(w un)-3(derl)6(y)-4(i)-8(ng)-2( )3(da)-2(ta)-2( )3(before )5(a f)-2(inal )3(progress )5(interpre)6(ta)-2(tio)-9(n is )6(display)-4(e)3(d.)] TJ
+[7] EMC  /Span
+[7] MCID 2/Lang (en-US)
+[7] R)-3(e)3(sult history)-2( )3(shou)-3(ld )5(pres)3(e)3(rv)-3(e)3( )3(m)-3(e)3(an)-3(ingf)-5(ul c)4(ha)-3(ng)-2(e)3(s.)] TJ
+[7] EMC  /Span
+[7] MCID 3/Lang (en-US)
+[7] O)4(p)-3(e)4(n d)-2(e)4(c)-2(is)3(ions:  )] TJ
+[7] The)-4( )-6(e)3(x)4(act progress)-5( )3(inpu)-3(ts/)-3(f)-3(orm)-3(ula, te)3(acher )4(ov)-5(e)3(rride)5( )3(polic)4(y)-4(, )3(re)4(sult fie)-6(lds)-6(, )3(an)-3(d publication )] TJ
+[7] tim)-3(ing are )5(stil)3(l )6(p)-9(e)3(nding)-3(.)] TJ
+[7] EMC  /Span
+[7] MCID 4/Lang (en-US)
+[7] N)-2(otifications)] TJ
+[7] EMC  /Span
+[7] MCID 5/Lang (en-US)
+[7] E)4(x)4(am)-5( )3(sche)3(du)-3(l)-6(e)3(d/)-4(re)4(sche)3(du)-3(le)6(d.)] TJ
+[7] EMC  /Span
+[7] MCID 6/Lang (en-US)
+[7] R)-3(e)3(sult publishe)4(d.)] TJ
+[7] EMC  /Span
+[7] MCID 7/Lang (en-US)
+[7] Importa)-4(nt acad)-3(e)3(m)-3(ic )5(e)3(v)-4(e)3(nt.)] TJ
+[7] EMC  /Span
+[7] MCID 8/Lang (en-US)
+[7] C)-2(lassroom)-2( )3(up)-3(da)-2(tes.)] TJ
+[7] EMC  /Span
+[7] MCID 9/Lang (en-US)
+[7] Join)] TJ
+[7] re)4(qu)-3(e)3(st de)5(cisi)3(o)-9(ns.)] TJ
+[7] EMC  /Span
+[7] MCID 10/Lang (en-US)
+[7] S)4(tu)-3(dent )3(prof)-3(il)4(e)-5( )3(chan)-3(ges )5(af)-5(ter)3( )3(teache)3(r )4(asso)-11(ciation.)] TJ
+[7] EMC  /Span
+[7] MCID 11/Lang (en-US)
+[7] Oth)-3(e)3(r )4(im)-2(porta)-3(nt sy)-3(stem e)5(v)-4(e)3(nts.)] TJ
+[7] EMC  /Span
+[7] MCID 12/Lang (en-US)
+[7] Notifica)-2(tions should prima)-3(ril)4(y)-4( )3(e)3(x)4(ist )3(inside)-6( )3(C)-2(l)-6(assora)-3(. )3(E)4(m)-3(ail )4(notif)-4(ications can be)4( )3(ad)-2(ded )4(late)-6(r )4(f)-3(or )3(im)-2(porta)-3(nt )] TJ
+[7] e)3(v)-4(e)3(nts wh)-2(e)3(re)4( )3(usef)-2(ul. )-5(W)-2(hether)3( )3(the )4(f)-3(irst )4(MV)-5(P)-3( )3(is )4(in)] TJ
+[7] ap)-2(p onl)3(y)-4( )3(re)4(m)-3(ains a pe)3(nding)-3( )3(dec)3(ision.)] TJ
+[7] EMC  /Span
+[7] MCID 13/Lang (en-US)
+[7] Privacy and Pe)-2(rm)3(iss)-2(ion)3( )-2(P)-2(rinc)3(iple)] TJ
+[7] EMC  /Span
+[7] MCID 14/Lang (en-US)
+[7] Au)-3(thentication)-2( )3(alone )5(does )5(not dete)5(rm)-2(ine )6(w)-11(ha)-3(t a use)3(r )4(can acce)4(ss.)-8( )3(E)4(v)-4(e)3(ry)-3( )3(im)-2(porta)-3(nt action m)-2(ust)-2( )3(also )3(be )] TJ
+[7] chec)4(ke)4(d aga)-3(inst the )6(u)-11(se)3(r
+[7] s )4(rol)-5(e)3( )3(an)-3(d re)-3(lationship to the)4( )3(re)4(qu)-3(e)3(sted)-7( )-6(da)-2(ta)-2(.)] TJ
+[7] EMC  /Span
+[7] MCID 15/Lang (en-US)
+[7] S)4(tu)-3(dent )3(can acce)4(ss)-8( )3(t)-9(heir)3( )3(ow)-2(n priva)-4(te )5(aca)-2(demic )3(da)-2(ta)-2(.)] TJ
+[7] EMC  /Span
+[7] MCID 16/Lang (en-US)
+[7] Te)6(acher)-7( )3(can acce)4(ss )-5(da)-2(ta)-2( )3(bel)5(ong)-2(ing to c)4(las)-8(sroom)-3(s/)-3(stu)-2(dents )3(they)-3( )13(are )5(au)-4(thorised )5(to ma)-4(na)-3(ge.)] TJ
+[7] EMC  /Span
+[7] MCID 17/Lang (en-US)
+[7] Dire)5(ctory)-3( )3(se)3(arch)-10( )3(e)3(x)4(p)-9(ose)3(s )3(li)4(m)-3(ite)3(d i)3(nf)-4(orm)-3(at)-2(ion onl)3(y)-4(.)] TJ
+[7] EMC  /Span
+[7] MCID 18/Lang (en-US)
+[7] One )3(teache)3(r)-8( )3(cann)-3(ot )-7(au)-4(tom)-4(at)-2(icall)5(y)-4( )3(se)3(e)3( )3(an)-3(other )4(indepe)4(ndent te)4(ac)-10(her
+[7] s)3( )3(priv)-3(at)-2(e)3( )3(wo)-2(rkspace)3(.)] TJ
+[7] EMC  /Span
+[7] MCID 19/Lang (en-US)
+[7] P)-3(arent acce)6(ss, )4(wh)-3(e)3(n)-10( )3(im)-2(ple)5(m)-3(e)3(nted, )3(m)-3(ust)-2( )3(be )5(li)4(m)-3(ite)3(d to )4(v)-4(e)3(rified)-8( )3(chi)-8(ld )5(re)4(lationships.)] TJ
+[7] EMC  /Span
+[7] MCID 20/Lang (en-US)
+[7] Fut)-3(ure )4(school )5(ad)-2(m)-3(inistration)-2( )3(m)-3(ay)-6( )3(ha)6(v)-4(e)3( )3(broad)-3(e)3(r )4(orga)-3(nisat)-2(ion)] TJ
+[7] le)6(v)-4(e)3(l )6(permissions.)] TJ
+[7] EMC  /Span
+[7] MCID 21/Lang (en-US)
+[7] C)-3(on)4(ceptua)-4(l S)4(ecurity Mod)-3(el)] TJ
+[7] EMC  /Span
+[7] MCID 22/Lang (en-US)
+[7] Au)-3(thentication)-2( )] TJ
+[7] P)-3(rof)-2(i)10(le)6( )] TJ
+[7] R)-3(ole)-3( )] TJ
+[7] R)-3(e)3(lations)-9(hip )] TJ
+[7] P)-3(e)3(rm)-2(ission )] TJ
+[7] Data)] TJ
+[7] EMC  /Span
+[7] MCID 23/Lang (en-US)
+[7] Au)-3(thentication)-2(: )3(prov)-5(e)3(s )3(accou)-2(nt own)-3(e)3(rship.)] TJ
+[7] EMC  /Span
+[7] MCID 24/Lang (en-US)
+[7] P)-3(rof)-2(il)4(e)3(: )3(ide)3(ntif)-4(ie)4(s )3(th)-11(e)-5( )3(C)-2(lassora pe)4(rson.)] TJ
+[7] EMC  /Span
+[7] MCID 25/Lang (en-US)
+[7] R)-3(ole)6(: )3(teache)-5(r/)-2(stu)-2(dent/)-3(pa)-2(re)4(nt/)-5(ad)6(m)-3(inistrat)7(or.)] TJ
+[7] EMC  /Span
+[7] MCID 26/Lang (en-US)
+[7] R)-3(e)3(lationship: de)3(ter)3(m)-13(ines )6(wh)-3(ich )4(cl)4(assroom)-5(, )3(stu)-2(dent, )3(or )3(teache)3(r )-5(connections )4(e)3(x)4(ist.)] TJ
+[7] EMC  /Span
+[7] MCID 27/Lang (en-US)
+[7] P)-3(e)3(rm)-2(ission: )4(dete)5(rm)-2(i)-8(nes )5(the )4(permitted )3(op)-10(e)-5(ration)-2(.)] TJ
+[7] EMC  /Span
+[7] MCID 28/Lang (en-US)
+[7] Data)-4(ba)-2(se)3( )3(se)3(curity)-5( )3(rule)4(s )3(e)3(nf)-4(orce)-4( )3(acce)3(ss )4(rat)-11(her )5(tha)-4(n re)5(lying)-3( )3(only)-3( )3(o)-9(n fron)-2(tend )3(hiding)-3(.)] TJ
+[8] Artifact
+[8] Attached [/Top]/Type/Pagination/Subtype/Header
+[8] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[8] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[8] EMC /Artifact
+[8] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[8] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[8] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[8] Pa)-4(g)-3(e )] TJ
+[8] EMC  /Span
+[8] MCID 0/Lang (en-US)
+[8] The)5( )3(f)-3(inal )3(tec)4(hnica)-2(l)-6( )3(im)-2(ple)5(m)-3(e)3(nta)-4(tion is )6(intentio)-8(na)-3(ll)6(y)-4( )3(not pre)3(scri)3(bed )4(h)-10(e)3(re)4(. )3(Th)-7(e)3( )3(tec)4(hnica)-2(l)-6( )3(stack, data)-2(ba)-2(se)3( )] TJ
+[8] sche)3(m)-3(a, au)-3(thenticatio)8(n prov)-3(ide)3(r )4(conf)-3(igu)-3(ratio)8(n, and e)3(x)4(act se)5(curity)-5( )3(p)-9(oli)3(cie)5(s )3(be)-6(long to )4(the )-5(e)-5(x)4(e)3(cution)] TJ
+[8] plann)-2(ing )] TJ
+[8] stag)-4(e)3(.)] TJ
+[8] EMC  /Span
+[8] MCID 1/Lang (en-US)
+[8] D)3(ash)-4(bo)4(ar)-3(d )4(Con)4(cept)] TJ
+[8] EMC  /Span
+[8] MCID 2/Lang (en-US)
+[8] Te)6(ac)4(h)-8(e)3(r )4(dashb)-3(oar)-4(d)] TJ
+[8] EMC  /Span
+[8] MCID 3/Lang (en-US)
+[8] C)-2(lassroom)-2(s)] TJ
+[8] EMC  /Span
+[8] MCID 4/Lang (en-US)
+[8] Activ)-4(e)3( )3(stu)-2(dents)] TJ
+[8] EMC  /Span
+[8] MCID 5/Lang (en-US)
+[8] P)-3(e)3(nding)-3( )3(join )3(re)4(qu)-3(e)3(st)-9(s)] TJ
+[8] EMC  /Span
+[8] MCID 6/Lang (en-US)
+[8] Today)-5(
+[8] s )4(/)-3( )3(up)-3(com)-2(ing sche)4(du)-3(le)] TJ
+[8] EMC  /Span
+[8] MCID 7/Lang (en-US)
+[8] U)-4(pcom)-3(ing e)4(x)4(am)-5(inat)-3(ions)] TJ
+[8] EMC  /Span
+[8] MCID 8/Lang (en-US)
+[8] Homework)] TJ
+[8] EMC  /Span
+[8] MCID 9/Lang (en-US)
+[8] R)-3(e)3(ce)4(nt r)-7(e)3(sults)] TJ
+[8] EMC  /Span
+[8] MCID 10/Lang (en-US)
+[8] P)-3(rogress)3( )3(ov)-5(e)3(rv)-3(ie)4(w)] TJ
+[8] EMC  /Span
+[8] MCID 11/Lang (en-US)
+[8] Notifica)-2(tions)] TJ
+[8] EMC  /Span
+[8] MCID 12/Lang (en-US)
+[8] S)4(tudent )3(dashb)-3(oard)] TJ
+[8] EMC  /Span
+[8] MCID 13/Lang (en-US)
+[8] My)-5( )3(cl)4(assroom)-5(s)] TJ
+[8] EMC  /Span
+[8] MCID 14/Lang (en-US)
+[8] Today)-5(
+[8] s )4(/)-3( )3(up)-3(com)-2(ing sche)4(du)-3(le)] TJ
+[8] EMC  /Span
+[8] MCID 15/Lang (en-US)
+[8] U)-4(pcom)-3(ing e)4(x)4(am)-5(inat)-3(ions)] TJ
+[8] EMC  /Span
+[8] MCID 16/Lang (en-US)
+[8] Homework)] TJ
+[8] EMC  /Span
+[8] MCID 17/Lang (en-US)
+[8] R)-3(e)3(ce)4(nt r)-7(e)3(sults)] TJ
+[8] EMC  /Span
+[8] MCID 18/Lang (en-US)
+[8] P)-3(rogress)] TJ
+[8] EMC  /Span
+[8] MCID 19/Lang (en-US)
+[8] C)-2(urrent te)5(achers)] TJ
+[8] EMC  /Span
+[8] MCID 20/Lang (en-US)
+[8] P)-3(re)4(v)-4(ious te)3(achers)] TJ
+[8] EMC  /Span
+[8] MCID 21/Lang (en-US)
+[8] Notifica)-2(tions)] TJ
+[8] EMC  /Span
+[8] MCID 22/Lang (en-US)
+[8] Fu)4(t)-5(ur)4(e S)-3(ch)-3(oo)5(l Ad)3(ministr)-3(ation)] TJ
+[8] EMC  /Span
+[8] MCID 23/Lang (en-US)
+[8] The)5( )3(f)-3(irst )4(re)-5(le)6(ase )4(shou)-3(l)-6(d not r)3(e)3(qu)-3(ire)5( )3(a school)-6( )-6(ad)-2(m)-3(inistrator. T)4(he )5(conce)4(ptu)-4(al )4(hier)3(archy)-6( )3(shou)-3(ld )5(nev)-2(e)3(rthel)5(e)3(ss )] TJ
+[8] le)6(av)-6(e)3( )3(room)-3( )3(f)-3(or )3(orga)-3(nisat)-2(ion)] TJ
+[8] le)6(v)-4(e)3(l )6(ad)-2(m)-3(inistrat)7(ion.)] TJ
+[8] EMC  /Span
+[8] MCID 24/Lang (en-US)
+[8] Orga)-4(nisat)-2(ion / S)5(chool )5(Adm)-6(inistration)-2( )] TJ
+[8] Te)6(achers )5(/)-3( )3(S)4(tu)-3(dents )3(/)-3( )3(P)-3(are)-7(nts)] TJ
+[8] EMC  /Span
+[8] MCID 25/Lang (en-US)
+[8] Te)6(acher)-7( )3(m)-3(an)-3(ag)-3(e)3(m)-3(e)3(nt)] TJ
+[8] EMC  /Span
+[8] MCID 26/Lang (en-US)
+[8] S)4(tu)-3(dent )3(m)-3(an)-3(ag)-3(e)3(m)-3(e)3(nt)] TJ
+[8] EMC  /Span
+[8] MCID 27/Lang (en-US)
+[8] P)-3(arent/)-4(gu)-4(ardia)-3(n re)5(lationships)] TJ
+[8] EMC  /Span
+[8] MCID 28/Lang (en-US)
+[8] Orga)-4(nisat)-2(ion)] TJ
+[8] wide )3(polic)4(ie)4(s)] TJ
+[8] EMC  /Span
+[8] MCID 29/Lang (en-US)
+[8] C)-2(lassroom)-2( )3(ov)-5(e)3(rsight)] TJ
+[8] EMC  /Span
+[8] MCID 30/Lang (en-US)
+[8] P)-3(e)3(rm)-2(ission )4(m)-3(an)-3(ag)-3(e)3(m)-3(e)3(nt)] TJ
+[9] Artifact
+[9] Attached [/Top]/Type/Pagination/Subtype/Header
+[9] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[9] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[9] EMC /Artifact
+[9] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[9] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[9] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[9] Pa)-4(g)-3(e )] TJ
+[9] EMC  /Span
+[9] MCID 0/Lang (en-US)
+[9] R)-3(e)3(ports)] TJ
+[9] EMC  /Span
+[9] MCID 1/Lang (en-US)
+[9] The)5(se)3( )3(are)-7( )3(f)-3(ut)-3(ure )4(e)3(x)4(pa)-12(nsion l)4(ay)-6(e)3(rs, )4(not re)4(aso)-11(ns to )4(com)-2(plic)4(at)-2(e)3( )3(the )4(f)-3(i)-8(rst )3(re)4(le)6(as)-11(e)3(.)] TJ
+[9] EMC  /Span
+[9] MCID 2/Lang (en-US)
+[9] MV)-2(P)-2( B)5(ou)4(n)-3(dar)4(y )] TJ
+[9] Re)-4(fine)-3(d)] TJ
+[9] EMC  /Span
+[9] MCID 3/Lang (en-US)
+[9] The)5( )3(MV)-5(P)-3( )3(shou)-3(ld )5(f)-3(ocus on the)3( )3(sm)-3(all)3(e)3(st use)3(f)-3(ul )-6(v)-4(e)3(rsion )3(of)-3( )3(the )4(ide)3(a wh)-3(il)4(e)3( )3(pres)-5(e)3(rv)-3(ing the )5(acco)-9(un)-3(t, i)3(dentity)-4(, )] TJ
+[9] re)4(lationship, and)-3( )3(per)-6(m)-3(ission )4(principl)3(e)3(s )3(e)3(st)-9(ab)-2(li)4(shed )4(in this )5(bluepr)-7(int.)] TJ
+[9] EMC  /Span
+[9] MCID 4/Lang (en-US)
+[9] Te)6(acher)-7( )3(re)4(gistra)-2(tion )-7(an)-3(d si)3(gn)] TJ
+[9] in.)] TJ
+[9] EMC  /Span
+[9] MCID 5/Lang (en-US)
+[9] S)4(tu)-3(dent )3(re)4(gistra)-2(tion )-7(an)-3(d si)3(gn)] TJ
+[9] in.)] TJ
+[9] EMC  /Span
+[9] MCID 6/Lang (en-US)
+[9] E)4(m)-3(ail )4(v)-4(e)3(rificat)-2(ion.)] TJ
+[9] EMC  /Span
+[9] MCID 7/Lang (en-US)
+[9] P)-3(e)3(rm)-2(an)-3(e)3(nt Classora)-2( )3(ID)3( )3(gene)3(ration)-2(.)] TJ
+[9] EMC  /Span
+[9] MCID 8/Lang (en-US)
+[9] Te)6(acher)-7( )3(an)-3(d student profile)4(s.)] TJ
+[9] EMC  /Span
+[9] MCID 9/Lang (en-US)
+[9] Au)-3(tom)-4(at)-2(ic )5(indepe)4(ndent te)4(acher )4(wo)-2(rkspac)-8(e)3(.)] TJ
+[9] EMC  /Span
+[9] MCID 10/Lang (en-US)
+[9] Te)6(acher)-7( )3(cl)4(assroom)-5( )3(c)-7(re)4(at)-2(ion/)-4(m)-3(an)-3(ag)-3(e)13(m)-3(e)3(nt.)] TJ
+[9] EMC  /Span
+[9] MCID 11/Lang (en-US)
+[9] S)4(tu)-3(dent )3(cl)4(assroom)-5( )3(j)-8(oin re)6(qu)-3(e)3(st.)] TJ
+[9] EMC  /Span
+[9] MCID 12/Lang (en-US)
+[9] Te)6(acher)-7( )3(inv)-5(itat)-2(ion by)6( )3(C)-2(lassora I)5(D.)] TJ
+[9] EMC  /Span
+[9] MCID 13/Lang (en-US)
+[9] Te)6(acher)-7( )3(ap)-2(prov)-5(al )4(of)-3( )3(cl)4(assroom)-5( )3(m)-3(e)3(m)-3(bers)3(hip.)] TJ
+[9] EMC  /Span
+[9] MCID 14/Lang (en-US)
+[9] B)4(asic )3(sch)-8(e)3(du)-3(le)6(.)] TJ
+[9] EMC  /Span
+[9] MCID 15/Lang (en-US)
+[9] B)4(asic )3(hom)-5(e)3(wo)-2(rk.)] TJ
+[9] EMC  /Span
+[9] MCID 16/Lang (en-US)
+[9] B)4(asic )-5(e)3(x)4(am)-5(inat)-3(ions and re)5(sults.)] TJ
+[9] EMC  /Span
+[9] MCID 17/Lang (en-US)
+[9] B)4(asic )3(progr)-10(e)3(ss )4(v)-4(ie)4(w )] TJ
+[9] sub)-3(je)4(ct )3(to fina)-4(l )6(progre)-7(ss )4(definition.)] TJ
+[9] EMC  /Span
+[9] MCID 18/Lang (en-US)
+[9] B)4(asic )3(notif)-4(ications.)] TJ
+[9] EMC  /Span
+[9] MCID 19/Lang (en-US)
+[9] R)-3(ole)] TJ
+[9] ba)-2(se)3(d acce)5(ss )4(c)-7(ontrol.)] TJ
+[9] EMC  /Span
+[9] MCID 20/Lang (en-US)
+[9] C)-2(le)6(an)-3( )3(re)4(sponsiv)-5(e)3( )3(we)-8(b i)3(nterfa)-3(ce)4(.)] TJ
+[9] EMC  /Span
+[9] MCID 21/Lang (en-US)
+[9] P)-3(arent portal, )5(school )-3(ad)-2(m)-3(inistration)-2(, )3(ad)6(v)-4(an)6(ce)4(d i)3(ntegrat)-2(ions, mobile)4( )3(ap)-2(plic)4(at)-2(ions, and ot)-9(her )5(e)3(x)4(pa)-2(nsion )] TJ
+[9] f)-3(e)3(at)-2(ures )4(re)4(m)-3(ain f)-3(ut)-3(ure)10( )3(scope)3( )3(un)-3(le)6(ss )-5(later)4( )3(pr)-9(om)-4(oted )4(into the )5(MV)-5(P)-3(.)] TJ
+[9] EMC  /Span
+[9] MCID 22/Lang (en-US)
+[9] Informatio)-4(n )4(Arch)4(ite)-3(ctur)4(e)-8( )] TJ
+[9] P)-2(rovisional)] TJ
+[9] EMC  /Span
+[9] MCID 23/Lang (en-US)
+[9] Public )4(/ E)6(ntry)] TJ
+[9] EMC  /Span
+[9] MCID 24/Lang (en-US)
+[9] Home)] TJ
+[9] EMC  /Span
+[9] MCID 25/Lang (en-US)
+[9] L)5(ogin)] TJ
+[9] EMC  /Span
+[9] MCID 26/Lang (en-US)
+[9] Te)6(acher)-7( )3(R)-3(e)3(gistra)-2(tion)] TJ
+[9] EMC  /Span
+[9] MCID 27/Lang (en-US)
+[9] S)4(tu)-3(dent )3(R)-3(e)3(gistra)-2(tion)] TJ
+[9] EMC  /Span
+[9] MCID 28/Lang (en-US)
+[9] P)-3(assw)-4(ord Rec)3(ov)-5(e)3(ry)] TJ
+[9] EMC  /Span
+[9] MCID 29/Lang (en-US)
+[9] Abou)-5(t / H)4(e)3(lp)] TJ
+[9] EMC  /Span
+[9] MCID 30/Lang (en-US)
+[9] Te)6(ac)4(h)-8(e)3(r )4(a)-5(re)4(a)] TJ
+[9] EMC  /Span
+[9] MCID 31/Lang (en-US)
+[9] Dash)-2(boa)-3(rd)] TJ
+[10] Artifact
+[10] Attached [/Top]/Type/Pagination/Subtype/Header
+[10] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[10] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[10] EMC /Artifact
+[10] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[10] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[10] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[10] Pa)-4(g)-3(e )] TJ
+[10] EMC  /Span
+[10] MCID 0/Lang (en-US)
+[10] P)-3(rof)-2(il)4(e)] TJ
+[10] EMC  /Span
+[10] MCID 1/Lang (en-US)
+[10] C)-2(lassroom)-2(s)] TJ
+[10] EMC  /Span
+[10] MCID 2/Lang (en-US)
+[10] S)4(tu)-3(dents)] TJ
+[10] EMC  /Span
+[10] MCID 3/Lang (en-US)
+[10] Join)-2( )3(R)-3(e)3(qu)-3(e)3(sts)] TJ
+[10] EMC  /Span
+[10] MCID 4/Lang (en-US)
+[10] S)4(chedule)] TJ
+[10] EMC  /Span
+[10] MCID 5/Lang (en-US)
+[10] E)4(x)4(am)-5(inat)-3(ions)] TJ
+[10] EMC  /Span
+[10] MCID 6/Lang (en-US)
+[10] Homework)] TJ
+[10] EMC  /Span
+[10] MCID 7/Lang (en-US)
+[10] R)-3(e)3(sults)] TJ
+[10] EMC  /Span
+[10] MCID 8/Lang (en-US)
+[10] P)-3(rogress)] TJ
+[10] EMC  /Span
+[10] MCID 9/Lang (en-US)
+[10] Note)3(s)] TJ
+[10] EMC  /Span
+[10] MCID 10/Lang (en-US)
+[10] Notifica)-2(tions)] TJ
+[10] EMC  /Span
+[10] MCID 11/Lang (en-US)
+[10] S)4(tudent )3(ar)-4(e)3(a)] TJ
+[10] EMC  /Span
+[10] MCID 12/Lang (en-US)
+[10] Dash)-2(boa)-3(rd)] TJ
+[10] EMC  /Span
+[10] MCID 13/Lang (en-US)
+[10] P)-3(rof)-2(il)4(e)] TJ
+[10] EMC  /Span
+[10] MCID 14/Lang (en-US)
+[10] My)-5( )3(C)-2(lassroom)-2(s)] TJ
+[10] EMC  /Span
+[10] MCID 15/Lang (en-US)
+[10] My)-5( )3(Te)6(achers)] TJ
+[10] EMC  /Span
+[10] MCID 16/Lang (en-US)
+[10] P)-3(re)4(v)-4(ious T)4(e)3(achers)] TJ
+[10] EMC  /Span
+[10] MCID 17/Lang (en-US)
+[10] S)4(chedule)] TJ
+[10] EMC  /Span
+[10] MCID 18/Lang (en-US)
+[10] E)4(x)4(am)-5(inat)-3(ions)] TJ
+[10] EMC  /Span
+[10] MCID 19/Lang (en-US)
+[10] Homework)] TJ
+[10] EMC  /Span
+[10] MCID 20/Lang (en-US)
+[10] R)-3(e)3(sults)] TJ
+[10] EMC  /Span
+[10] MCID 21/Lang (en-US)
+[10] P)-3(rogress)] TJ
+[10] EMC  /Span
+[10] MCID 22/Lang (en-US)
+[10] Down)-3(loads)] TJ
+[10] EMC  /Span
+[10] MCID 23/Lang (en-US)
+[10] Notifica)-2(tions)] TJ
+[10] EMC  /Span
+[10] MCID 24/Lang (en-US)
+[10] Fu)-3(ture)4( or)4(ganis)-3(ation )3(are)6(a)] TJ
+[10] EMC  /Span
+[10] MCID 25/Lang (en-US)
+[10] Adm)-6(inistration)] TJ
+[10] EMC  /Span
+[10] MCID 26/Lang (en-US)
+[10] Te)6(achers)] TJ
+[10] EMC  /Span
+[10] MCID 27/Lang (en-US)
+[10] S)4(tu)-3(dents)] TJ
+[10] EMC  /Span
+[10] MCID 28/Lang (en-US)
+[10] P)-3(arents)] TJ
+[10] EMC  /Span
+[10] MCID 29/Lang (en-US)
+[10] Orga)-4(nisat)-2(ion S)6(e)3(tting)-12(s)] TJ
+[10] EMC  /Span
+[10] MCID 30/Lang (en-US)
+[10] R)-3(e)3(ports)] TJ
+[10] EMC  /Span
+[10] MCID 31/Lang (en-US)
+[10] C)-3(on)4(ceptua)-4(l Co)4(re Ob)-2(jects)] TJ
+[10] EMC  /Span
+[10] MCID 32/Lang (en-US)
+[10] Au)-3(thentication)-2( )3(Accoun)-3(t)] TJ
+[10] EMC  /Span
+[10] MCID 33/Lang (en-US)
+[10] U)-4(se)3(r )4(/)-3( )3(P)-3(rof)-2(il)4(e)] TJ
+[11] Artifact
+[11] Attached [/Top]/Type/Pagination/Subtype/Header
+[11] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[11] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[11] EMC /Artifact
+[11] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[11] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[11] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[11] Pa)-4(g)-3(e )] TJ
+[11] EMC  /Span
+[11] MCID 0/Lang (en-US)
+[11] Te)6(acher)-7( )3(P)-3(rof)-2(il)4(e)] TJ
+[11] EMC  /Span
+[11] MCID 1/Lang (en-US)
+[11] S)4(tu)-3(dent )3(P)-3(rof)-2(il)4(e)] TJ
+[11] EMC  /Span
+[11] MCID 2/Lang (en-US)
+[11] P)-3(arent Prof)-4(il)4(e)3( )] TJ
+[11] f)-3(ut)-3(ure)] TJ
+[11] EMC  /Span
+[11] MCID 3/Lang (en-US)
+[11] C)-2(lassora I)5(D)] TJ
+[11] EMC  /Span
+[11] MCID 4/Lang (en-US)
+[11] Inde)4(pende)3(nt )-8(Te)6(ache)-8(r )4(W)-2(orkspace)] TJ
+[11] EMC  /Span
+[11] MCID 5/Lang (en-US)
+[11] S)4(chool )5(/)-3( )3(Orga)-4(nisat)-2(io)-8(n )] TJ
+[11] f)-3(ut)-3(ure)] TJ
+[11] EMC  /Span
+[11] MCID 6/Lang (en-US)
+[11] C)-2(lass)] TJ
+[11] EMC  /Span
+[11] MCID 7/Lang (en-US)
+[11] C)-2(lassroom)] TJ
+[11] EMC  /Span
+[11] MCID 8/Lang (en-US)
+[11] C)-2(lassroom)-2( )3(Membership)] TJ
+[11] EMC  /Span
+[11] MCID 9/Lang (en-US)
+[11] S)4(ub)-3(je)4(ct)] TJ
+[11] EMC  /Span
+[11] MCID 10/Lang (en-US)
+[11] S)4(chedule)-3( )3(E)4(v)-4(e)3(nt)] TJ
+[11] EMC  /Span
+[11] MCID 11/Lang (en-US)
+[11] E)4(x)4(am)-5(inat)-3(ion)] TJ
+[11] EMC  /Span
+[11] MCID 12/Lang (en-US)
+[11] Homework)] TJ
+[11] EMC  /Span
+[11] MCID 13/Lang (en-US)
+[11] R)-3(e)3(sult)] TJ
+[11] EMC  /Span
+[11] MCID 14/Lang (en-US)
+[11] P)-3(rogress)3( )3(R)-3(e)3(cord)] TJ
+[11] EMC  /Span
+[11] MCID 15/Lang (en-US)
+[11] C)-2(lassroom)-2( )3(Note)] TJ
+[11] EMC  /Span
+[11] MCID 16/Lang (en-US)
+[11] Notifica)-2(tion)] TJ
+[11] EMC  /Span
+[11] MCID 17/Lang (en-US)
+[11] Acad)-3(e)3(m)-3(ic )5(Docum)-5(e)3(nt)] TJ
+[11] EMC  /Span
+[11] MCID 18/Lang (en-US)
+[11] Mo)4(d)-3(e)4(lling rule)4(:)-4( )3( )] TJ
+[11] The)5(s)-8(e)3( )3(are )5(conc)-8(e)3(ptu)-4(al )4(obje)-6(cts )4(only)-3(. )3(Do not )3(tu)-3(rn t)-7(he )5(li)4(st dir)-5(e)3(ctl)3(y)-4( )3(into dat)-11(ab)-2(ase )4(ta)-2(ble)5(s )3(un)-3(til )] TJ
+[11] re)4(lationships and)-3( )3(re)4(qu)-3(ire)5(m)-3(e)3(nts hav)-7(e)3( )3(bee)5(n r)-6(e)-5(v)-4(ie)4(wed.)] TJ
+[11] EMC  /Span
+[11] MCID 19/Lang (en-US)
+[11] UX )3(Di)-5(rection)] TJ
+[11] EMC  /Span
+[11] MCID 20/Lang (en-US)
+[11] P)-3(rof)-2(e)3(ssional )3(aca)-2(demic)] TJ
+[11] sy)-4(stem fee)4(l.)] TJ
+[11] EMC  /Span
+[11] MCID 21/Lang (en-US)
+[11] Modern )4(bu)-3(t not visu)-3(all)3(y)-4( )3(com)-2(plic)4(at)-2(e)3(d.)] TJ
+[11] EMC  /Span
+[11] MCID 22/Lang (en-US)
+[11] S)4(im)-2(ple)5( )-6(e)3(nou)-4(gh)-2( )3(f)-3(or )3(a non)] TJ
+[11] tec)4(hnica)-2(l )6(teache)3(r)-8(.)] TJ
+[11] EMC  /Span
+[11] MCID 23/Lang (en-US)
+[11] Dash)-2(boa)-3(rd)] TJ
+[11] f)-3(irst )4(na)-3(v)-4(i)10(ga)-3(tion.)] TJ
+[11] EMC  /Span
+[11] MCID 24/Lang (en-US)
+[11] C)-2(le)6(ar ro)-7(le)] TJ
+[11] spec)4(ific n)-8(av)-6(iga)-2(tion.)] TJ
+[11] EMC  /Span
+[11] MCID 25/Lang (en-US)
+[11] R)-3(e)3(sponsiv)-5(e)3( )3(web de)5(si)-7(gn)-2(.)] TJ
+[11] EMC  /Span
+[11] MCID 26/Lang (en-US)
+[11] De)3(sktop)] TJ
+[11] f)-3(irst )4(plann)-2(i)-8(ng)-2( )3(with)-3( )3(m)-3(obile)6( )3(re)4(spon)-11(siv)-3(e)3(ness.)] TJ
+[11] EMC  /Span
+[11] MCID 27/Lang (en-US)
+[11] C)-2(onsistent notificat)-3(ion and prof)-3(il)4(e)3( )3(areas.)] TJ
+[11] EMC  /Span
+[11] MCID 28/Lang (en-US)
+[11] Av)-6(oid unn)-2(e)3(ce)4(ssary)-5( )3(f)-3(orm)-3(s )3(an)-3(d re)6(peated )4(da)-2(ta)-2( )3(e)3(ntry)-6(.)] TJ
+[11] EMC  /Span
+[11] MCID 29/Lang (en-US)
+[11] Wh)4(at)-5( I)5(s D)-3(el)-3(iberate)-2(l)5(y Not )5(Being Deci)-2(ded Y)5(et)] TJ
+[11] EMC  /Span
+[11] MCID 30/Lang (en-US)
+[11] Final )3(progra)-3(m)-3(m)-3(ing fra)-4(m)-3(e)3(wo)-2(rk.)] TJ
+[11] EMC  /Span
+[11] MCID 31/Lang (en-US)
+[11] Final )3(da)-2(ta)-2(ba)-2(se)3( )3(sche)-5(m)-3(a.)] TJ
+[11] EMC  /Span
+[11] MCID 32/Lang (en-US)
+[11] E)4(x)4(act)-10( )3(au)-4(thentication)-2( )3(prov)-5(ide)3(r )4(conf)-3(igu)-3(ration)6(.)] TJ
+[12] Artifact
+[12] Attached [/Top]/Type/Pagination/Subtype/Header
+[12] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[12] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[12] EMC /Artifact
+[12] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[12] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[12] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[12] Pa)-4(g)-3(e )] TJ
+[12] EMC  /Span
+[12] MCID 0/Lang (en-US)
+[12] E)4(x)4(act)-10( )3(progress )5(f)-3(orm)-3(ula.)] TJ
+[12] EMC  /Span
+[12] MCID 1/Lang (en-US)
+[12] De)3(ta)-2(il)4(e)3(d)-9( )3(notif)-4(ication de)3(li)4(v)-4(e)3(ry)-3( )3(inf)-3(rastru)-3(cture.)] TJ
+[12] EMC  /Span
+[12] MCID 2/Lang (en-US)
+[12] Final )3(v)-4(isua)-3(l )6(desi)3(gn)-2( )3(sy)-4(stem.)] TJ
+[12] EMC  /Span
+[12] MCID 3/Lang (en-US)
+[12] Mobile)5( )3(ap)-2(pli)-6(cation architecture.)] TJ
+[12] EMC  /Span
+[12] MCID 4/Lang (en-US)
+[12] S)4(chool )5(ad)-2(m)-3(inistratio)-11(n imple)4(m)-3(e)3(nta)-4(tion.)] TJ
+[12] EMC  /Span
+[12] MCID 5/Lang (en-US)
+[12] P)-3(arent portal )4(im)-2(ple)-3(m)-3(e)3(nta)-4(tion.)] TJ
+[12] EMC  /Span
+[12] MCID 6/Lang (en-US)
+[12] Third)] TJ
+[12] pa)-2(rty)-4( )3(integration)-2(s.)] TJ
+[12] EMC  /Span
+[12] MCID 7/Lang (en-US)
+[12] Ve)-3(rsion)4( 0.)-5(5 )4(Deci)-2(sion )5(Re)-4(gi)-3(ste)-3(r)] TJ
+[12] EMC  /Span
+[12] MCID 8/Lang (en-US)
+[12] The)5( )3(f)-3(oll)5(ow)-2(ing re)5(giste)-7(r )-5(consoli)3(da)-2(tes )6(the )4(an)-3(swers )5(alre)4(ad)-2(y)-4( )3(pres)3(e)3(nt)-11( )3(in )-6(the )4(sup)-3(plie)6(d bl)4(ueprint)-10(. )3(U)-4(na)-3(nsw)-3(e)3(re)4(d )] TJ
+[12] qu)-3(e)3(stions re)6(m)-3(ain e)3(x)4(pl)-7(icitl)5(y)-4( )3(m)-3(arked )5(pending )-8(rath)-3(e)3(r )4(tha)-4(n be)4(ing fill)4(e)3(d)-9( )3(f)-3(rom)-3( )3(ou)-2(tside )6(assu)-4(m)-3(pt)8(ions.)] TJ
+[12] EMC /Artifact BMC 0.929 g
+[12] BDC 59.1 521.78 141.83 14 re
+[12] EMC  /Span
+[12] MCID 10/Lang (en-US)
+[12] D)-3(ec)5(is)6(io)-2(n )4(Area)] TJ
+[12] EMC /Artifact BMC 206.63 521.78 150.35 14 re
+[12] MCID 11
+[12] BDC 211.85 521.78 140 14 re
+[12] EMC  /Span
+[12] MCID 12/Lang (en-US)
+[12] Sta)-5(tu)4(s)] TJ
+[12] EMC /Artifact BMC 357.48 521.78 200.73 14 re
+[12] MCID 13
+[12] BDC 362.68 521.78 190.32 14 re
+[12] EMC  /Span
+[12] MCID 14/Lang (en-US)
+[12] D)-3(ec)5(is)6(io)-2(n )4(/ C)-2(u)4(rr)5(ent)-9( P)-2(o)-4(s)5(ition)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 15/Lang (en-US)
+[12] Au)4(th)-3(e)5(n)-4(ti)-4(cati)-3(o)-3(n)-4( m)12(o)-3(d)5(e)5(l)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 16
+[12] BDC 210.93 503.25 141.83 14.025 re
+[12] EMC  /Span
+[12] MCID 17/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 18/Lang (en-US)
+[12] Ema)-3(i)-4(l)4(
+[12] pa)-4(ss)-5(w)10(o)-3(rd)6( is)-4( ac)3(ce)-3(p)-5(te)6(d)5( as th)-2(e)5( pri)-6(ma)-4(ry )] TJ
+[12] cr)3(e)5(d)-5(e)5(n)-4(ti)-4(al )5(mo)-5(d)5(e)5(l)4(; G)-2(o)-3(o)-3(g)-4(l)4(e)5( )-7(si)-7(g)6(n)] TJ
+[12] i)6(n)-4( is)-4( al)5(so)-5( )14(p)-5(art of )] TJ
+[12] th)-3(e)5( work)-2(i)-4(n)-4(g)-4( d)8(i)-4(re)5(ct)4(i)-4(o)8(n)-4(. C)3(l)4(as)-4(so)-5(ra I)6(D i)-4(s i)-4(d)5(e)5(n)-4(ti)-4(ty)] TJ
+[12] o)8(n)-4(l)4(y)-3(.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 19/Lang (en-US)
+[12] Ema)-3(i)-4(l)4( ve)4(ri)-4(fi)-3(cati)7(o)-3(n)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 20
+[12] BDC 210.93 458.75 141.83 14 re
+[12] EMC  /Span
+[12] MCID 21/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 22/Lang (en-US)
+[12] Man)-5(d)5(ato)-4(ry b)-5(e)5(fore )6(n)-4(o)-3(rma)-3(l)4( C)6(l)4(as)-4(so)-5(ra u)5(se.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 23/Lang (en-US)
+[12] Log)-7(i)6(n)-4( e)8(ma)-4(i)-4(l)4( c)6(h)-4(an)-6(g)-4(e)5(s)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 24
+[12] BDC 210.93 436.25 141.83 14 re
+[12] EMC  /Span
+[12] MCID 25/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 26/Lang (en-US)
+[12] Al)5(l)4(o)-3(we)4(d)5(; v)-2(e)5(ri)-4(fi)-3(cati)-3(o)-3(n)-4( r)4(e)5(q)5(u)3(i)-4(re)5(d)5(.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 27/Lang (en-US)
+[12] Se)5(p)-5(ara)-3(te)6( work)-2(sp)-8(ace)5( ac)3(ti)-4(v)-3(ati)4(o)-3(n)] TJ
+[12] EMC /Artifact BMC 0.945 g
+[12] MCID 28
+[12] BDC 210.93 413.85 141.83 13.9 re
+[12] EMC  /Span
+[12] MCID 29/Lang (en-US)
+[12] R)-4(e)5(so)-5(l)4(v)-3(e)5(d)] TJ
+[12] MCID 30/Lang (en-US)
+[12] N)-4(o)-3( se)5(p)-5(ara)-3(te)6( u)6(p)-5(g)-4(rad)4(e)5( ste)6(p)-5( is)-4( ne)3(e)5(d)5(e)5(d)-5( bec)5(ause)3( )] TJ
+[12] e)5(v)-3(e)5(ry te)6(ach)-3(e)5(r)-9( au)4(tom)-4(ati)-6(cal)5(l)4(y)-3( r)4(e)5(c)-7(e)5(i)-4(v)-3(e)5(s an)-6( )] TJ
+[12] i)-4(n)-4(d)5(e)5(p)-5(e)5(n)-4(d)5(e)5(n)-4(t )4(wo)-4(rks)-3(p)-5(ace)5(.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 31/Lang (en-US)
+[12] Au)4(tom)-4(ati)-6(c )6(te)6(ach)-3(e)5(r )4(wo)-4(rks)-3(p)-5(ace)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 32
+[12] BDC 210.93 369.35 141.83 14 re
+[12] EMC  /Span
+[12] MCID 33/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 34/Lang (en-US)
+[12] Y)-3(e)5(s.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 35/Lang (en-US)
+[12] Stu)4(d)5(e)5(n)-4(t )4(ma)-4(y)-3( r)4(e)5(g)-4(i)-4(ster)3( be)-8(fore )] TJ
+[12] j)-4(o)-3(i)6(n)-4(i)6(n)-4(g)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 36
+[12] BDC 210.93 346.85 141.83 14 re
+[12] EMC  /Span
+[12] MCID 37/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 38/Lang (en-US)
+[12] Y)-3(e)5(s.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 39/Lang (en-US)
+[12] Te)7(ach)-3(e)5(r )4(i)-4(n)-4(v)-3(i)-4(tati)5(o)-3(n)-4( by)-5( C)6(l)4(as)-4(so)-5(ra I)6(D)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 40
+[12] BDC 210.93 313.32 141.83 14.025 re
+[12] EMC  /Span
+[12] MCID 41/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 42/Lang (en-US)
+[12] Y)-3(e)5(s,)-5( in)-6( ad)6(d)5(i)-4(ti)-4(o)8(n)-4( t)4(o)-3( stu)4(d)5(e)5(n)-4(t)] TJ
+[12] i)-4(n)7(i)-4(ti)-4(ate)3(d)5( jo)5(i)-4(n)-4( r)4(e)5(q)5(u)3(e)5(sts)-4(.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 43/Lang (en-US)
+[12] Mu)5(l)4(ti)-4(p)-5(l)4(e)5( c)-4(l)4(as)-4(sro)-5(o)-3(ms)-4( u)6(n)7(d)5(e)5(r )4(sa)-4(me )] TJ
+[12] te)6(ach)-3(e)5(r)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 44
+[12] BDC 210.93 290.92 141.83 13.9 re
+[12] EMC  /Span
+[12] MCID 45/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 46/Lang (en-US)
+[12] Y)-3(e)5(s.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 47/Lang (en-US)
+[12] On)-4(e)5( ac)3(ti)-4(v)-3(e)5( me)5(mb)-7(e)5(rsh)-6(i)-4(p)5( in)-6( sam)-4(e)5( )] TJ
+[12] cl)7(as)-4(sro)-5(o)-3(m)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 48
+[12] BDC 210.93 257.42 141.83 14 re
+[12] EMC  /Span
+[12] MCID 49/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 50/Lang (en-US)
+[12] Y)-3(e)5(s.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 51/Lang (en-US)
+[12] B)5(as)-4(i)-4(c )6(search re)7(sul)5(t)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 52
+[12] BDC 210.93 223.92 141.83 14 re
+[12] EMC  /Span
+[12] MCID 53/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 54/Lang (en-US)
+[12] N)-4(am)-4(e)5(, role)6(, cl)7(as)-4(s,)-5( pro)-5(fi)-3(l)4(e)5( ph)-6(o)-3(to)8(, C)3(l)4(as)-4(so)-5(ra I)6(D.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 55/Lang (en-US)
+[12] C)5(l)4(as)-4(so)-5(ra I)6(D v)-2(i)-4(sibi)-7(l)4(i)-4(ty)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 56
+[12] BDC 210.93 201.42 141.83 14 re
+[12] EMC  /Span
+[12] MCID 57/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 58/Lang (en-US)
+[12] Ev)-2(e)5(ryo)-5(n)-4(e)5(.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 59/Lang (en-US)
+[12] Stu)5(d)5(e)5(n)-4(t )-6(e)5(d)5(i)-4(ts n)-3(am)-4(e)5(/)-4(cl)-3(as)-4(s)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 60
+[12] BDC 210.93 178.92 141.83 14 re
+[12] EMC  /Span
+[12] MCID 61/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 62/Lang (en-US)
+[12] Al)5(l)4(o)-3(we)4(d)5(.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 63/Lang (en-US)
+[12] Te)7(ach)-3(e)5(r )-6(e)5(d)5(i)-4(ts stud)-2(e)5(n)-4(t )4(p)-5(rofi)-6(l)4(e)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 64
+[12] BDC 210.93 156.52 141.83 13.9 re
+[12] EMC  /Span
+[12] MCID 65/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 66/Lang (en-US)
+[12] V)-3(i)-4(e)5(w an)-4(d)5( r)4(e)5(q)5(u)-7(e)5(st to c)4(h)-4(an)-6(g)-4(e)5(.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 67/Lang (en-US)
+[12] Profi)-6(l)4(e)5( ph)-6(o)-3(tos)] TJ
+[12] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[12] MCID 68
+[12] BDC 210.93 134.02 141.83 14 re
+[12] EMC  /Span
+[12] MCID 69/Lang (en-US)
+[12] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[12] MCID 70/Lang (en-US)
+[12] Op)-6(ti)-4(o)8(n)-4(al.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 71/Lang (en-US)
+[12] Prog)-6(re)5(ss)-5( f)4(actors)] TJ
+[12] EMC /Artifact BMC 1 0.953 0.839 rg
+[12] MCID 72
+[12] BDC 210.93 111.5 141.83 14 re
+[12] EMC  /Span
+[12] MCID 73/Lang (en-US)
+[12] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[12] MCID 74/Lang (en-US)
+[12] Atte)6(n)-4(d)5(an)-6(ce)8(/)-4(e)5(xa)-4(ms)-4(/)-4(te)6(sts)-4(/)6(h)-4(o)-3(mework)7(/)-4(con)-4(fi)7(g)-4(u)3(rab)-6(l)4(e)5( )] TJ
+[12] com)-2(b)-5(i)6(n)-4(ati)4(o)-3(n)-4( n)10(o)-3(t )4(fi)-3(n)-4(ali)-2(z)5(e)5(d)5(.)] TJ
+[12] EMC /Artifact BMC 0 g
+[12] MCID 75/Lang (en-US)
+[12] Man)-3(u)3(al )5(p)-5(rog)-7(re)5(ss)-5( ov)-3(e)5(rri)-3(d)5(e)] TJ
+[12] EMC /Artifact BMC 1 0.953 0.839 rg
+[12] MCID 76
+[12] BDC 210.93 78 141.83 14 re
+[12] EMC  /Span
+[12] MCID 77/Lang (en-US)
+[12] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[12] MCID 78/Lang (en-US)
+[12] N)-4(o)-3(t )4(fi)-3(n)-4(ali)-2(z)5(e)5(d)5(.)] TJ
+[12] EMC /Artifact BMC 0 g
+[13] Artifact
+[13] Attached [/Top]/Type/Pagination/Subtype/Header
+[13] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[13] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[13] EMC /Artifact
+[13] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[13] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[13] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[13] Pa)-4(g)-3(e )] TJ
+[13] EMC /Artifact BMC 0.929 g
+[13] BDC 59.1 725.7 141.83 13.9 re
+[13] EMC  /Span
+[13] MCID 1/Lang (en-US)
+[13] D)-3(ec)5(is)6(io)-2(n )4(Area)] TJ
+[13] EMC /Artifact BMC 206.63 725.7 150.35 13.9 re
+[13] BDC 211.85 725.7 140 13.9 re
+[13] EMC  /Span
+[13] MCID 3/Lang (en-US)
+[13] Sta)-5(tu)4(s)] TJ
+[13] EMC /Artifact BMC 357.48 725.7 200.73 13.9 re
+[13] BDC 362.68 725.7 190.32 13.9 re
+[13] EMC  /Span
+[13] MCID 5/Lang (en-US)
+[13] D)-3(ec)5(is)6(io)-2(n )4(/ C)-2(u)4(rr)5(ent)-9( P)-2(o)-4(s)5(ition)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] MCID 6/Lang (en-US)
+[13] R)-3(e)5(sul)5(t )4(fi)-3(e)5(l)-6(d)5(s)] TJ
+[13] EMC /Artifact BMC 1 0.953 0.839 rg
+[13] BDC 210.93 707.2 141.83 14 re
+[13] EMC  /Span
+[13] MCID 8/Lang (en-US)
+[13] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[13] MCID 9/Lang (en-US)
+[13] Marks)-4( vs)-2( mark)-2(s
+[13] g)-4(rad)4(e)5(
+[13] r)-6(e)5(ma)-4(rks)-3( no)-4(t )4(fi)-3(n)-4(ali)-2(z)5(e)5(d)5(.)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] MCID 10/Lang (en-US)
+[13] R)-3(e)5(sul)5(t )4(p)-5(u)3(b)-5(l)4(i)-4(cati)-3(o)-3(n)] TJ
+[13] EMC /Artifact BMC 1 0.953 0.839 rg
+[13] MCID 11
+[13] BDC 210.93 684.67 141.83 14 re
+[13] EMC  /Span
+[13] MCID 12/Lang (en-US)
+[13] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[13] MCID 13/Lang (en-US)
+[13] I)4(mm)-4(e)5(d)5(i)-4(ate)3( vs)-2( e)8(xp)-7(l)4(i)-4(cit p)-4(u)3(b)-5(l)4(i)-4(sh)-6( n)10(o)-3(t )4(fi)-3(n)-4(ali)-2(z)5(e)5(d)5(.)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] MCID 14/Lang (en-US)
+[13] Ho)-5(mework)-3( attachm)-3(e)5(n)7(ts)] TJ
+[13] EMC /Artifact BMC 1 0.953 0.839 rg
+[13] MCID 15
+[13] BDC 210.93 662.17 141.83 14 re
+[13] EMC  /Span
+[13] MCID 16/Lang (en-US)
+[13] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[13] MCID 17/Lang (en-US)
+[13] N)-4(o)-3(t )4(fi)-3(n)-4(ali)-2(z)5(e)5(d)5(.)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] MCID 18/Lang (en-US)
+[13] R)-3(e)5(cu)6(rri)-3(n)-4(g)-4( we)7(e)5(kly sche)-8(d)5(u)3(l)-6(e)5(s)] TJ
+[13] EMC /Artifact BMC 1 0.953 0.839 rg
+[13] MCID 19
+[13] BDC 210.93 639.67 141.83 14 re
+[13] EMC  /Span
+[13] MCID 20/Lang (en-US)
+[13] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[13] MCID 21/Lang (en-US)
+[13] N)-4(o)-3(t )4(fi)-3(n)-4(ali)-2(z)5(e)5(d)5(.)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] MCID 22/Lang (en-US)
+[13] N)-3(o)-3(ti)-4(fi)-3(cat)12(i)-4(o)8(n)-4( d)8(e)5(l)4(i)-4(v)-3(e)5(ry)] TJ
+[13] EMC /Artifact BMC 1 0.953 0.839 rg
+[13] MCID 23
+[13] BDC 210.93 617.17 141.83 14 re
+[13] EMC  /Span
+[13] MCID 24/Lang (en-US)
+[13] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[13] MCID 25/Lang (en-US)
+[13] Tc[(In)] TJ
+[13] ap)3(p)] TJ
+[13] o)8(n)-4(l)4(y)-3( f)4(i)-4(rst vs)-4( l)7(ate)3(r )4(e)-5(ma)-4(i)-4(l)4( no)-4(t )4(fi)-3(n)7(ali)-2(z)5(e)5(d)5(.)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] MCID 26/Lang (en-US)
+[13] Ess)-3(e)5(n)-4(ti)-4(al )5(fi)-3(v)-3(e)5( f)4(e)5(ature)7(s)] TJ
+[13] EMC /Artifact BMC 1 0.953 0.839 rg
+[13] MCID 27
+[13] BDC 210.93 594.67 141.83 14 re
+[13] EMC  /Span
+[13] MCID 28/Lang (en-US)
+[13] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[13] MCID 29/Lang (en-US)
+[13] N)-4(o)-3(t )4(fi)-3(n)-4(ali)-2(z)5(e)5(d)5(.)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] MCID 30/Lang (en-US)
+[13] F)3(e)5(ature)7(s )-10(to p)-4(o)-3(stp)-7(o)8(n)-4(e)] TJ
+[13] EMC /Artifact BMC 1 0.953 0.839 rg
+[13] MCID 31
+[13] BDC 210.93 572.27 141.83 13.9 re
+[13] EMC  /Span
+[13] MCID 32/Lang (en-US)
+[13] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[13] MCID 33/Lang (en-US)
+[13] N)-4(o)-3(t )4(fi)-3(n)-4(ali)-2(z)5(e)5(d)5(.)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] MCID 34/Lang (en-US)
+[13] Vi)-7(sual )6(d)5(i)-4(re)5(ct)4(i)-4(o)-3(n)] TJ
+[13] EMC /Artifact BMC 1 0.953 0.839 rg
+[13] MCID 35
+[13] BDC 210.93 549.78 141.83 14 re
+[13] EMC  /Span
+[13] MCID 36/Lang (en-US)
+[13] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[13] MCID 37/Lang (en-US)
+[13] Scho)-5(o)-3(l)4(/)-4(u)3(n)7(i)-4(v)-3(e)5(rsi)-7(ty )11(p)-5(o)-3(rtal)4( v)11(s Saa)-4(S d)8(as)-4(h)-4(b)-5(o)8(ard)4( vs)-2( )] TJ
+[13] h)-4(y)-3(b)-5(r)12(i)-4(d)5( no)-4(t )4(fi)-3(n)-4(ali)-2(z)5(e)5(d)5(.)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] MCID 38/Lang (en-US)
+[13] I)6(n)-4(i)-4(ti)-4(al )5(o)-3(p)-5(e)5(rati)5(n)-4(g)-4( mo)-2(d)5(e)5(l)] TJ
+[13] EMC /Artifact BMC 1 0.953 0.839 rg
+[13] MCID 39
+[13] BDC 210.93 516.28 141.83 14 re
+[13] EMC  /Span
+[13] MCID 40/Lang (en-US)
+[13] Pe)4(n)-4(d)5(i)-4(n)-4(g)] TJ
+[13] MCID 41/Lang (en-US)
+[13] Te)6(ach)-3(e)5(r)] TJ
+[13] fi)-3(rst wi)-4(th)-3( scho)6(o)-3(l)4( ad)6(mi)-7(n)-4(i)6(stra)-3(ti)-4(o)8(n)-4( as fu)5(tu)4(re)5( )] TJ
+[13] e)5(xp)-7(an)-6(s)8(i)-4(o)-3(n)-4( )14(i)-4(s p)-5(ro)8(p)-5(o)-3(sed)7( in)-6( t)15(h)-4(e)5( blu)5(e)5(p)-5(ri)-4(n)-4(t, b)-4(u)3(t )4(th)-3(e)5( )] TJ
+[13] e)5(xp)-7(l)4(i)-4(cit an)-5(sw)-3(e)5(r )4(re)5(ma)-4(i)-4(n)7(s b)-5(l)4(an)-6(k.)] TJ
+[13] EMC /Artifact BMC 0 g
+[13] EMC  /Span
+[13] MCID 42/Lang (en-US)
+[13] EMC  /Span
+[13] MCID 43/Lang (en-US)
+[13] Proposed )-2(Next P)-2(lanning)6( S)5(tage)] TJ
+[13] EMC  /Span
+[13] MCID 44/Lang (en-US)
+[13] Once )5(the )4(re)4(m)-3(ainin)-2(g de)-5(cisi)3(on questions are)4( )3(a)-11(nsw)-3(e)3(re)4(d, the)3( )3(proje)3(ct)-8( )3(s)-8(hou)-4(ld )5(stop chang)-3(ing its )4(au)-4(thentication)-2( )] TJ
+[13] conce)4(pt and)-2( )3(m)-3(ov)-5(e)3( )3(into e)5(x)4(e)3(cution)-2( )3(p)-9(lanning)-3(.)] TJ
+[13] EMC  /Span
+[13] MCID 45/Lang (en-US)
+[13] Fre)4(e)3(ze)3( )3(V)-4(e)3(rsion )-5(0.5 )5(a)-11(ccount)-2( )3(an)-3(d l)5(ogin principl)4(e)3(s.)] TJ
+[13] EMC  /Span
+[13] MCID 46/Lang (en-US)
+[13] C)-2(re)4(at)-2(e)3( )3(the )4(com)-2(ple)5(t)-9(e)3( )3(site)4(m)-3(ap)-2(.)] TJ
+[13] EMC  /Span
+[13] MCID 47/Lang (en-US)
+[13] De)3(f)-3(ine )6(the )4(T)-6(e)3(acher )-4(user )4(journ)-2(e)3(y)-4(.)] TJ
+[13] EMC  /Span
+[13] MCID 48/Lang (en-US)
+[13] De)3(f)-3(ine )6(the )4(S)4(tu)-3(dent )-5(user )4(journ)-2(e)3(y)-4(.)] TJ
+[13] EMC  /Span
+[13] MCID 49/Lang (en-US)
+[13] De)3(f)-3(ine )6(re)4(gistra)-2(tion a)-10(nd l)4(ogin scre)6(e)3(ns.)] TJ
+[13] EMC  /Span
+[13] MCID 50/Lang (en-US)
+[13] De)3(f)-3(ine )6(e)3(v)-4(e)3(ry)-3( )3(pa)-2(ge )4(a)-11(nd its )4(pu)-3(rpose.)] TJ
+[13] EMC  /Span
+[13] MCID 51/Lang (en-US)
+[13] C)-2(re)4(at)-2(e)3( )3(the )4(Te)6(ach)-11(e)3(r )-5(v)-4(s )3(S)4(tu)-3(dent )3(permission ma)-3(trix)5(.)] TJ
+[13] EMC  /Span
+[13] MCID 52/Lang (en-US)
+[13] C)-2(re)4(at)-2(e)3( )3(the )4(conce)4(pt)-10(ua)-4(l )6(da)-2(ta)-2( )3(re)4(lationship diag)-2(ram)-5(.)] TJ
+[13] EMC  /Span
+[13] MCID 53/Lang (en-US)
+[13] De)3(f)-3(ine )6(da)-2(shboa)-4(rd widgets.)] TJ
+[13] EMC  /Span
+[13] MCID 54/Lang (en-US)
+[13] De)3(f)-3(ine )6(f)-3(orm)-3(s )3(an)-3(d v)6(alidation)-2( )3(re)4(qu)-3(ire)5(m)-3(e)3(nts.)] TJ
+[13] EMC  /Span
+[13] MCID 55/Lang (en-US)
+[13] De)3(f)-3(ine )6(MV)-5(P)-3( )3(an)-3(d fu)5(tu)-3(re)4( )3(scope)3(.)] TJ
+[13] EMC  /Span
+[13] MCID 56/Lang (en-US)
+[13] C)-2(re)4(at)-2(e)3( )3(low)] TJ
+[13] f)-3(ide)3(li)4(ty)-5( )3(wirefra)-2(m)-3(e)3(s.)] TJ
+[13] EMC  /Span
+[13] MCID 57/Lang (en-US)
+[13] C)-2(re)4(at)-2(e)3( )3(the )4(v)-4(isua)-3(l/U)-5(I )6(desi)3(gn)-2( )3(dire)4(ction.)] TJ
+[13] EMC  /Span
+[13] MCID 58/Lang (en-US)
+[13] P)-3(re)4(pa)-2(re)4( )3(the )4(tec)4(hni)-10(cal )5(re)4(qu)-3(ire)5(m)-3(e)3(nts docu)-10(m)-3(e)3(nt.)] TJ
+[13] EMC  /Span
+[13] MCID 59/Lang (en-US)
+[13] Only)-4( )3(then be)5(gin bu)-2(il)4(ding)-2( )3(the )4(f)-3(irst )4(website)-5( )-6(prototy)-7(pe.)] TJ
+[14] Artifact
+[14] Attached [/Top]/Type/Pagination/Subtype/Header
+[14] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[14] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[14] EMC /Artifact
+[14] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[14] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[14] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[14] Pa)-4(g)-3(e )] TJ
+[14] EMC  /Span
+[14] MCID 0/Lang (en-US)
+[14] Ve)-3(rsion)4( )-2(Bound)4(ary)] TJ
+[14] EMC  /Span
+[14] MCID 1/Lang (en-US)
+[14] V)-4(e)3(rsion )3(0.5 )5(is )4(not a co)-7(ding)-2( )3(spec)4(ifica)-2(tion. I)4(t i)3(s)-8( )3(the )4(new theor)-5(e)3(tical )5(b)-9(asel)4(ine. )6(The)-4( )3(m)-3(ain chan)-3(ge )4(f)-3(rom)-3( )3(V)-4(e)3(rsion )3(0.4 )] TJ
+[14] is )4(the )4(se)3(pa)-2(ration)-2( )3(of)-3( )3(au)-4(thentication)-2( )3(f)-3(rom)-3( )3(C)-2(las)10(sora ide)4(ntity)-6(. )3(The)5( )3(goa)-3(l )-3(is )4(to re)6(m)-3(ov)-5(e)3( )3(un)-3(nec)3(e)3(ss)-8(ary)-6( )3(custom)-6( )3(login )] TJ
+[14] com)-2(ple)5(x)4(ity)-4( )3(wh)-3(il)4(e)3( )3(pres)-5(e)3(rv)-3(ing the )5(C)-2(lassora I)5(D )-5(conce)4(pt.)] TJ
+[14] EMC  /Span
+[14] MCID 2/Lang (en-US)
+[14] Ne)4(w ide)3(as af)-4(ter)3( )3(this v)-2(e)-5(rsion )3(shou)-3(ld )5(be )5(cl)4(assif)-13(ie)4(d as:)] TJ
+[14] EMC  /Span
+[14] MCID 3/Lang (en-US)
+[14] A. Required )5(f)-3(or )3(the )-5(c)-7(ore)3( )3(wo)-2(rkflow.)] TJ
+[14] EMC  /Span
+[14] MCID 4/Lang (en-US)
+[14] B)4(. )3(U)-4(se)3(f)-3(ul but l)4(at)-2(e)3(r.)] TJ
+[14] EMC  /Span
+[14] MCID 5/Lang (en-US)
+[14] C)-2(. )3(Fut)-3(ure )4(e)3(x)4(pa)-2(nsion.)] TJ
+[14] EMC  /Span
+[14] MCID 6/Lang (en-US)
+[14] This )6(cl)4(assif)-4(ication ke)6(e)-5(ps the)3( )3(proje)3(ct )3(f)-3(rom)-3( )3(be)-6(com)-2(ing un)-2(nec)3(e)3(ssarily comp)-3(li)4(cated.)] TJ
+[14] EMC  /Span
+[14] MCID 7/Lang (en-US)
+[14] Ve)-3(rsion)4( )-2(Histor)4(y)] TJ
+[14] EMC  /Span
+[14] MCID 8/Lang (en-US)
+[14] Initia)-8(l )6(structu)-4(ral )4(brain)-2(storm)-3(ing.)] TJ
+[14] EMC  /Span
+[14] MCID 9/Lang (en-US)
+[14] R)-3(e)3(lationship, pr)-8(iv)-3(acy)-5(, )3(an)-3(d pe)4(rm)-2(ission )13(brain)-2(storm)-3(ing.)] TJ
+[14] EMC  /Span
+[14] MCID 10/Lang (en-US)
+[14] C)-2(onsolidated )3(pr)-9(odu)-3(ct )3(un)-3(ders)3(ta)-2(nding)-3( )3(a)7(nd Classora)-2( )3(na)-3(m)-3(ing.)] TJ
+[14] EMC  /Span
+[14] MCID 11/Lang (en-US)
+[14] P)-3(re)4(v)-4(ious fin)-2(al )4(pr)-9(e)] TJ
+[14] e)3(x)4(e)3(cution)-2( )3(blueprint)-8( )-6(with)-3( )3(U)-4(ID)3( )3(
+[14] pa)-2(ssword l)3(ogin.)] TJ
+[14] EMC  /Span
+[14] MCID 12/Lang (en-US)
+[14] N)-7(e)3(w theore)5(tical)-7( )3(blueprint: )4(e)3(m)-3(ail )4(
+[14] pa)-2(ssword au)-4(thentication)-2( )13(with)-3( )3(se)3(pa)-2(rate )4(C)-2(lassora I)5(D )3(ide)3(ntity)-6(.)] TJ
+[14] EMC  /Span
+[14] MCID 13/Lang (en-US)
+[14] R)-3(e)3(f)-3(ined )] TJ
+[14] S)4(tru)-2(ctura)-3(l )6(cl)4(e)3(an)-3(up)-3(, )3(dec)3(ision )-5(c)-7(onsolidation)-2(, )3(an)-3(d c)3(larification)-3( )3(of)-3( )3(current )4(scope)3( )3(with)-3(ou)-2(t adding)-3( )] TJ
+[14] e)3(x)4(ter)3(na)-3(l )-3(re)4(qu)-3(ire)5(m)-3(e)3(nts)-10(.)] TJ
+[14] EMC  /Span
+[14] MCID 14/Lang (en-US)
+[14] W)-2(or)5(ki)-2(ng N)-3(otes and)5( Curr)-3(ent Technical Dire)-3(ction)] TJ
+[14] EMC  /Span
+[14] MCID 15/Lang (en-US)
+[14] S)4(ign in )3(with)-3( )-6(G)3(oogle)4( )3(a)-11(nd e)4(m)-3(ail )4(sign)] TJ
+[14] in are)4( )3(pa)-12(rt of the )6(current )4(dir)-8(e)3(cti)-7(on.)] TJ
+[14] EMC  /Span
+[14] MCID 16/Lang (en-US)
+[14] Au)-3(thentication)-2( )3(will)4( )3(b)-9(e)3( )3(on S)5(up)-3(ab)-2(ase.)] TJ
+[14] EMC  /Span
+[14] MCID 17/Lang (en-US)
+[14] Data)-4(ba)-2(se)3( )3(will)4( )3(be)-6( )3(on )-7(S)4(up)-3(ab)-2(ase.)] TJ
+[14] EMC  /Span
+[14] MCID 18/Lang (en-US)
+[14] E)4(x)4(act prov)-4(ide)3(r )4(conf)-3(igu)-3(ration)-2(, )3(sche)3(m)-3(a, se)4(curity)-5( )3(polic)4(ie)4(s, )4(an)-3(d i)3(m)-3(ple)-3(m)-3(e)3(nta)-4(tion de)4(ta)-2(il)4(s )3(re)4(m)-3(ain pa)-2(rt of the )] TJ
+[14] e)3(x)4(e)3(cution)] TJ
+[14] plann)-2(ing stag)-3(e)3(.)] TJ
+[14] EMC  /Span
+[14] MCID 19/Lang (en-US)
+[14] Final S)5(co)3(pe Ch)-2(eck)] TJ
+[14] EMC /Artifact BMC 0.929 g
+[14] MCID 20
+[14] BDC 64.4 221.33 153.95 14 re
+[14] EMC  /Span
+[14] MCID 21/Lang (en-US)
+[14] D)-3(ec)5(is)6(io)-2(n )4(Area)] TJ
+[14] EMC /Artifact BMC 223.95 221.33 164.23 14 re
+[14] MCID 22
+[14] BDC 229.15 221.33 153.83 14 re
+[14] EMC  /Span
+[14] MCID 23/Lang (en-US)
+[14] Sta)-5(tu)4(s)] TJ
+[14] EMC /Artifact BMC 388.68 221.33 164.12 14 re
+[14] MCID 24
+[14] BDC 393.77 221.33 153.93 14 re
+[14] EMC  /Span
+[14] MCID 25/Lang (en-US)
+[14] D)-3(ec)5(is)6(io)-2(n )4(/ C)-2(u)4(rr)5(ent)-9( P)-2(o)-4(s)5(ition)] TJ
+[14] EMC /Artifact BMC 0 g
+[14] MCID 26/Lang (en-US)
+[14] I)4(d)5(e)5(n)-4(ti)-4(ty)] TJ
+[14] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[14] MCID 27
+[14] BDC 228.25 202.92 155.63 13.9 re
+[14] EMC  /Span
+[14] MCID 28/Lang (en-US)
+[14] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[14] MCID 29/Lang (en-US)
+[14] Pe)4(rma)-3(n)-4(e)5(n)-4(t )4(C)3(l)4(as)-4(so)-5(ra I)6(D i)-4(s sep)-3(ara)-3(te)6( f)4(rom)-4( )] TJ
+[14] l)4(o)-3(g)-4(i)-4(n)-4( au)4(th)-3(e)5(n)-4(t)12(i)-4(cati)-3(o)8(n)-4(.)] TJ
+[14] EMC /Artifact BMC 0 g
+[14] MCID 30/Lang (en-US)
+[14] Au)4(th)-3(e)5(n)-4(ti)-4(cati)-3(o)-3(n)] TJ
+[14] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[14] MCID 31
+[14] BDC 228.25 169.42 155.63 14 re
+[14] EMC  /Span
+[14] MCID 32/Lang (en-US)
+[14] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[14] MCID 33/Lang (en-US)
+[14] Ema)-3(i)-4(l)4(/)-4(p)5(as)-4(sw)7(o)-3(rd)6(
+[14] Go)-3(o)-3(g)-4(l)4(e)5( d)8(i)-4(re)5(ct)4(i)-4(o)-3(n)-4(; )] TJ
+[14] ma)-4(n)-4(d)5(ato)-4(ry e)5(ma)-4(i)-4(l)4( ve)4(ri)-4(fi)-3(cat)12(i)6(o)-3(n)-4(.)] TJ
+[14] EMC /Artifact BMC 0 g
+[14] MCID 34/Lang (en-US)
+[14] Te)6(ach)-3(e)5(r )4(mo)-5(d)5(e)-5(l)] TJ
+[14] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[14] MCID 35
+[14] BDC 228.25 135.92 155.63 14 re
+[14] EMC  /Span
+[14] MCID 36/Lang (en-US)
+[14] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[14] MCID 37/Lang (en-US)
+[14] I)4(n)-4(d)5(e)5(p)-5(e)5(n)-4(d)5(e)5(n)-4(t )4(t)-9(e)5(ach)-3(e)5(r )4(wo)-4(rk)-11(sp)-8(ace)5( is)-4( )] TJ
+[14] autom)-3(ati)-6(c.)] TJ
+[14] EMC /Artifact BMC 0 g
+[14] MCID 38/Lang (en-US)
+[14] Stu)4(d)5(e)5(n)-4(t )4(mo)-5(d)5(e)-5(l)] TJ
+[14] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[14] MCID 39
+[14] BDC 228.25 102.4 155.63 14 re
+[14] EMC  /Span
+[14] MCID 40/Lang (en-US)
+[14] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[14] MCID 41/Lang (en-US)
+[14] Stu)4(d)5(e)5(n)-4(t )4(ma)-4(y)-3( r)4(e)5(g)-4(i)-4(ster)3( f)4(i)-4(rst )-9(an)-6(d)5( jo)-5(i)6(n)-4( l)7(ate)3(r.)] TJ
+[14] EMC /Artifact BMC 0 g
+[14] MCID 42/Lang (en-US)
+[14] R)-4(e)5(l)4(ati)-6(o)-3(n)-4(s)8(h)-4(i)6(p)-5(s)] TJ
+[14] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[14] MCID 43
+[14] BDC 228.25 80 155.63 13.9 re
+[14] EMC  /Span
+[14] MCID 44/Lang (en-US)
+[14] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[14] MCID 45/Lang (en-US)
+[14] Mu)5(l)4(ti)-4(p)-5(l)4(e)5( t)-6(e)5(ach)-3(e)5(rs an)-5(d)5( mu)4(l)-6(ti)-4(p)-5(l)4(e)5( )] TJ
+[14] cl)7(as)-4(sro)-5(o)-3(ms)-4( are)6( su)4(p)-5(p)5(o)-3(rte)6(d)5( )] TJ
+[14] con)-4(ce)8(p)-5(tu)4(all)7(y)-3(.)] TJ
+[14] EMC /Artifact BMC 0 g
+[15] Artifact
+[15] Attached [/Top]/Type/Pagination/Subtype/Header
+[15] C)-4(LA)-5(SS)-3(O)12(R)-2(A)-4(  )6(
+[15] V)4(ER)-5(SI)-7(ON 0)-2(.)12(5)-3( R)12(EFI)-8(NE)-3(D)] TJ
+[15] EMC /Artifact
+[15] Attached [/Bottom]/Type/Pagination/Subtype/Footer
+[15] C)4(la)-8(ss)-2(ora)-7( )] TJ
+[15] Ver)-3(sion )6(0)-3(.5)-4( R)-2(ef)3(ine)17(d  )5(
+[15] Pa)-4(g)-3(e )] TJ
+[15] EMC /Artifact BMC 0.929 g
+[15] BDC 64.4 725.7 153.95 13.9 re
+[15] EMC  /Span
+[15] MCID 1/Lang (en-US)
+[15] D)-3(ec)5(is)6(io)-2(n )4(Area)] TJ
+[15] EMC /Artifact BMC 223.95 725.7 164.23 13.9 re
+[15] BDC 229.15 725.7 153.83 13.9 re
+[15] EMC  /Span
+[15] MCID 3/Lang (en-US)
+[15] Sta)-5(tu)4(s)] TJ
+[15] EMC /Artifact BMC 388.68 725.7 164.12 13.9 re
+[15] BDC 393.77 725.7 153.93 13.9 re
+[15] EMC  /Span
+[15] MCID 5/Lang (en-US)
+[15] D)-3(ec)5(is)6(io)-2(n )4(/ C)-2(u)4(rr)5(ent)-9( P)-2(o)-4(s)5(ition)] TJ
+[15] EMC /Artifact BMC 0 g
+[15] MCID 6/Lang (en-US)
+[15] Se)4(arch)] TJ
+[15] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[15] BDC 228.25 707.2 155.63 14 re
+[15] EMC  /Span
+[15] MCID 8/Lang (en-US)
+[15] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[15] MCID 9/Lang (en-US)
+[15] Li)-4(mi)-7(te)6(d)5( d)8(i)-4(sco)-3(v)-3(e)5(ry;)-5( f)4(i)-4(n)-4(d)5(i)6(n)-4(g)-4( )14(an)-6( I)7(D d)6(o)-3(e)5(s )] TJ
+[15] n)-4(o)-3(t )4(g)-4(ran)-5(t )4(acc)3(e)5(ss)-5(.)] TJ
+[15] EMC /Artifact BMC 0 g
+[15] MCID 10/Lang (en-US)
+[15] Pri)-5(v)-3(acy)] TJ
+[15] EMC /Artifact BMC 0.91 0.953 0.91 rg
+[15] MCID 11
+[15] BDC 228.25 673.67 155.63 14 re
+[15] EMC  /Span
+[15] MCID 12/Lang (en-US)
+[15] C)3(o)-3(n)-4(fi)-3(rmed)] TJ
+[15] MCID 13/Lang (en-US)
+[15] R)-4(o)-3(l)4(e)5(
+[15] r)4(e)-5(l)4(ati)-6(o)-3(n)-4(sh)4(i)-4(p)-5(
+[15] perm)11(i)-4(ss)5(i)-4(o)-3(n)-4( c)6(h)-4(e)5(cks )] TJ
+[15] are)3( r)4(e)-5(q)5(u)3(i)-4(re)5(d)5(.)] TJ
+[15] EMC /Artifact BMC 0 g
+[15] MCID 14/Lang (en-US)
+[15] Acad)6(e)5(mi)-7(c )6(core)] TJ
+[15] EMC /Artifact BMC 0.945 g
+[15] MCID 15
+[15] BDC 228.25 640.17 155.63 14 re
+[15] EMC  /Span
+[15] MCID 16/Lang (en-US)
+[15] Pro)-3(v)-3(i)-4(s)8(i)-4(o)8(n)-4(al)] TJ
+[15] MCID 17/Lang (en-US)
+[15] Sched)8(u)3(l)-6(e)5(, h)-3(o)-3(mework)-3(, e)5(xa)-4(mi)-7(n)-4(at)10(i)-4(o)-3(n)7(s,)-5( )] TJ
+[15] re)5(sul)5(ts,)-4( pro)-5(g)-4(re)5(ss)-5(, n)-3(o)-3(te)6(s,)-5( n)10(o)-3(ti)-4(fi)-3(cat)12(i)-4(o)-3(n)7(s.)] TJ
+[15] EMC /Artifact BMC 0 g
+[15] MCID 18/Lang (en-US)
+[15] MVP)-3( bo)-5(u)3(n)-4(d)5(ari)-6(e)5(s)] TJ
+[15] EMC /Artifact BMC 0.945 g
+[15] MCID 19
+[15] BDC 228.25 606.77 155.63 13.9 re
+[15] EMC  /Span
+[15] MCID 20/Lang (en-US)
+[15] Pa)-2(rti)-3(all)7(y)-3( c)6(o)-3(n)-4(fi)-3(rmed)] TJ
+[15] MCID 21/Lang (en-US)
+[15] C)3(o)-3(re)5( work)-2(fl)5(o)-3(w i)-3(s d)6(e)5(fi)-3(n)-4(e)5(d)5(; )-10(seve)3(ral )] TJ
+[15] fe)6(ature)] TJ
+[15] l)-6(e)5(v)-3(e)5(l)-6( q)8(u)-7(e)5(sti)-7(o)-3(n)-4(s re)6(ma)-4(i)-4(n)-4( )14(p)-5(e)5(n)-4(d)5(i)-4(n)-4(g)6(.)] TJ
+[15] EMC /Artifact BMC 0 g
+[15] MCID 22/Lang (en-US)
+[15] Te)6(chn)-5(i)-4(cal)5( im)-4(p)-5(l)4(e)5(menta)-3(ti)-4(o)8(n)] TJ
+[15] EMC /Artifact BMC 0.945 g
+[15] MCID 23
+[15] BDC 228.25 573.28 155.63 14 re
+[15] EMC  /Span
+[15] MCID 24/Lang (en-US)
+[15] Defe)8(rre)-4(d)] TJ
+[15] MCID 25/Lang (en-US)
+[15] Schema,)-4( f)4(i)-4(n)-4(al )5(sta)-3(ck/)-4(co)10(n)-4(fi)7(g)-4(u)3(rati)-5(o)-3(n)7(, an)-6(d)5( )] TJ
+[15] d)5(e)5(tai)-6(l)4(e)-5(d)5( se)5(cu)-4(ri)-4(ty p)-4(o)-3(l)4(i)-4(cies r)14(e)5(ma)-4(i)-4(n)-4( f)4(o)-3(r )] TJ
+[15] e)5(xec)5(u)3(ti)-4(o)-3(n)-4( plan)-4(n)-4(i)6(n)-4(g)-4(.)] TJ
+[15] EMC /Artifact BMC 0 g
+[15] EMC  /Span
+[15] MCID 26/Lang (en-US)
+[16] P 58 0 R/S/Title/Type/StructElem/K[ 0] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 3 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 7] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 9] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 10] /Pg 3 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 3 0 R
+[16] P 76 0 R/S/P/Type/StructElem/K[ 12 13] /Pg 3 0 R
+[16] P 75 0 R/S/TH/Type/StructElem/K[ 77 0 R] /Pg 3 0 R
+[16] P 78 0 R/S/P/Type/StructElem/K[ 14 15] /Pg 3 0 R
+[16] P 75 0 R/S/TH/Type/StructElem/K[ 79 0 R] /Pg 3 0 R
+[16] P 80 0 R/S/P/Type/StructElem/K[ 16 17] /Pg 3 0 R
+[16] P 75 0 R/S/TH/Type/StructElem/K[ 81 0 R] /Pg 3 0 R
+[16] P 74 0 R/S/TR/Type/StructElem/K[ 76 0 R 78 0 R 80 0 R] /Pg 3 0 R
+[16] P 83 0 R/S/P/Type/StructElem/K[ 0 1] /Pg 20 0 R
+[16] P 82 0 R/S/TH/Type/StructElem/K[ 84 0 R] /Pg 20 0 R
+[16] P 86 0 R/S/P/Type/StructElem/K[ 2 3] /Pg 20 0 R
+[16] P 82 0 R/S/TH/Type/StructElem/K[ 87 0 R] /Pg 20 0 R
+[16] P 88 0 R/S/P/Type/StructElem/K[ 4 5] /Pg 20 0 R
+[16] P 82 0 R/S/TH/Type/StructElem/K[ 89 0 R] /Pg 20 0 R
+[16] P 74 0 R/S/TR/Type/StructElem/K[ 83 0 R 86 0 R 88 0 R] /Pg 20 0 R
+[16] P 73 0 R/S/THead/Type/StructElem/K[ 75 0 R 82 0 R]
+[16] P 92 0 R/S/P/Type/StructElem/K[ 18] /Pg 3 0 R
+[16] P 91 0 R/S/TH/Type/StructElem/K[ 93 0 R] /Pg 3 0 R
+[16] P 94 0 R/S/P/Type/StructElem/K[ 19 20] /Pg 3 0 R
+[16] P 91 0 R/S/TD/Type/StructElem/K[ 95 0 R] /Pg 3 0 R
+[16] P 96 0 R/S/P/Type/StructElem/K[ 21] /Pg 3 0 R
+[16] P 91 0 R/S/TD/Type/StructElem/K[ 97 0 R] /Pg 3 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 92 0 R 94 0 R 96 0 R] /Pg 3 0 R
+[16] P 99 0 R/S/P/Type/StructElem/K[ 22] /Pg 3 0 R
+[16] P 98 0 R/S/TH/Type/StructElem/K[ 100 0 R] /Pg 3 0 R
+[16] P 101 0 R/S/P/Type/StructElem/K[ 23 24] /Pg 3 0 R
+[16] P 98 0 R/S/TD/Type/StructElem/K[ 102 0 R] /Pg 3 0 R
+[16] P 103 0 R/S/P/Type/StructElem/K[ 25] /Pg 3 0 R
+[16] P 98 0 R/S/TD/Type/StructElem/K[ 104 0 R] /Pg 3 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 99 0 R 101 0 R 103 0 R] /Pg 3 0 R
+[16] P 106 0 R/S/P/Type/StructElem/K[ 26] /Pg 3 0 R
+[16] P 105 0 R/S/TH/Type/StructElem/K[ 107 0 R] /Pg 3 0 R
+[16] P 108 0 R/S/P/Type/StructElem/K[ 27 28] /Pg 3 0 R
+[16] P 105 0 R/S/TD/Type/StructElem/K[ 109 0 R] /Pg 3 0 R
+[16] P 110 0 R/S/P/Type/StructElem/K[ 29] /Pg 3 0 R
+[16] P 105 0 R/S/TD/Type/StructElem/K[ 111 0 R] /Pg 3 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 106 0 R 108 0 R 110 0 R] /Pg 3 0 R
+[16] P 113 0 R/S/P/Type/StructElem/K[ 30] /Pg 3 0 R
+[16] P 112 0 R/S/TH/Type/StructElem/K[ 114 0 R] /Pg 3 0 R
+[16] P 115 0 R/S/P/Type/StructElem/K[ 31 32] /Pg 3 0 R
+[16] P 112 0 R/S/TD/Type/StructElem/K[ 116 0 R] /Pg 3 0 R
+[16] P 117 0 R/S/P/Type/StructElem/K[ 33] /Pg 3 0 R
+[16] P 112 0 R/S/TD/Type/StructElem/K[ 118 0 R] /Pg 3 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 113 0 R 115 0 R 117 0 R] /Pg 3 0 R
+[16] P 120 0 R/S/P/Type/StructElem/K[ 34] /Pg 3 0 R
+[16] P 119 0 R/S/TH/Type/StructElem/K[ 121 0 R] /Pg 3 0 R
+[16] P 122 0 R/S/P/Type/StructElem/K[ 35 36] /Pg 3 0 R
+[16] P 119 0 R/S/TD/Type/StructElem/K[ 123 0 R] /Pg 3 0 R
+[16] P 124 0 R/S/P/Type/StructElem/K[ 37] /Pg 3 0 R
+[16] P 119 0 R/S/TD/Type/StructElem/K[ 125 0 R] /Pg 3 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 120 0 R 122 0 R 124 0 R] /Pg 3 0 R
+[16] P 127 0 R/S/P/Type/StructElem/K[ 38] /Pg 3 0 R
+[16] P 126 0 R/S/TH/Type/StructElem/K[ 128 0 R] /Pg 3 0 R
+[16] P 129 0 R/S/P/Type/StructElem/K[ 39 40] /Pg 3 0 R
+[16] P 126 0 R/S/TD/Type/StructElem/K[ 130 0 R] /Pg 3 0 R
+[16] P 131 0 R/S/P/Type/StructElem/K[ 41] /Pg 3 0 R
+[16] P 126 0 R/S/TD/Type/StructElem/K[ 132 0 R] /Pg 3 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 127 0 R 129 0 R 131 0 R] /Pg 3 0 R
+[16] P 134 0 R/S/P/Type/StructElem/K[ 42] /Pg 3 0 R
+[16] P 133 0 R/S/TH/Type/StructElem/K[ 135 0 R] /Pg 3 0 R
+[16] P 136 0 R/S/P/Type/StructElem/K[ 43 44] /Pg 3 0 R
+[16] P 133 0 R/S/TD/Type/StructElem/K[ 137 0 R] /Pg 3 0 R
+[16] P 138 0 R/S/P/Type/StructElem/K[ 45] /Pg 3 0 R
+[16] P 133 0 R/S/TD/Type/StructElem/K[ 139 0 R] /Pg 3 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 134 0 R 136 0 R 138 0 R] /Pg 3 0 R
+[16] P 141 0 R/S/P/Type/StructElem/K[ 46] /Pg 3 0 R
+[16] P 140 0 R/S/TH/Type/StructElem/K[ 142 0 R] /Pg 3 0 R
+[16] P 143 0 R/S/P/Type/StructElem/K[ 47 48] /Pg 3 0 R
+[16] P 140 0 R/S/TD/Type/StructElem/K[ 144 0 R] /Pg 3 0 R
+[16] P 145 0 R/S/P/Type/StructElem/K[ 49] /Pg 3 0 R
+[16] P 140 0 R/S/TD/Type/StructElem/K[ 146 0 R] /Pg 3 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 141 0 R 143 0 R 145 0 R] /Pg 3 0 R
+[16] P 148 0 R/S/P/Type/StructElem/K[ 6] /Pg 20 0 R
+[16] P 147 0 R/S/TH/Type/StructElem/K[ 149 0 R] /Pg 20 0 R
+[16] P 150 0 R/S/P/Type/StructElem/K[ 7 8] /Pg 20 0 R
+[16] P 147 0 R/S/TD/Type/StructElem/K[ 151 0 R] /Pg 20 0 R
+[16] P 152 0 R/S/P/Type/StructElem/K[ 9] /Pg 20 0 R
+[16] P 147 0 R/S/TD/Type/StructElem/K[ 153 0 R] /Pg 20 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 148 0 R 150 0 R 152 0 R] /Pg 20 0 R
+[16] P 155 0 R/S/P/Type/StructElem/K[ 10] /Pg 20 0 R
+[16] P 154 0 R/S/TH/Type/StructElem/K[ 156 0 R] /Pg 20 0 R
+[16] P 157 0 R/S/P/Type/StructElem/K[ 11 12] /Pg 20 0 R
+[16] P 154 0 R/S/TD/Type/StructElem/K[ 158 0 R] /Pg 20 0 R
+[16] P 159 0 R/S/P/Type/StructElem/K[ 13] /Pg 20 0 R
+[16] P 154 0 R/S/TD/Type/StructElem/K[ 160 0 R] /Pg 20 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 155 0 R 157 0 R 159 0 R] /Pg 20 0 R
+[16] P 162 0 R/S/P/Type/StructElem/K[ 14] /Pg 20 0 R
+[16] P 161 0 R/S/TH/Type/StructElem/K[ 163 0 R] /Pg 20 0 R
+[16] P 164 0 R/S/P/Type/StructElem/K[ 15 16] /Pg 20 0 R
+[16] P 161 0 R/S/TD/Type/StructElem/K[ 165 0 R] /Pg 20 0 R
+[16] P 166 0 R/S/P/Type/StructElem/K[ 17] /Pg 20 0 R
+[16] P 161 0 R/S/TD/Type/StructElem/K[ 167 0 R] /Pg 20 0 R
+[16] P 90 0 R/S/TR/Type/StructElem/K[ 162 0 R 164 0 R 166 0 R] /Pg 20 0 R
+[16] P 73 0 R/S/TBody/Type/StructElem/K[ 91 0 R 98 0 R 105 0 R 112 0 R 119 0 R 126 0 R 133 0 R 140 0 R 147 0 R 154 0 R 161 0 R] /Pg 3 0 R
+[16] P 58 0 R/S/Table/Type/StructElem/K[ 74 0 R 90 0 R]
+[16] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 20 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 19] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 21] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 22] /Pg 20 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 23] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 24] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 25] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 27] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 28] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 29] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 30] /Pg 20 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 31] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 32] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 33] /Pg 20 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 34] /Pg 20 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 0] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 7] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 27 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 9] /Pg 27 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 10] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 12] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 13] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 14] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 16] /Pg 27 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 17] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 19] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 21] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 22] /Pg 27 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 23] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 24] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 25] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 27] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 28] /Pg 27 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 29] /Pg 27 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 0] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 7] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 29 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 9] /Pg 29 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 10] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 12] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 13] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 14] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 16] /Pg 29 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 17] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 19] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 21] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 22] /Pg 29 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 23] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 24] /Pg 29 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 25] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 29 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 27] /Pg 29 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 28] /Pg 29 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 0] /Pg 31 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 1] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 7] /Pg 31 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 8] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 9] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 10] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 12] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 13] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 14] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 31 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 16] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 17] /Pg 31 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 18] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 19] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 21] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 22] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 23] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 24] /Pg 31 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 25] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 27] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 28] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 29] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 30] /Pg 31 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 0] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 33 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 5] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 7] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 9] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 10] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 12] /Pg 33 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 13] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 14] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 16] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 17] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 19] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 21] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 22] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 23] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 24] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 25] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 27] /Pg 33 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 28] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 29] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 30] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 31] /Pg 33 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 0] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 35 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 4] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 7] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 9] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 10] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 12] /Pg 35 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 13] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 14] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 16] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 17] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 19] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 35 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 21] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 22] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 23] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 24] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 25] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 27] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 28] /Pg 35 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 0] /Pg 37 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 1] /Pg 37 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 2] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 7] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 9] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 10] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 37 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 12] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 13] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 14] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 16] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 17] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 19] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 21] /Pg 37 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 22] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 23] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 24] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 25] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 27] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 28] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 29] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 30] /Pg 37 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 0] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 39 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 2] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 7] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 9] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 10] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 12] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 13] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 14] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 16] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 17] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 19] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 21] /Pg 39 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 22] /Pg 39 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 23] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 24] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 25] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 27] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 28] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 29] /Pg 39 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 30] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 31] /Pg 39 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 0] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 7] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 9] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 10] /Pg 41 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 11] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 12] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 13] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 14] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 16] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 17] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 19] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 21] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 22] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 23] /Pg 41 0 R
+[16] P 58 0 R/S/H2/Type/StructElem/K[ 24] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 25] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 27] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 28] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 29] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 30] /Pg 41 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 31] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 32] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 33] /Pg 41 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 0] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 7] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 9] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 10] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 12] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 13] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 14] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 16] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 17] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 43 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 19] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 20] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 21] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 22] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 23] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 24] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 25] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 27] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 28] /Pg 43 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 29] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 30] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 31] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 32] /Pg 43 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 0] /Pg 45 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 45 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 45 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 45 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 45 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 45 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 45 0 R
+[16] P 58 0 R/S/H1/Type/StructElem/K[ 7] /Pg 45 0 R
+[16] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 45 0 R
+[16] P 488 0 R/S/P/Type/StructElem/K[ 9 10] /Pg 45 0 R
+[16] P 487 0 R/S/TH/Type/StructElem/K[ 489 0 R] /Pg 45 0 R
+[16] P 490 0 R/S/P/Type/StructElem/K[ 11 12] /Pg 45 0 R
+[16] P 487 0 R/S/TH/Type/StructElem/K[ 491 0 R] /Pg 45 0 R
+[16] P 492 0 R/S/P/Type/StructElem/K[ 13 14] /Pg 45 0 R
+[16] P 487 0 R/S/TH/Type/StructElem/K[ 493 0 R] /Pg 45 0 R
+[16] P 486 0 R/S/TR/Type/StructElem/K[ 488 0 R 490 0 R 492 0 R] /Pg 45 0 R
+[16] P 495 0 R/S/P/Type/StructElem/K[ 0 1] /Pg 47 0 R
+[16] P 494 0 R/S/TH/Type/StructElem/K[ 496 0 R] /Pg 47 0 R
+[16] P 498 0 R/S/P/Type/StructElem/K[ 2 3] /Pg 47 0 R
+[16] P 494 0 R/S/TH/Type/StructElem/K[ 499 0 R] /Pg 47 0 R
+[16] P 500 0 R/S/P/Type/StructElem/K[ 4 5] /Pg 47 0 R
+[16] P 494 0 R/S/TH/Type/StructElem/K[ 501 0 R] /Pg 47 0 R
+[16] P 486 0 R/S/TR/Type/StructElem/K[ 495 0 R 498 0 R 500 0 R] /Pg 47 0 R
+[16] P 485 0 R/S/THead/Type/StructElem/K[ 487 0 R 494 0 R]
+[16] P 504 0 R/S/P/Type/StructElem/K[ 15] /Pg 45 0 R
+[16] P 503 0 R/S/TH/Type/StructElem/K[ 505 0 R] /Pg 45 0 R
+[16] P 506 0 R/S/P/Type/StructElem/K[ 16 17] /Pg 45 0 R
+[16] P 503 0 R/S/TD/Type/StructElem/K[ 507 0 R] /Pg 45 0 R
+[16] P 508 0 R/S/P/Type/StructElem/K[ 18] /Pg 45 0 R
+[16] P 503 0 R/S/TD/Type/StructElem/K[ 509 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 504 0 R 506 0 R 508 0 R] /Pg 45 0 R
+[16] P 511 0 R/S/P/Type/StructElem/K[ 19] /Pg 45 0 R
+[16] P 510 0 R/S/TH/Type/StructElem/K[ 512 0 R] /Pg 45 0 R
+[16] P 513 0 R/S/P/Type/StructElem/K[ 20 21] /Pg 45 0 R
+[16] P 510 0 R/S/TD/Type/StructElem/K[ 514 0 R] /Pg 45 0 R
+[16] P 515 0 R/S/P/Type/StructElem/K[ 22] /Pg 45 0 R
+[16] P 510 0 R/S/TD/Type/StructElem/K[ 516 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 511 0 R 513 0 R 515 0 R] /Pg 45 0 R
+[16] P 518 0 R/S/P/Type/StructElem/K[ 23] /Pg 45 0 R
+[16] P 517 0 R/S/TH/Type/StructElem/K[ 519 0 R] /Pg 45 0 R
+[16] P 520 0 R/S/P/Type/StructElem/K[ 24 25] /Pg 45 0 R
+[16] P 517 0 R/S/TD/Type/StructElem/K[ 521 0 R] /Pg 45 0 R
+[16] P 522 0 R/S/P/Type/StructElem/K[ 26] /Pg 45 0 R
+[16] P 517 0 R/S/TD/Type/StructElem/K[ 523 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 518 0 R 520 0 R 522 0 R] /Pg 45 0 R
+[16] P 525 0 R/S/P/Type/StructElem/K[ 27] /Pg 45 0 R
+[16] P 524 0 R/S/TH/Type/StructElem/K[ 526 0 R] /Pg 45 0 R
+[16] P 527 0 R/S/P/Type/StructElem/K[ 28 29] /Pg 45 0 R
+[16] P 524 0 R/S/TD/Type/StructElem/K[ 528 0 R] /Pg 45 0 R
+[16] P 529 0 R/S/P/Type/StructElem/K[ 30] /Pg 45 0 R
+[16] P 524 0 R/S/TD/Type/StructElem/K[ 530 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 525 0 R 527 0 R 529 0 R] /Pg 45 0 R
+[16] P 532 0 R/S/P/Type/StructElem/K[ 31] /Pg 45 0 R
+[16] P 531 0 R/S/TH/Type/StructElem/K[ 533 0 R] /Pg 45 0 R
+[16] P 534 0 R/S/P/Type/StructElem/K[ 32 33] /Pg 45 0 R
+[16] P 531 0 R/S/TD/Type/StructElem/K[ 535 0 R] /Pg 45 0 R
+[16] P 536 0 R/S/P/Type/StructElem/K[ 34] /Pg 45 0 R
+[16] P 531 0 R/S/TD/Type/StructElem/K[ 537 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 532 0 R 534 0 R 536 0 R] /Pg 45 0 R
+[16] P 539 0 R/S/P/Type/StructElem/K[ 35] /Pg 45 0 R
+[16] P 538 0 R/S/TH/Type/StructElem/K[ 540 0 R] /Pg 45 0 R
+[16] P 541 0 R/S/P/Type/StructElem/K[ 36 37] /Pg 45 0 R
+[16] P 538 0 R/S/TD/Type/StructElem/K[ 542 0 R] /Pg 45 0 R
+[16] P 543 0 R/S/P/Type/StructElem/K[ 38] /Pg 45 0 R
+[16] P 538 0 R/S/TD/Type/StructElem/K[ 544 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 539 0 R 541 0 R 543 0 R] /Pg 45 0 R
+[16] P 546 0 R/S/P/Type/StructElem/K[ 39] /Pg 45 0 R
+[16] P 545 0 R/S/TH/Type/StructElem/K[ 547 0 R] /Pg 45 0 R
+[16] P 548 0 R/S/P/Type/StructElem/K[ 40 41] /Pg 45 0 R
+[16] P 545 0 R/S/TD/Type/StructElem/K[ 549 0 R] /Pg 45 0 R
+[16] P 550 0 R/S/P/Type/StructElem/K[ 42] /Pg 45 0 R
+[16] P 545 0 R/S/TD/Type/StructElem/K[ 551 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 546 0 R 548 0 R 550 0 R] /Pg 45 0 R
+[16] P 553 0 R/S/P/Type/StructElem/K[ 43] /Pg 45 0 R
+[16] P 552 0 R/S/TH/Type/StructElem/K[ 554 0 R] /Pg 45 0 R
+[16] P 555 0 R/S/P/Type/StructElem/K[ 44 45] /Pg 45 0 R
+[16] P 552 0 R/S/TD/Type/StructElem/K[ 556 0 R] /Pg 45 0 R
+[16] P 557 0 R/S/P/Type/StructElem/K[ 46] /Pg 45 0 R
+[16] P 552 0 R/S/TD/Type/StructElem/K[ 558 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 553 0 R 555 0 R 557 0 R] /Pg 45 0 R
+[16] P 560 0 R/S/P/Type/StructElem/K[ 47] /Pg 45 0 R
+[16] P 559 0 R/S/TH/Type/StructElem/K[ 561 0 R] /Pg 45 0 R
+[16] P 562 0 R/S/P/Type/StructElem/K[ 48 49] /Pg 45 0 R
+[16] P 559 0 R/S/TD/Type/StructElem/K[ 563 0 R] /Pg 45 0 R
+[16] P 564 0 R/S/P/Type/StructElem/K[ 50] /Pg 45 0 R
+[16] P 559 0 R/S/TD/Type/StructElem/K[ 565 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 560 0 R 562 0 R 564 0 R] /Pg 45 0 R
+[16] P 567 0 R/S/P/Type/StructElem/K[ 51] /Pg 45 0 R
+[16] P 566 0 R/S/TH/Type/StructElem/K[ 568 0 R] /Pg 45 0 R
+[16] P 569 0 R/S/P/Type/StructElem/K[ 52 53] /Pg 45 0 R
+[16] P 566 0 R/S/TD/Type/StructElem/K[ 570 0 R] /Pg 45 0 R
+[16] P 571 0 R/S/P/Type/StructElem/K[ 54] /Pg 45 0 R
+[16] P 566 0 R/S/TD/Type/StructElem/K[ 572 0 R] /Pg 45 0 R
+[16] P 502 0 R/S/TR/Type/StructElem/K[ 567 0 R 569 0 R 571 0 R] /Pg 45 0 R
+[16] P 574 0 R/S/P/Type/StructElem/K[ 55] /Pg 45 0 R
+[16] P 573 0 R/S/TH/Type/StructElem/K[ 575 0 R] /Pg 45 0 R
+[17] P 576 0 R/S/P/Type/StructElem/K[ 56 57] /Pg 45 0 R
+[17] P 573 0 R/S/TD/Type/StructElem/K[ 577 0 R] /Pg 45 0 R
+[17] P 579 0 R/S/P/Type/StructElem/K[ 58] /Pg 45 0 R
+[17] P 573 0 R/S/TD/Type/StructElem/K[ 580 0 R] /Pg 45 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 574 0 R 576 0 R 579 0 R] /Pg 45 0 R
+[17] P 582 0 R/S/P/Type/StructElem/K[ 59] /Pg 45 0 R
+[17] P 581 0 R/S/TH/Type/StructElem/K[ 583 0 R] /Pg 45 0 R
+[17] P 584 0 R/S/P/Type/StructElem/K[ 60 61] /Pg 45 0 R
+[17] P 581 0 R/S/TD/Type/StructElem/K[ 585 0 R] /Pg 45 0 R
+[17] P 586 0 R/S/P/Type/StructElem/K[ 62] /Pg 45 0 R
+[17] P 581 0 R/S/TD/Type/StructElem/K[ 587 0 R] /Pg 45 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 582 0 R 584 0 R 586 0 R] /Pg 45 0 R
+[17] P 589 0 R/S/P/Type/StructElem/K[ 63] /Pg 45 0 R
+[17] P 588 0 R/S/TH/Type/StructElem/K[ 590 0 R] /Pg 45 0 R
+[17] P 591 0 R/S/P/Type/StructElem/K[ 64 65] /Pg 45 0 R
+[17] P 588 0 R/S/TD/Type/StructElem/K[ 592 0 R] /Pg 45 0 R
+[17] P 593 0 R/S/P/Type/StructElem/K[ 66] /Pg 45 0 R
+[17] P 588 0 R/S/TD/Type/StructElem/K[ 594 0 R] /Pg 45 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 589 0 R 591 0 R 593 0 R] /Pg 45 0 R
+[17] P 596 0 R/S/P/Type/StructElem/K[ 67] /Pg 45 0 R
+[17] P 595 0 R/S/TH/Type/StructElem/K[ 597 0 R] /Pg 45 0 R
+[17] P 598 0 R/S/P/Type/StructElem/K[ 68 69] /Pg 45 0 R
+[17] P 595 0 R/S/TD/Type/StructElem/K[ 599 0 R] /Pg 45 0 R
+[17] P 600 0 R/S/P/Type/StructElem/K[ 70] /Pg 45 0 R
+[17] P 595 0 R/S/TD/Type/StructElem/K[ 601 0 R] /Pg 45 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 596 0 R 598 0 R 600 0 R] /Pg 45 0 R
+[17] P 603 0 R/S/P/Type/StructElem/K[ 71] /Pg 45 0 R
+[17] P 602 0 R/S/TH/Type/StructElem/K[ 604 0 R] /Pg 45 0 R
+[17] P 605 0 R/S/P/Type/StructElem/K[ 72 73] /Pg 45 0 R
+[17] P 602 0 R/S/TD/Type/StructElem/K[ 606 0 R] /Pg 45 0 R
+[17] P 607 0 R/S/P/Type/StructElem/K[ 74] /Pg 45 0 R
+[17] P 602 0 R/S/TD/Type/StructElem/K[ 608 0 R] /Pg 45 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 603 0 R 605 0 R 607 0 R] /Pg 45 0 R
+[17] P 610 0 R/S/P/Type/StructElem/K[ 75] /Pg 45 0 R
+[17] P 609 0 R/S/TH/Type/StructElem/K[ 611 0 R] /Pg 45 0 R
+[17] P 612 0 R/S/P/Type/StructElem/K[ 76 77] /Pg 45 0 R
+[17] P 609 0 R/S/TD/Type/StructElem/K[ 613 0 R] /Pg 45 0 R
+[17] P 614 0 R/S/P/Type/StructElem/K[ 78] /Pg 45 0 R
+[17] P 609 0 R/S/TD/Type/StructElem/K[ 615 0 R] /Pg 45 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 610 0 R 612 0 R 614 0 R] /Pg 45 0 R
+[17] P 617 0 R/S/P/Type/StructElem/K[ 6] /Pg 47 0 R
+[17] P 616 0 R/S/TH/Type/StructElem/K[ 618 0 R] /Pg 47 0 R
+[17] P 619 0 R/S/P/Type/StructElem/K[ 7 8] /Pg 47 0 R
+[17] P 616 0 R/S/TD/Type/StructElem/K[ 620 0 R] /Pg 47 0 R
+[17] P 621 0 R/S/P/Type/StructElem/K[ 9] /Pg 47 0 R
+[17] P 616 0 R/S/TD/Type/StructElem/K[ 622 0 R] /Pg 47 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 617 0 R 619 0 R 621 0 R] /Pg 47 0 R
+[17] P 624 0 R/S/P/Type/StructElem/K[ 10] /Pg 47 0 R
+[17] P 623 0 R/S/TH/Type/StructElem/K[ 625 0 R] /Pg 47 0 R
+[17] P 626 0 R/S/P/Type/StructElem/K[ 11 12] /Pg 47 0 R
+[17] P 623 0 R/S/TD/Type/StructElem/K[ 627 0 R] /Pg 47 0 R
+[17] P 628 0 R/S/P/Type/StructElem/K[ 13] /Pg 47 0 R
+[17] P 623 0 R/S/TD/Type/StructElem/K[ 629 0 R] /Pg 47 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 624 0 R 626 0 R 628 0 R] /Pg 47 0 R
+[17] P 631 0 R/S/P/Type/StructElem/K[ 14] /Pg 47 0 R
+[17] P 630 0 R/S/TH/Type/StructElem/K[ 632 0 R] /Pg 47 0 R
+[17] P 633 0 R/S/P/Type/StructElem/K[ 15 16] /Pg 47 0 R
+[17] P 630 0 R/S/TD/Type/StructElem/K[ 634 0 R] /Pg 47 0 R
+[17] P 635 0 R/S/P/Type/StructElem/K[ 17] /Pg 47 0 R
+[17] P 630 0 R/S/TD/Type/StructElem/K[ 636 0 R] /Pg 47 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 631 0 R 633 0 R 635 0 R] /Pg 47 0 R
+[17] P 638 0 R/S/P/Type/StructElem/K[ 18] /Pg 47 0 R
+[17] P 637 0 R/S/TH/Type/StructElem/K[ 639 0 R] /Pg 47 0 R
+[17] P 640 0 R/S/P/Type/StructElem/K[ 19 20] /Pg 47 0 R
+[17] P 637 0 R/S/TD/Type/StructElem/K[ 641 0 R] /Pg 47 0 R
+[17] P 642 0 R/S/P/Type/StructElem/K[ 21] /Pg 47 0 R
+[17] P 637 0 R/S/TD/Type/StructElem/K[ 643 0 R] /Pg 47 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 638 0 R 640 0 R 642 0 R] /Pg 47 0 R
+[17] P 645 0 R/S/P/Type/StructElem/K[ 22] /Pg 47 0 R
+[17] P 644 0 R/S/TH/Type/StructElem/K[ 646 0 R] /Pg 47 0 R
+[17] P 647 0 R/S/P/Type/StructElem/K[ 23 24] /Pg 47 0 R
+[17] P 644 0 R/S/TD/Type/StructElem/K[ 648 0 R] /Pg 47 0 R
+[17] P 649 0 R/S/P/Type/StructElem/K[ 25] /Pg 47 0 R
+[17] P 644 0 R/S/TD/Type/StructElem/K[ 650 0 R] /Pg 47 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 645 0 R 647 0 R 649 0 R] /Pg 47 0 R
+[17] P 652 0 R/S/P/Type/StructElem/K[ 26] /Pg 47 0 R
+[17] P 651 0 R/S/TH/Type/StructElem/K[ 653 0 R] /Pg 47 0 R
+[17] P 654 0 R/S/P/Type/StructElem/K[ 27 28] /Pg 47 0 R
+[17] P 651 0 R/S/TD/Type/StructElem/K[ 655 0 R] /Pg 47 0 R
+[17] P 656 0 R/S/P/Type/StructElem/K[ 29] /Pg 47 0 R
+[17] P 651 0 R/S/TD/Type/StructElem/K[ 657 0 R] /Pg 47 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 652 0 R 654 0 R 656 0 R] /Pg 47 0 R
+[17] P 659 0 R/S/P/Type/StructElem/K[ 30] /Pg 47 0 R
+[17] P 658 0 R/S/TH/Type/StructElem/K[ 660 0 R] /Pg 47 0 R
+[17] P 661 0 R/S/P/Type/StructElem/K[ 31 32] /Pg 47 0 R
+[17] P 658 0 R/S/TD/Type/StructElem/K[ 662 0 R] /Pg 47 0 R
+[17] P 663 0 R/S/P/Type/StructElem/K[ 33] /Pg 47 0 R
+[17] P 658 0 R/S/TD/Type/StructElem/K[ 664 0 R] /Pg 47 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 659 0 R 661 0 R 663 0 R] /Pg 47 0 R
+[17] P 666 0 R/S/P/Type/StructElem/K[ 34] /Pg 47 0 R
+[17] P 665 0 R/S/TH/Type/StructElem/K[ 667 0 R] /Pg 47 0 R
+[17] P 668 0 R/S/P/Type/StructElem/K[ 35 36] /Pg 47 0 R
+[17] P 665 0 R/S/TD/Type/StructElem/K[ 669 0 R] /Pg 47 0 R
+[17] P 670 0 R/S/P/Type/StructElem/K[ 37] /Pg 47 0 R
+[17] P 665 0 R/S/TD/Type/StructElem/K[ 671 0 R] /Pg 47 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 666 0 R 668 0 R 670 0 R] /Pg 47 0 R
+[17] P 673 0 R/S/P/Type/StructElem/K[ 38] /Pg 47 0 R
+[17] P 672 0 R/S/TH/Type/StructElem/K[ 674 0 R] /Pg 47 0 R
+[17] P 675 0 R/S/P/Type/StructElem/K[ 39 40] /Pg 47 0 R
+[17] P 672 0 R/S/TD/Type/StructElem/K[ 676 0 R] /Pg 47 0 R
+[17] P 677 0 R/S/P/Type/StructElem/K[ 41] /Pg 47 0 R
+[17] P 672 0 R/S/TD/Type/StructElem/K[ 678 0 R] /Pg 47 0 R
+[17] P 502 0 R/S/TR/Type/StructElem/K[ 673 0 R 675 0 R 677 0 R] /Pg 47 0 R
+[17] P 485 0 R/S/TBody/Type/StructElem/K[ 503 0 R 510 0 R 517 0 R 524 0 R 531 0 R 538 0 R 545 0 R 552 0 R 559 0 R 566 0 R 573 0 R 581 0 R 588 0 R 595 0 R 602 0 R 609 0 R 616 0 R 623 0 R 630 0 R 637 0 R 644 0 R 651 0 R 658 0 R 665 0 R 672 0 R] /Pg 45 0 R
+[17] P 58 0 R/S/Table/Type/StructElem/K[ 486 0 R 502 0 R]
+[17] P 58 0 R/S/P/Type/StructElem/K[ 42] /Pg 47 0 R
+[17] P 58 0 R/S/H1/Type/StructElem/K[ 43] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 44] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 45] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 46] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 47] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 48] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 49] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 50] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 51] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 52] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 53] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 54] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 55] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 56] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 57] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 58] /Pg 47 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 59] /Pg 47 0 R
+[17] P 58 0 R/S/H1/Type/StructElem/K[ 0] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 1] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 2] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 3] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 4] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 5] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 6] /Pg 49 0 R
+[17] P 58 0 R/S/H1/Type/StructElem/K[ 7] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 8] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 9] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 10] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 11] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 12] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 13] /Pg 49 0 R
+[17] P 58 0 R/S/H1/Type/StructElem/K[ 14] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 15] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 16] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 17] /Pg 49 0 R
+[17] P 58 0 R/S/P/Type/StructElem/K[ 18] /Pg 49 0 R
+[17] P 58 0 R/S/H1/Type/StructElem/K[ 19] /Pg 49 0 R
+[17] P 721 0 R/S/P/Type/StructElem/K[ 20 21] /Pg 49 0 R
+[17] P 720 0 R/S/TH/Type/StructElem/K[ 722 0 R] /Pg 49 0 R
+[17] P 723 0 R/S/P/Type/StructElem/K[ 22 23] /Pg 49 0 R
+[17] P 720 0 R/S/TH/Type/StructElem/K[ 724 0 R] /Pg 49 0 R
+[17] P 725 0 R/S/P/Type/StructElem/K[ 24 25] /Pg 49 0 R
+[17] P 720 0 R/S/TH/Type/StructElem/K[ 726 0 R] /Pg 49 0 R
+[17] P 719 0 R/S/TR/Type/StructElem/K[ 721 0 R 723 0 R 725 0 R] /Pg 49 0 R
+[17] P 728 0 R/S/P/Type/StructElem/K[ 0 1] /Pg 51 0 R
+[17] P 727 0 R/S/TH/Type/StructElem/K[ 729 0 R] /Pg 51 0 R
+[17] P 731 0 R/S/P/Type/StructElem/K[ 2 3] /Pg 51 0 R
+[17] P 727 0 R/S/TH/Type/StructElem/K[ 732 0 R] /Pg 51 0 R
+[17] P 733 0 R/S/P/Type/StructElem/K[ 4 5] /Pg 51 0 R
+[17] P 727 0 R/S/TH/Type/StructElem/K[ 734 0 R] /Pg 51 0 R
+[17] P 719 0 R/S/TR/Type/StructElem/K[ 728 0 R 731 0 R 733 0 R] /Pg 51 0 R
+[17] P 718 0 R/S/THead/Type/StructElem/K[ 720 0 R 727 0 R]
+[17] P 737 0 R/S/P/Type/StructElem/K[ 26] /Pg 49 0 R
+[17] P 736 0 R/S/TH/Type/StructElem/K[ 738 0 R] /Pg 49 0 R
+[17] P 739 0 R/S/P/Type/StructElem/K[ 27 28] /Pg 49 0 R
+[17] P 736 0 R/S/TD/Type/StructElem/K[ 740 0 R] /Pg 49 0 R
+[17] P 741 0 R/S/P/Type/StructElem/K[ 29] /Pg 49 0 R
+[17] P 736 0 R/S/TD/Type/StructElem/K[ 742 0 R] /Pg 49 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 737 0 R 739 0 R 741 0 R] /Pg 49 0 R
+[17] P 744 0 R/S/P/Type/StructElem/K[ 30] /Pg 49 0 R
+[17] P 743 0 R/S/TH/Type/StructElem/K[ 745 0 R] /Pg 49 0 R
+[17] P 746 0 R/S/P/Type/StructElem/K[ 31 32] /Pg 49 0 R
+[17] P 743 0 R/S/TD/Type/StructElem/K[ 747 0 R] /Pg 49 0 R
+[17] P 748 0 R/S/P/Type/StructElem/K[ 33] /Pg 49 0 R
+[17] P 743 0 R/S/TD/Type/StructElem/K[ 749 0 R] /Pg 49 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 744 0 R 746 0 R 748 0 R] /Pg 49 0 R
+[17] P 751 0 R/S/P/Type/StructElem/K[ 34] /Pg 49 0 R
+[17] P 750 0 R/S/TH/Type/StructElem/K[ 752 0 R] /Pg 49 0 R
+[17] P 753 0 R/S/P/Type/StructElem/K[ 35 36] /Pg 49 0 R
+[17] P 750 0 R/S/TD/Type/StructElem/K[ 754 0 R] /Pg 49 0 R
+[17] P 755 0 R/S/P/Type/StructElem/K[ 37] /Pg 49 0 R
+[17] P 750 0 R/S/TD/Type/StructElem/K[ 756 0 R] /Pg 49 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 751 0 R 753 0 R 755 0 R] /Pg 49 0 R
+[17] P 758 0 R/S/P/Type/StructElem/K[ 38] /Pg 49 0 R
+[17] P 757 0 R/S/TH/Type/StructElem/K[ 759 0 R] /Pg 49 0 R
+[17] P 760 0 R/S/P/Type/StructElem/K[ 39 40] /Pg 49 0 R
+[17] P 757 0 R/S/TD/Type/StructElem/K[ 761 0 R] /Pg 49 0 R
+[17] P 762 0 R/S/P/Type/StructElem/K[ 41] /Pg 49 0 R
+[17] P 757 0 R/S/TD/Type/StructElem/K[ 763 0 R] /Pg 49 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 758 0 R 760 0 R 762 0 R] /Pg 49 0 R
+[17] P 765 0 R/S/P/Type/StructElem/K[ 42] /Pg 49 0 R
+[17] P 764 0 R/S/TH/Type/StructElem/K[ 766 0 R] /Pg 49 0 R
+[17] P 767 0 R/S/P/Type/StructElem/K[ 43 44] /Pg 49 0 R
+[17] P 764 0 R/S/TD/Type/StructElem/K[ 768 0 R] /Pg 49 0 R
+[17] P 769 0 R/S/P/Type/StructElem/K[ 45] /Pg 49 0 R
+[17] P 764 0 R/S/TD/Type/StructElem/K[ 770 0 R] /Pg 49 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 765 0 R 767 0 R 769 0 R] /Pg 49 0 R
+[17] P 772 0 R/S/P/Type/StructElem/K[ 6] /Pg 51 0 R
+[17] P 771 0 R/S/TH/Type/StructElem/K[ 773 0 R] /Pg 51 0 R
+[17] P 774 0 R/S/P/Type/StructElem/K[ 7 8] /Pg 51 0 R
+[17] P 771 0 R/S/TD/Type/StructElem/K[ 775 0 R] /Pg 51 0 R
+[17] P 776 0 R/S/P/Type/StructElem/K[ 9] /Pg 51 0 R
+[17] P 771 0 R/S/TD/Type/StructElem/K[ 777 0 R] /Pg 51 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 772 0 R 774 0 R 776 0 R] /Pg 51 0 R
+[17] P 779 0 R/S/P/Type/StructElem/K[ 10] /Pg 51 0 R
+[17] P 778 0 R/S/TH/Type/StructElem/K[ 780 0 R] /Pg 51 0 R
+[17] P 781 0 R/S/P/Type/StructElem/K[ 11 12] /Pg 51 0 R
+[17] P 778 0 R/S/TD/Type/StructElem/K[ 782 0 R] /Pg 51 0 R
+[17] P 783 0 R/S/P/Type/StructElem/K[ 13] /Pg 51 0 R
+[17] P 778 0 R/S/TD/Type/StructElem/K[ 784 0 R] /Pg 51 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 779 0 R 781 0 R 783 0 R] /Pg 51 0 R
+[17] P 786 0 R/S/P/Type/StructElem/K[ 14] /Pg 51 0 R
+[17] P 785 0 R/S/TH/Type/StructElem/K[ 787 0 R] /Pg 51 0 R
+[17] P 788 0 R/S/P/Type/StructElem/K[ 15 16] /Pg 51 0 R
+[17] P 785 0 R/S/TD/Type/StructElem/K[ 789 0 R] /Pg 51 0 R
+[17] P 790 0 R/S/P/Type/StructElem/K[ 17] /Pg 51 0 R
+[17] P 785 0 R/S/TD/Type/StructElem/K[ 791 0 R] /Pg 51 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 786 0 R 788 0 R 790 0 R] /Pg 51 0 R
+[17] P 793 0 R/S/P/Type/StructElem/K[ 18] /Pg 51 0 R
+[17] P 792 0 R/S/TH/Type/StructElem/K[ 794 0 R] /Pg 51 0 R
+[17] P 795 0 R/S/P/Type/StructElem/K[ 19 20] /Pg 51 0 R
+[17] P 792 0 R/S/TD/Type/StructElem/K[ 796 0 R] /Pg 51 0 R
+[17] P 797 0 R/S/P/Type/StructElem/K[ 21] /Pg 51 0 R
+[17] P 792 0 R/S/TD/Type/StructElem/K[ 798 0 R] /Pg 51 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 793 0 R 795 0 R 797 0 R] /Pg 51 0 R
+[17] P 800 0 R/S/P/Type/StructElem/K[ 22] /Pg 51 0 R
+[17] P 799 0 R/S/TH/Type/StructElem/K[ 801 0 R] /Pg 51 0 R
+[17] P 802 0 R/S/P/Type/StructElem/K[ 23 24] /Pg 51 0 R
+[17] P 799 0 R/S/TD/Type/StructElem/K[ 803 0 R] /Pg 51 0 R
+[17] P 804 0 R/S/P/Type/StructElem/K[ 25] /Pg 51 0 R
+[17] P 799 0 R/S/TD/Type/StructElem/K[ 805 0 R] /Pg 51 0 R
+[17] P 735 0 R/S/TR/Type/StructElem/K[ 800 0 R 802 0 R 804 0 R] /Pg 51 0 R
+[17] P 718 0 R/S/TBody/Type/StructElem/K[ 736 0 R 743 0 R 750 0 R 757 0 R 764 0 R 771 0 R 778 0 R 785 0 R 792 0 R 799 0 R] /Pg 49 0 R
+[17] P 58 0 R/S/Table/Type/StructElem/K[ 719 0 R 735 0 R]
+[17] P 58 0 R/S/P/Type/StructElem/K[ 26] /Pg 51 0 R
+[17] P 54 0 R/S/Document/Type/StructElem/K[ 59 0 R 62 0 R 63 0 R 64 0 R 65 0 R 66 0 R 67 0 R 68 0 R 69 0 R 70 0 R 71 0 R 72 0 R 73 0 R 168 0 R 169 0 R 170 0 R 171 0 R 172 0 R 173 0 R 174 0 R 175 0 R 176 0 R 177 0 R 178 0 R 179 0 R 180 0 R 181 0 R 182 0 R 183 0 R 184 0 R 185 0 R 187 0 R 188 0 R 189 0 R 190 0 R 191 0 R 192 0 R 193 0 R 194 0 R 195 0 R 196 0 R 197 0 R 198 0 R 199 0 R 200 0 R 201 0 R 202 0 R 203 0 R 204 0 R 205 0 R 206 0 R 207 0 R 208 0 R 209 0 R 210 0 R 211 0 R 212 0 R 213 0 R 214 0 R 215 0 R 216 0 R 218 0 R 219 0 R 220 0 R 221 0 R 222 0 R 223 0 R 224 0 R 225 0 R 226 0 R 227 0 R 228 0 R 229 0 R 230 0 R 231 0 R 232 0 R 233 0 R 234 0 R 235 0 R 236 0 R 237 0 R 238 0 R 239 0 R 240 0 R 241 0 R 242 0 R 243 0 R 244 0 R 245 0 R 246 0 R 248 0 R 249 0 R 250 0 R 251 0 R 252 0 R 253 0 R 254 0 R 255 0 R 256 0 R 257 0 R 258 0 R 259 0 R 260 0 R 261 0 R 262 0 R 263 0 R 264 0 R 265 0 R 266 0 R 267 0 R 268 0 R 269 0 R 270 0 R 271 0 R 272 0 R 273 0 R 274 0 R 275 0 R 276 0 R 277 0 R 278 0 R 280 0 R 281 0 R 282 0 R 283 0 R 284 0 R 285 0 R 286 0 R 287 0 R 288 0 R 289 0 R 290 0 R 291 0 R 292 0 R 293 0 R 294 0 R 295 0 R 296 0 R 297 0 R 298 0 R 299 0 R 300 0 R 301 0 R 302 0 R 303 0 R 304 0 R 305 0 R 306 0 R 307 0 R 308 0 R 309 0 R 310 0 R 311 0 R 313 0 R 314 0 R 315 0 R 316 0 R 317 0 R 318 0 R 319 0 R 320 0 R 321 0 R 322 0 R 323 0 R 324 0 R 325 0 R 326 0 R 327 0 R 328 0 R 329 0 R 330 0 R 331 0 R 332 0 R 333 0 R 334 0 R 335 0 R 336 0 R 337 0 R 338 0 R 339 0 R 340 0 R 341 0 R 343 0 R 344 0 R 345 0 R 346 0 R 347 0 R 348 0 R 349 0 R 350 0 R 351 0 R 352 0 R 353 0 R 354 0 R 355 0 R 356 0 R 357 0 R 358 0 R 359 0 R 360 0 R 361 0 R 362 0 R 363 0 R 364 0 R 365 0 R 366 0 R 367 0 R 368 0 R 369 0 R 370 0 R 371 0 R 372 0 R 373 0 R 375 0 R 376 0 R 377 0 R 378 0 R 379 0 R 380 0 R 381 0 R 382 0 R 383 0 R 384 0 R 385 0 R 386 0 R 387 0 R 388 0 R 389 0 R 390 0 R 391 0 R 392 0 R 393 0 R 394 0 R 395 0 R 396 0 R 397 0 R 398 0 R 399 0 R 400 0 R 401 0 R 402 0 R 403 0 R 404 0 R 405 0 R 406 0 R 408 0 R 409 0 R 410 0 R 411 0 R 412 0 R 413 0 R 414 0 R 415 0 R 416 0 R 417 0 R 418 0 R 419 0 R 420 0 R 421 0 R 422 0 R 423 0 R 424 0 R 425 0 R 426 0 R 427 0 R 428 0 R 429 0 R 430 0 R 431 0 R 432 0 R 433 0 R 434 0 R 435 0 R 436 0 R 437 0 R 438 0 R 439 0 R 440 0 R 441 0 R 443 0 R 444 0 R 445 0 R 446 0 R 447 0 R 448 0 R 449 0 R 450 0 R 451 0 R 452 0 R 453 0 R 454 0 R 455 0 R 456 0 R 457 0 R 458 0 R 459 0 R 460 0 R 461 0 R 462 0 R 463 0 R 464 0 R 465 0 R 466 0 R 467 0 R 468 0 R 469 0 R 470 0 R 471 0 R 472 0 R 473 0 R 474 0 R 475 0 R 477 0 R 478 0 R 479 0 R 480 0 R 481 0 R 482 0 R 483 0 R 484 0 R 485 0 R 679 0 R 680 0 R 681 0 R 682 0 R 683 0 R 684 0 R 685 0 R 686 0 R 687 0 R 688 0 R 689 0 R 690 0 R 691 0 R 692 0 R 693 0 R 694 0 R 695 0 R 696 0 R 697 0 R 699 0 R 700 0 R 701 0 R 702 0 R 703 0 R 704 0 R 705 0 R 706 0 R 707 0 R 708 0 R 709 0 R 710 0 R 711 0 R 712 0 R 713 0 R 714 0 R 715 0 R 716 0 R 717 0 R 718 0 R 806 0 R]
+[17] Type/StructTreeRoot/RoleMap 55 0 R/ParentTree 56 0 R/K[ 58 0 R] /ParentTreeNextKey 15
+[17] Footnote/Note/Endnote/Note/Textbox/Sect/Header/Sect/Footer/Sect/InlineShape/Sect/Annotation/Sect/Artifact/Sect/Workbook/Document/Worksheet/Part/Macrosheet/Part/Chartsheet/Part/Dialogsheet/Part/Slide/Sect/Chart/Sect/Diagram/Figure/Title/H1/CommentAnchor/Span/Notes/Sect
+[17] Nums[ 0 60 0 R 1 85 0 R 2 186 0 R 3 217 0 R 4 247 0 R 5 279 0 R 6 312 0 R 7 342 0 R 8 374 0 R 9 407 0 R 10 442 0 R 11 476 0 R 12 497 0 R 13 698 0 R 14 730 0 R]
+[17] Names[]
+[19] zyxwvutsrqponmlkjihgfedcba
+[19] ZYXWVUTSQPONMLKJIHGF(
+[19] QX!KRXED
+[19] KS#KQZX E
+[19] Y-,KTX E
+[19] YYYBBBBB-,E
+[19] PXeY-,#
+[19] TX fae#!
+[19] G75E9!(
+[19] Wsg-aLYg
+[19] N5MiJICC5
+[19] Jc\JKbe
+[19] IMMIIMM
+[19] PJ78II87J
+[19] A4Mo, ?
+[19] Wc))cWUa((a
+[19] dQYZnaV]e
+[19] Z4\86Z72\:xP.N/fE,N1/O
+[19] aaZQLnY
+[19] wwwwvuu
+[19] S\&DWDU&
+[19] ArILs@@sLIrA
+[19] L013AJ:
+[19] P2OL32QO4.CF
+[19] HNNHIMM
+[19] Microsoft Corporation. All Rights Reserved. The
+[19] table of this font was developed in part using a study by Andr
+[19] Fuchs on the relevance of kerning pairs (https://github.com/andre-fuchs/kerning-pairs/blob/master/LICENSE.md). Copyright 2019 Andr
+[19] Fuchs. Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the
+[19] Software
+[19] to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.Aptos is a trademark of the Microsoft group of companies.Aptos BoldAptosBoldVersion 2.01;O365Aptos-BoldMicrosoft supplied font. You may use this font to create, display, and print content as permitted by the license terms or terms of use, of the Microsoft product, service, or content in which this font was included. You may only (i) embed this font in content as permitted by the embedding restrictions included in this font; and (ii) temporarily download this font to a printer or other output device to help print content. Any other use is prohibited.https://docs.microsoft.com/typography/aboutWeightWidthRegularOptical SizeItalic
+[19] fontTools: 4.49.0; ufo2ft: 3.1.0; glyphsLib: 6.6.6; msfontlib: 0.9.8; project git revision: 5cc10c5cLatn, Cyrl, Greek, vi-Latn, bg-Cyrl, sr-Cyrl, uk-CyrlLatn, Cyrl, Greek, vi-Latn, bg-Cyrl, sr-Cyrl, uk-Cyrl
+[20] zyxwvutsrqponmlkjihgfedcba
+[20] ZYXWVUTSQPONMLKJIHGF(
+[20] QX!KRXED
+[20] KS#KQZX E
+[20] Y-,KTX E
+[20] YYYBBBBB-,E
+[20] PXeY-,#
+[20] TX fae#!
+[20] Rk-,G6;OXP
+[20] rugc;O@#*
+[20] N5MiJICC5
+[20] Gn?a;z@n
+[20] Zr]ITHF!
+[20] GmSAcB!
+[20] e,bTudd
+[20] cIld,\HHc3
+[20] Up8fuXl1
+[20] W66IT?x
+[20] R47KPNAFP
+[20] C8Mg5,ZDE\
+[20] WMIVVG4I
+[20] iM:CPOOI
+[20] mU??H/#l]
+[20] HLyDBwLO7H
+[20] NAbaA?faD6UU66WV
+[20] OQg1nABAD
+[20] I57GG75I
+[20] YI56FF65I
+[20] A&454676654&#
+[20] J6HH67II
+[20] kRua2,LS5
+[20] WI56FF65I
+[20] Microsoft Corporation. All Rights Reserved. The
+[20] table of this font was developed in part using a study by Andr
+[20] Fuchs on the relevance of kerning pairs (https://github.com/andre-fuchs/kerning-pairs/blob/master/LICENSE.md). Copyright 2019 Andr
+[20] Fuchs. Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the
+[20] Software
+[20] to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.Aptos is a trademark of the Microsoft group of companies.RegularVersion 2.01;O365Microsoft supplied font. You may use this font to create, display, and print content as permitted by the license terms or terms of use, of the Microsoft product, service, or content in which this font was included. You may only (i) embed this font in content as permitted by the embedding restrictions included in this font; and (ii) temporarily download this font to a printer or other output device to help print content. Any other use is prohibited.https://docs.microsoft.com/typography/aboutWeightWidthOptical SizeItalic
+[20] fontTools: 4.49.0; ufo2ft: 3.1.0; glyphsLib: 6.6.6; msfontlib: 0.9.8; project git revision: 5cc10c5cLatn, Cyrl, Greek, vi-Latn, bg-Cyrl, sr-Cyrl, uk-CyrlLatn, Cyrl, Greek, vi-Latn, bg-Cyrl, sr-Cyrl, uk-Cyrl
+[22] jhlocai
+[22] ZYXUTSRQPONMLKJIHGFEDCBA@?
+[22] HH-,E#F#a
+[22] HH-,E#F
+[22] HH-,E#F#a
+[22] HH-,E#F
+[22] HH-,E#F#a
+[22] D#Y!!-,  E
+[22] D-,KRXED
+[22] iD-,KQX
+[22] ED-,E# E
+[22] EH!!!!-,
+[22] CH!!!-,E# E
+[22] P X#e#Y#h
+[22] D-,KS#KQZX E
+[22] Y-,KTX E
+[22] BYYYYY-,E
+[22] h#KQX# E d
+[22] uTudutu
+[22] gUf.dUe
+[22] TUS.QUR
+[22] QUO.NUN
+[22] KUJ.HUI
+[22] ststuutst
+[22] IeFMyU,/W
+[22] FM)pv?U6
+[22] MbhbM0Eu
+[22] HoK6ZG5
+[22] BTXTA(;g
+[22] A,AqS0/Z
+[22] DH1Re58jS2
+[22] J JoJoJ
+[22] HvLiLYHEL?
+[22] A2uokP3
+[22] uHeLXLK
+[22] L:8IL;9
+[22] L:8IL;9IL:8IL;9
+[22] L:8IL;9
+[22] BoR.)OoGBoR-)No
+[22] NHAHHH;X
+[22] N:!(OvO5
+[22] NuNLkE -
+[22] A@-/?A-
+[22] FsR.(LpIFrQ,(LoL#;,
+[22] L:8IL;9
+[22] G86EG86
+[22] ATT@AUS@
+[22] PU(PB(PP(B
+[22] SxM;fO9
+[22] wA#Db?3R;
+[22] TtE5\OC
+[22] MpG3cirA
+[22] SxM;fO9
+[22] p8!Aa?3R:
+[22] TuG/YPG
+[22] CeD1RA/
+[22] IrN)!EiG(LE?
+[22] Fb?)I?8
+[22] P/#ESeDC
+[22] Q/BdA HK(D/
+[22] BgF&4@eE
+[22] KoHJmG!C?GR
+[22] KpKHmI&
+[22] EjHHiC A7@H
+[22] K03W?#(Nu91@&
+[22] IVI1,Lc8
+[22] LDEI*64*
+[22] P-eaYC(
+[22] E# D0384
+[22] JRBHxvxiBFMN
+[22] WI3Q!&R
+[22] T-m[!?Z:La6
+[22] i i i i i i i i i i!J!J!J!J!J!J!J!J!J!J
+[22] e0e0e0e0e0e1f1f1f1f1
+[22] I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@I@m@
+[22] A,A,A,A,A,A,A,AGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAxA
+[22] a3a3a3a3a3a3a
+[22] u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1u1
+[22] Microsoft Corporation. All Rights Reserved.
+[22] Hebrew OpenType Layout logic copyright
+[22] Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.Calibri is a modern sans serif family with subtle roundings on stems and corners. It features real italics, small caps, and multiple numeral sets. Its proportions allow high impact in tightly set lines of big and small text alike. Calibri
+[22] s many curves and the new rasteriser team up in bigger sizes to reveal a warm and soft character.Microsoft: Calibri BoldVersion 6.27Calibri-BoldCalibri is a trademark of the Microsoft group of companies.Luc(as) de Groothttps://learn.microsoft.com/en-us/typography/font-list/calibrihttp://lucasfonts.comMicrosoft supplied font. You may use this font to create, display, and print content as permitted by the license terms or terms of use, of the Microsoft product, service, or content in which this font was included. You may only (i) embed this font in content as permitted by the embedding restrictions included in this font; and (ii) temporarily download this font to a printer or other output device to help print content. Any other use is prohibited.
+[22] The following license, based on the MIT license (http://en.wikipedia.org/wiki/MIT
+[22] License), applies to the OpenType Layout logic for Biblical Hebrew
+[22] Layout Logic
+[22] as jointly developed by Ralph Hancock and John Hudson.
+[22] Permission is hereby granted, free of charge, to any person obtaining a copy of the OpenType Layout logic for Biblical Hebrew and associated documentation files (the
+[22] Layout Logic Software
+[22] to deal in the Layout Logic Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Layout Logic Software, and to permit persons to whom the Layout Logic Software is furnished to do so, subject to the following conditions:
+[22] The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Layout Logic Software.
+[22] THE SOFTWARE IS PROVIDED
+[22] WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+[22] Arab, Armn, Cyrl, Geok, Geor, Grek, Hebr, LatnArab, Armn, Cyrl, Geok, Geor, Grek, Hebr, Latn
+[23] tsrqponmlkjihgfeb
+[23] ZYXUTSRQPONMLKJIHGFEDCBA@?
+[23] HH-,E#F#a
+[23] HH-,E#F
+[23] HH-,E#F#a
+[23] HH-,E#F
+[23] HH-,E#F#a
+[23] D#Y!!-,  E
+[23] D-,KRXED
+[23] iD-,KQX
+[23] ED-,E# E
+[23] EH!!!!-,
+[23] CH!!!-,E# E
+[23] P X#e#Y#h
+[23] D-,KS#KQZX E
+[23] Y-,KTX E
+[23] YYYBBBBB-,E
+[23] h#KQX# E d
+[23] PXeY-,#
+[23] TX fae#!
+[23] zUyUwUx
+[23] oUnfmUj
+[23] gUf8dUe
+[23] TUS8QUR
+[23] QUO8NUN
+[23] KUJ8HUI
+[23] HUG8FUE
+[23] CUX@B,!
+[23] B6029Ka@U
+[23] CZ3-C6.29KaAO
+[23] PSQ&&NOM
+[23] D]ECwX4
+[23] EE3Tkrn,#E9#
+[23] Ulng&gj )
+[23] C\o;@Z9
+[23] Ulng&gj )
+[23] Ulng&gj )
+[23] bEH1Rjqn.ag
+[23] BQ73?-Le8
+[23] lqFA@#k
+[23] EE2Slqo-
+[23] D\o;@Z9
+[23] CUX@9D--.9
+[23] L@*!9O/#L?*&BX4#D
+[23] Ibou82P8
+[23] CUX@)6,
+[23] X@#aa( n0n
+[23] E]o9D]9
+[23] Ua)24(BW/
+[23] qHnk6;4Qa-7;5Pa
+[23] IL&:C:&&Eb
+[23] CIWpLIe
+[23] X@7dpqqwhhcVc4x5wLVMU3y2
+[23] GzHz[ONiS\HN
+[23] ZHKOBN1
+[23] Microsoft Corporation. All Rights Reserved. Calibri is a modern sans serif family with subtle roundings on stems and corners. It features real italics, small caps, and multiple numeral sets. Its proportions allow high impact in tightly set lines of big and small text alike. Calibri
+[23] s many curves and the new rasteriser team up in bigger sizes to reveal a warm and soft character.Microsoft: Calibri ItalicVersion 6.27Calibri-ItalicCalibri is a trademark of the Microsoft group of companies.Luc(as) de Groothttps://learn.microsoft.com/en-us/typography/font-list/calibrihttp://lucasfonts.comMicrosoft supplied font. You may use this font to create, display, and print content as permitted by the license terms or terms of use, of the Microsoft product, service, or content in which this font was included. You may only (i) embed this font in content as permitted by the embedding restrictions included in this font; and (ii) temporarily download this font to a printer or other output device to help print content. Any other use is prohibited.
+[23] The following license, based on the MIT license (http://en.wikipedia.org/wiki/MIT
+[23] License), applies to the OpenType Layout logic for Biblical Hebrew
+[23] Layout Logic
+[23] as jointly developed by Ralph Hancock and John Hudson.
+[23] Permission is hereby granted, free of charge, to any person obtaining a copy of the OpenType Layout logic for Biblical Hebrew and associated documentation files (the
+[23] Layout Logic Software
+[23] to deal in the Layout Logic Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Layout Logic Software, and to permit persons to whom the Layout Logic Software is furnished to do so, subject to the following conditions:
+[23] The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Layout Logic Software.
+[23] THE SOFTWARE IS PROVIDED
+[23] WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+[23] Armn, Cyrl, Geok, Geor, Grek, Hebr, LatnArmn, Cyrl, Geok, Geor, Grek, Hebr, Latn

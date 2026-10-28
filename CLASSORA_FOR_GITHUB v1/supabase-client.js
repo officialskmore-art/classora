@@ -1789,10 +1789,10 @@ class ClassoraAuthService {
     // 9. TEACHER NOTIFICATIONS (teacher/notifications.html)
     // ───────────────────────────────────────────
     if (path.includes('/teacher/notifications.html')) {
-      const list = document.querySelector('.dash-content .card') || document.querySelector('.dash-content > div');
+      const list = document.getElementById('notif-list');
       if (list) {
         list.innerHTML = `
-          <div style="text-align:center; padding:56px 20px;">
+          <div style="text-align:center; padding:56px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
             <div style="font-size:2.5rem; margin-bottom:8px;">🔔</div>
             <h4 style="color:var(--gray-800); margin-bottom:4px;">No Notifications</h4>
             <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">You are all caught up! System alerts and student activities will appear here.</p>
@@ -2314,6 +2314,33 @@ class ClassoraAuthService {
     const clsList = await clsResp.json();
     if (!clsList.length) throw new Error('Invalid classroom code. Please check with your teacher.');
     const classroom = clsList[0];
+
+    // Check if student is already enrolled in this classroom (Bug 5)
+    try {
+      const memberCheck = await fetch(`${this.url}/rest/v1/classroom_members?student_id=eq.${user.id}&classroom_id=eq.${classroom.id}&select=id`, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (memberCheck.ok) {
+        const memberRows = await memberCheck.json();
+        if (memberRows.length > 0) throw new Error('You are already enrolled in this classroom.');
+      }
+    } catch (memErr) {
+      if (memErr.message && memErr.message.includes('enrolled')) throw memErr;
+    }
+
+    // Check if student already has a pending join request (Bug 5)
+    try {
+      const existingReq = await fetch(`${this.url}/rest/v1/join_requests?student_id=eq.${user.id}&classroom_id=eq.${classroom.id}&status=eq.pending&select=id`, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (existingReq.ok) {
+        const reqRows = await existingReq.json();
+        if (reqRows.length > 0) throw new Error('You already requested to join this class.');
+      }
+    } catch (reqErr) {
+      if (reqErr.message && reqErr.message.includes('already requested')) throw reqErr;
+    }
+
     const payload = {
       student_id: user.id,
       classroom_id: classroom.id,
