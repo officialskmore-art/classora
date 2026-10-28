@@ -263,11 +263,75 @@
   </div>
 </div>
 
+<!-- Modal: Inside Classroom / Classroom Details & Management -->
+<div class="modal-overlay" id="modal-classroom-details">
+  <div class="modal" style="max-width: 580px; text-align: left; padding: 0; overflow: hidden; border-radius: var(--radius-xl);">
+    <div id="modal-class-header" style="padding: 24px 28px; color: #fff; background: linear-gradient(135deg, #4F46E5, #7C3AED); position: relative;">
+      <button class="btn btn-ghost btn-sm" data-modal-close="modal-classroom-details" style="position: absolute; top: 16px; right: 16px; color: #fff; font-size: 1.25rem;">✕</button>
+      <div style="display:flex; gap:8px; align-items:center; margin-bottom: 8px;">
+        <span class="badge" id="modal-class-section" style="background: rgba(255,255,255,0.25); color: #fff;">Grade</span>
+        <span class="badge" style="background: rgba(255,255,255,0.2); color: #fff;">Active Classroom</span>
+      </div>
+      <h2 id="modal-class-name" style="color: #fff; margin: 0 0 4px; font-size: 1.4rem;">Classroom Name</h2>
+      <div id="modal-class-subject" style="font-size: 0.9rem; opacity: 0.9;">Subject Name</div>
+    </div>
+
+    <div style="padding: 24px 28px;">
+      <!-- Class Code Box -->
+      <div style="background: var(--gray-50); border: 1.5px dashed var(--primary-300); border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap:wrap; gap:10px;">
+        <div>
+          <div style="font-size: 0.7rem; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Classroom Invite Code</div>
+          <code id="modal-class-code" class="classora-id" style="font-size: 1.2rem; font-weight: 800; padding: 4px 10px; color: var(--primary-700);">CODE-000</code>
+        </div>
+        <button class="btn btn-primary btn-sm" id="btn-copy-class-code" onclick="copyModalClassCode()">📋 Copy Code</button>
+      </div>
+
+      <!-- Details List -->
+      <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--gray-100); padding-bottom: 8px;">
+          <span style="color: var(--gray-500);">Grade / Standard:</span>
+          <strong id="modal-detail-grade" style="color: var(--gray-800);">—</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--gray-100); padding-bottom: 8px;">
+          <span style="color: var(--gray-500);">Subject Curriculum:</span>
+          <strong id="modal-detail-subject" style="color: var(--gray-800);">—</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--gray-100); padding-bottom: 8px;">
+          <span style="color: var(--gray-500);">Schedule / Details:</span>
+          <strong id="modal-detail-desc" style="color: var(--gray-800); text-align: right; max-width: 60%;">—</strong>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div style="display: flex; gap: 10px; margin-bottom: 24px; flex-wrap:wrap;">
+        <a id="modal-link-students" href="students.html" class="btn btn-secondary btn-sm flex-1" style="justify-content: center;">👥 View Enrolled Students</a>
+        <button class="btn btn-ghost btn-sm flex-1" onclick="shareClassroomInvite()">🔗 Share Invite</button>
+      </div>
+
+      <!-- Danger Zone / Delete Classroom -->
+      <div style="background: rgba(239,68,68,0.05); border: 1.5px solid rgba(239,68,68,0.25); border-radius: var(--radius-lg); padding: 16px 18px;">
+        <div style="font-weight: 700; color: var(--danger-700); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <span>⚠️</span> Danger Zone — Delete Classroom
+        </div>
+        <p style="font-size: 0.825rem; color: var(--gray-600); margin-bottom: 14px; line-height: 1.45;">
+          Permanently delete this classroom, revoke this Class Code, and remove all student enrolments. Only the classroom teacher or admin can perform this action.
+        </p>
+        <button class="btn btn-danger btn-sm" id="modal-btn-delete" style="background: var(--danger-600); color: #fff; border: none; font-weight: 600;" onclick="deleteFromModal()">
+          🗑️ Delete This Classroom Permanently
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast-container" id="toast-container"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
+  let CURRENT_CLASSROOMS = [];
+  let SELECTED_CLASSROOM = null;
+
   function handleClassSubjectChange(select) {
     const custom = document.getElementById('class-subject-custom');
     if (select.value === 'Others') {
@@ -282,7 +346,7 @@
   }
 
   function searchClasses() {
-    const q = document.getElementById('search-class-input').value.toLowerCase();
+    const q = (document.getElementById('search-class-input').value || '').trim().toLowerCase();
     document.querySelectorAll('.class-card').forEach(card => {
       const text = card.dataset.search || card.textContent || '';
       card.style.display = text.toLowerCase().includes(q) ? 'flex' : 'none';
@@ -304,6 +368,128 @@
         card.style.display = 'none';
       }
     });
+  }
+
+  async function loadTeacherClassrooms() {
+    const container = document.getElementById('classrooms-container');
+    if (!container) return;
+    container.innerHTML = `
+      <div style="grid-column:1/-1; text-align:center; padding:64px 20px;">
+        <div style="font-size:2rem; margin-bottom:12px;">⏳</div>
+        <p style="color:var(--gray-500);">Loading your classrooms…</p>
+      </div>
+    `;
+
+    try {
+      const classrooms = await ClassoraAuth.fetchClassrooms();
+      CURRENT_CLASSROOMS = classrooms || [];
+      const badge = document.getElementById('class-badge-count');
+      if (badge) badge.textContent = CURRENT_CLASSROOMS.length;
+      renderClassroomsList(CURRENT_CLASSROOMS);
+    } catch (err) {
+      console.warn('loadTeacherClassrooms error:', err);
+      renderClassroomsList([]);
+    }
+  }
+  window.loadTeacherClassrooms = loadTeacherClassrooms;
+
+  function renderClassroomsList(classrooms) {
+    const container = document.getElementById('classrooms-container');
+    if (!container) return;
+
+    if (!classrooms || classrooms.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column:1/-1; text-align:center; padding:64px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
+          <div style="font-size:3rem; margin-bottom:12px;">🏫</div>
+          <h3 style="margin-bottom:6px; color:var(--gray-800);">Your Classroom Roster is Empty</h3>
+          <p style="font-size:0.9rem; color:var(--gray-500); max-width:440px; margin:0 auto 20px;">
+            Create your first class to generate a unique Class Code and start organizing subjects, students, and materials.
+          </p>
+          <button class="btn btn-primary" onclick="openModal('modal-new-class')">➕ Create First Classroom</button>
+        </div>
+      `;
+      return;
+    }
+
+    const grads = ['card-grad-1', 'card-grad-2', 'card-grad-3', 'card-grad-4'];
+    container.innerHTML = classrooms.map((c, i) => {
+      const g = grads[i % grads.length];
+      const escName = escapeHTML(c.name || 'Classroom');
+      const escSub = escapeHTML(c.subject || 'Academic');
+      const escSec = escapeHTML(c.section || 'General');
+      const escCode = escapeHTML(c.class_code || '');
+      const escDesc = escapeHTML(c.description || 'Active classroom');
+      const rawId = c.id || c.class_code;
+
+      return `
+        <div class="class-card animate-fade-up" data-category="active" data-search="${escName.toLowerCase()} ${escSub.toLowerCase()} ${escSec.toLowerCase()} ${escCode.toLowerCase()}">
+          <div class="class-card-header ${g}" style="cursor:pointer;" onclick="openClassroomDetails('${rawId}')" title="Click to view inside classroom">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <span class="badge" style="background:rgba(255,255,255,0.2); color:#fff;">${escSec}</span>
+              <span class="badge" style="background:rgba(255,255,255,0.25); color:#fff;">Code: ${escCode}</span>
+            </div>
+            <h3 style="color:#fff; margin-top:12px; margin-bottom:4px;">${escName}</h3>
+            <div style="font-size:0.85rem; opacity:0.85;">${escSub}</div>
+          </div>
+          <div class="class-card-body">
+            <div class="class-meta-row">
+              <span>👥 Class Code</span>
+              <strong style="color:var(--primary-700); font-family:monospace; font-size:0.95rem;">${escCode}</strong>
+            </div>
+            <div class="class-meta-row">
+              <span>📝 Schedule & Info</span>
+              <strong style="color:var(--gray-900);">${escDesc}</strong>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:auto; padding-top:12px; align-items:center; flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="openClassroomDetails('${rawId}')" style="flex:1;">🔍 Inside Class</button>
+              <a href="students.html?class=${escCode}" class="btn btn-secondary btn-sm" title="View Students">👥 Students</a>
+              <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${escCode}', 'Class Code Copied!')" title="Copy Class Code">📋</button>
+              <button class="btn btn-ghost btn-sm" onclick="confirmDeleteClassroom('${rawId}', '${escName.replace(/'/g, "\\'")}')" title="Delete Classroom" style="color:var(--danger-600); border-color:rgba(220,38,38,0.25);">🗑️</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function openClassroomDetails(idOrCode) {
+    const cls = CURRENT_CLASSROOMS.find(c => c.id === idOrCode || c.class_code === idOrCode);
+    if (!cls) {
+      showToast('Classroom details not found', 'error');
+      return;
+    }
+    SELECTED_CLASSROOM = cls;
+
+    document.getElementById('modal-class-name').textContent = cls.name || 'Classroom';
+    document.getElementById('modal-class-subject').textContent = cls.subject || 'Academic';
+    document.getElementById('modal-class-section').textContent = cls.section || 'General';
+    document.getElementById('modal-class-code').textContent = cls.class_code || '—';
+    document.getElementById('modal-detail-grade').textContent = cls.section || 'General';
+    document.getElementById('modal-detail-subject').textContent = cls.subject || 'Academic';
+    document.getElementById('modal-detail-desc').textContent = cls.description || 'Active classroom';
+    document.getElementById('modal-link-students').href = `students.html?class=${cls.class_code}`;
+
+    openModal('modal-classroom-details');
+  }
+
+  function copyModalClassCode() {
+    if (SELECTED_CLASSROOM) {
+      copyToClipboard(SELECTED_CLASSROOM.class_code, 'Class Code Copied!');
+    }
+  }
+
+  function shareClassroomInvite() {
+    if (SELECTED_CLASSROOM) {
+      const inviteText = `Join my "${SELECTED_CLASSROOM.name}" classroom on Classora! Classroom Code: ${SELECTED_CLASSROOM.class_code}`;
+      copyToClipboard(inviteText, 'Invite text copied! Share with your students.');
+    }
+  }
+
+  async function deleteFromModal() {
+    if (!SELECTED_CLASSROOM) return;
+    const { id, class_code, name } = SELECTED_CLASSROOM;
+    closeModal('modal-classroom-details');
+    await confirmDeleteClassroom(id || class_code, name);
   }
 
   async function createClassroom(e) {
@@ -340,8 +526,8 @@
       closeModal('modal-new-class');
       document.getElementById('new-class-form').reset();
       
-      // Refresh UI to display new classroom
-      ClassoraAuth.syncAuthUI();
+      // Refresh UI to display new classroom immediately
+      await loadTeacherClassrooms();
     } catch (err) {
       showToast('Error: ' + err.message, 'error');
     }
@@ -356,13 +542,20 @@
       if (window.ClassoraAuth) {
         await window.ClassoraAuth.deleteClassroom(id);
         showToast(`Classroom "${name}" deleted successfully.`, 'success');
-        window.ClassoraAuth.syncAuthUI();
+        await loadTeacherClassrooms();
+        if (typeof window.ClassoraAuth.syncAuthUI === 'function') {
+          window.ClassoraAuth.syncAuthUI();
+        }
       }
     } catch (err) {
       showToast('Error deleting classroom: ' + err.message, 'error');
     }
   }
   window.confirmDeleteClassroom = confirmDeleteClassroom;
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadTeacherClassrooms();
+  });
 </script>
 </body>
 </html>

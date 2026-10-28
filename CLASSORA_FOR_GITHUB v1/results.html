@@ -163,7 +163,14 @@
     if (!user) return;
     try {
       const results = await ClassoraAuth.fetchExamResults({ studentId: user.id });
+      const exams = await ClassoraAuth.fetchExams();
+      const totalAssessments = Math.max(exams ? exams.length : 0, results ? results.length : 0);
       const tbody = document.querySelector('.table-wrapper table tbody');
+      const stats = document.querySelectorAll('.stats-grid .card-stat');
+      if (stats.length >= 3) {
+        stats[2].querySelector('div > div:first-child').textContent = `${results ? results.length : 0} / ${totalAssessments}`;
+      }
+
       if (tbody) {
         if (!results || !results.length) {
           tbody.innerHTML = `
@@ -175,21 +182,23 @@
           `;
         } else {
           const totalMax = results.reduce((sum, r) => sum + ((r.exams && r.exams.total_marks) || 100), 0);
-          const totalObtained = results.reduce((sum, r) => sum + (parseFloat(r.marks_obtained) || 0), 0);
+          const totalObtained = results.reduce((sum, r) => {
+            const val = r.marks_obtained != null ? r.marks_obtained : (r.score != null ? r.score : 0);
+            return sum + (parseFloat(val) || 0);
+          }, 0);
           const cumPct = totalMax > 0 ? Math.round((totalObtained / totalMax) * 100) : 0;
 
-          const stats = document.querySelectorAll('.stats-grid .card-stat');
           if (stats.length >= 3) {
             stats[0].querySelector('div > div:first-child').textContent = cumPct + '%';
-            stats[2].querySelector('div > div:first-child').textContent = `${results.length} / ${results.length}`;
+            stats[2].querySelector('div > div:first-child').textContent = `${results.length} / ${totalAssessments}`;
           }
 
           tbody.innerHTML = results.map(r => {
             const exam = r.exams || {};
             const teacher = (exam.profiles && exam.profiles.full_name) || 'Classora Educator';
             const maxM = exam.total_marks || 100;
-            const obtM = r.marks_obtained || 0;
-            const pct = Math.min(100, Math.round((obtM / maxM) * 100));
+            const obtM = (r.marks_obtained != null) ? r.marks_obtained : (r.score != null ? r.score : 0);
+            const pct = Math.min(100, Math.round((parseFloat(obtM) / maxM) * 100));
             const grade = r.grade || (pct >= 80 ? 'A' : pct >= 60 ? 'B' : 'C');
             return `
               <tr class="animate-fade-up">
@@ -209,6 +218,7 @@
       console.warn('Failed to load student results:', err);
     }
   }
+  window.loadStudentResults = loadStudentResults;
 
   document.addEventListener('DOMContentLoaded', async () => {
     await loadStudentResults();

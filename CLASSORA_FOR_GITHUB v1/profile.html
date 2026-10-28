@@ -430,7 +430,7 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('DOMContentLoaded', async () => {
     const profile = ClassoraAuth.getActiveProfile();
     if (profile) {
       if (profile.grade) {
@@ -446,6 +446,11 @@
         setPrivacySettingsToUI(profile.privacy_settings);
       }
     }
+    try {
+      const enrolled = await ClassoraAuth.fetchEnrolledClassrooms();
+      const countEl = document.getElementById('student-classes-count');
+      if (countEl) countEl.textContent = enrolled.length;
+    } catch(e) {}
   });
 
   async function handleAvatarUpload(event) {

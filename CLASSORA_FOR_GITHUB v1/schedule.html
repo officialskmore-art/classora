@@ -131,10 +131,15 @@
 
     <div class="dash-content">
       
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:16px;">
         <div style="display:flex; align-items:center; gap:12px;">
           <h3 style="margin:0;">Weekly Timetable</h3>
           <span class="badge badge-primary">Current Term</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="changeStudentWeek(-1)">◀ Previous</button>
+          <button class="btn btn-secondary btn-sm" onclick="resetStudentWeek()">Current Week</button>
+          <button class="btn btn-ghost btn-sm" onclick="changeStudentWeek(1)">Next ▶</button>
         </div>
       </div>
 
@@ -145,9 +150,9 @@
           <div style="font-size:0.75rem; color:var(--gray-400);">MON</div>
           <div style="font-weight:700; color:var(--gray-900);">Day 1</div>
         </div>
-        <div class="schedule-col-header" style="border-color:var(--primary-300); background:var(--primary-50);">
-          <div style="font-size:0.75rem; color:var(--primary-600); font-weight:700;">TUE (TODAY)</div>
-          <div style="font-weight:800; color:var(--primary-700);">Day 2</div>
+        <div class="schedule-col-header">
+          <div style="font-size:0.75rem; color:var(--gray-400);">TUE</div>
+          <div style="font-weight:700; color:var(--gray-900);">Day 2</div>
         </div>
         <div class="schedule-col-header">
           <div style="font-size:0.75rem; color:var(--gray-400);">WED</div>
@@ -196,6 +201,18 @@
 <script src="../js/main.js"></script>
 <script>
   let currentWeekOffset = 0;
+
+  function changeStudentWeek(d) {
+    currentWeekOffset += d;
+    updateStudentWeekDatesUI();
+    loadStudentSessions();
+  }
+
+  function resetStudentWeek() {
+    currentWeekOffset = 0;
+    updateStudentWeekDatesUI();
+    loadStudentSessions();
+  }
 
   function updateStudentWeekDatesUI() {
     const now = new Date();
@@ -264,11 +281,13 @@
       console.warn('loadStudentSessions error:', e);
     }
   }
+  window.loadStudentSessions = loadStudentSessions;
 
   document.addEventListener('DOMContentLoaded', async () => {
     updateStudentWeekDatesUI();
     await loadStudentSessions();
   });
+  updateStudentWeekDatesUI();
 </script>
 </body>
 </html>

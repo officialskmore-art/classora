@@ -149,6 +149,89 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
+  async function loadTeacherNotifications() {
+    const list = document.getElementById('notif-list');
+    if (!list) return;
+    try {
+      const joinReqs = await ClassoraAuth.fetchJoinRequests({ status: 'all' });
+      const submissions = await ClassoraAuth.fetchSubmissions();
+      
+      const notifs = [];
+      (joinReqs || []).forEach(r => {
+        const p = r.profiles || {};
+        const c = r.classrooms || {};
+        const studentName = p.full_name || 'Student';
+        const isApproved = r.status === 'approved';
+        notifs.push({
+          type: 'request',
+          icon: isApproved ? '✅' : '📩',
+          title: isApproved ? `Join Request Approved: ${studentName} joined ${c.name || 'class'}` : `New Join Request: ${studentName} requested to join ${c.name || 'class'}`,
+          desc: `Class Code: ${c.class_code || '—'} • Classora ID: ${p.classora_id || '—'}`,
+          time: r.created_at ? new Date(r.created_at).toLocaleString() : 'Recent',
+          unread: !isApproved,
+          created: r.created_at ? new Date(r.created_at).getTime() : 0
+        });
+      });
+
+      (submissions || []).forEach(s => {
+        notifs.push({
+          type: 'homework',
+          icon: '📚',
+          title: `Homework Turned In: Student submitted assignment`,
+          desc: s.notes ? `Note: "${s.notes}"` : 'Assignment turned in for teacher review.',
+          time: s.created_at ? new Date(s.created_at).toLocaleString() : 'Recent',
+          unread: true,
+          created: s.created_at ? new Date(s.created_at).getTime() : 0
+        });
+      });
+
+      // System notification
+      notifs.push({
+        type: 'system',
+        icon: '🎓',
+        title: 'Welcome to Classora Educator Workspace',
+        desc: 'Your educator account is active. Schedule classes, create assignments, and review grades seamlessly.',
+        time: 'System Notice',
+        unread: false,
+        created: 0
+      });
+
+      notifs.sort((a, b) => b.created - a.created);
+
+      // Update tabs count
+      const reqCount = notifs.filter(n => n.type === 'request').length;
+      const hwCount = notifs.filter(n => n.type === 'homework').length;
+      const sysCount = notifs.filter(n => n.type === 'system').length;
+      const tabs = document.querySelectorAll('.tabs .tab');
+      if (tabs.length >= 4) {
+        tabs[0].textContent = `All (${notifs.length})`;
+        tabs[1].textContent = `Join Requests (${reqCount})`;
+        tabs[2].textContent = `Homework (${hwCount})`;
+        tabs[3].textContent = `System (${sysCount})`;
+      }
+
+      const unreadCount = notifs.filter(n => n.unread).length;
+      const topCount = document.getElementById('top-notif-count');
+      if (topCount) topCount.textContent = unreadCount;
+
+      list.innerHTML = notifs.map(n => `
+        <div class="notif-row ${n.unread ? 'unread' : ''}" data-type="${n.type}">
+          <div style="font-size:1.75rem;">${n.icon}</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
+              <strong style="color:var(--gray-900); font-size:0.95rem;">${escapeHTML(n.title)}</strong>
+              <span style="font-size:0.75rem; color:var(--gray-400);">${escapeHTML(n.time)}</span>
+            </div>
+            <div style="font-size:0.85rem; color:var(--gray-600);">${escapeHTML(n.desc)}</div>
+          </div>
+        </div>
+      `).join('');
+    } catch (e) {
+      console.warn('loadTeacherNotifications error:', e);
+    }
+  }
+  window.loadTeacherNotifications = loadTeacherNotifications;
+
   function markAllRead() {
     document.querySelectorAll('.notif-row.unread').forEach(r => r.classList.remove('unread'));
     const notifCountEl = document.getElementById('top-notif-count');
@@ -163,6 +246,8 @@
       row.style.display = (type === 'all' || row.dataset.type === type) ? 'flex' : 'none';
     });
   }
+
+  document.addEventListener('DOMContentLoaded', loadTeacherNotifications);
 </script>
 </body>
 </html>

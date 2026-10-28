@@ -459,6 +459,22 @@ class ClassoraAuthService {
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
 
+    // Filter out columns not present in Supabase profiles schema (e.g. privacy_settings)
+    const remotePayload = Object.assign({}, updates);
+    if ('privacy_settings' in remotePayload) {
+      try {
+        localStorage.setItem('classora_privacy_' + user.id, JSON.stringify(remotePayload.privacy_settings));
+      } catch (e) {}
+      delete remotePayload.privacy_settings;
+    }
+
+    // If only privacy settings or local fields were updated, finish successfully
+    if (Object.keys(remotePayload).length === 0) {
+      localStorage.setItem('classora_profile', JSON.stringify(merged));
+      this.syncAuthUI();
+      return { success: true, profile: merged };
+    }
+
     try {
       const resp = await fetch(`${this.url}/rest/v1/profiles?id=eq.${user.id}`, {
         method: 'PATCH',
@@ -468,7 +484,7 @@ class ClassoraAuthService {
           'Content-Type': 'application/json',
           'Prefer': 'return=representation'
         },
-        body: JSON.stringify(updates)
+        body: JSON.stringify(remotePayload)
       });
 
       if (!resp.ok) {
@@ -477,7 +493,7 @@ class ClassoraAuthService {
       }
 
       const list = await resp.json();
-      const updated = list[0] || updates;
+      const updated = list[0] || remotePayload;
       const remoteMerged = Object.assign({}, merged, updated);
       localStorage.setItem('classora_profile', JSON.stringify(remoteMerged));
       this.syncAuthUI();
@@ -756,7 +772,7 @@ class ClassoraAuthService {
     const docRecord = {
       title,
       description,
-      file_url: fileUrl || null,
+      file_url: (fileUrl && fileUrl.trim()) ? fileUrl.trim() : '#text-note',
       file_type: fileUrl ? fileUrl.split('.').pop().toLowerCase() : 'text',
       file_size_bytes: 0,
       category,
@@ -913,27 +929,23 @@ class ClassoraAuthService {
     localStorage.setItem('classora_demo_classrooms', JSON.stringify(filtered));
 
     if (token && token !== 'demo-token') {
-      try {
-        const isCode = !idOrCode.includes('-');
-        let deleteUrl = `${this.url}/rest/v1/classrooms?${isCode ? 'class_code' : 'id'}=eq.${idOrCode}`;
-        if (!this.isAdmin()) {
-          deleteUrl += `&teacher_id=eq.${user.id}`;
-        }
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrCode);
+      let deleteUrl = `${this.url}/rest/v1/classrooms?${isUuid ? 'id' : 'class_code'}=eq.${encodeURIComponent(idOrCode)}`;
+      if (!this.isAdmin()) {
+        deleteUrl += `&teacher_id=eq.${user.id}`;
+      }
 
-        const resp = await fetch(deleteUrl, {
-          method: 'DELETE',
-          headers: {
-            'apikey': this.anonKey,
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!resp.ok) {
-          const err = await resp.json().catch(() => ({}));
-          console.warn('DB classroom deletion returned error:', err);
+      const resp = await fetch(deleteUrl, {
+        method: 'DELETE',
+        headers: {
+          'apikey': this.anonKey,
+          'Authorization': `Bearer ${token}`
         }
-      } catch (e) {
-        console.warn('Delete classroom DB call error:', e);
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.message || err.error || 'Failed to delete classroom from database.');
       }
     }
 
@@ -950,7 +962,17 @@ class ClassoraAuthService {
       const resp = await fetch(`${this.url}/rest/v1/sessions?week_offset=eq.${weekOffset}&select=*,classrooms(name,class_code)&order=start_time.asc`, {
         headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
       });
-      if (resp.ok) return await resp.json();
+      if (resp.ok) {
+        let list = await resp.json();
+        const profile = this.getActiveProfile();
+        // If student, only show sessions for classrooms they are actively enrolled in (N7)
+        if (profile && profile.role === 'student' && !this.isAdmin()) {
+          const enrolled = await this.fetchEnrolledClassrooms();
+          const enrolledIds = new Set(enrolled.map(c => c.id || c.class_code));
+          list = list.filter(s => enrolledIds.has(s.classroom_id));
+        }
+        return list;
+      }
       return [];
     } catch (e) {
       console.warn('Fetch sessions error:', e);
@@ -1378,12 +1400,17 @@ class ClassoraAuthService {
 
   // --- Completely replaces demo lists with real empty states or live database data across ALL portal pages ---
   async cleanWorkspaceForLoggedInUser({ isAdmin, fullName, firstName, cid, role }) {
-    const path = window.location.pathname.toLowerCase();
+    const rawPath = window.location.pathname.toLowerCase();
+    const cleanPath = rawPath.replace(/\.html$/, '').replace(/\/$/, '');
+    const isPage = (route) => {
+      const cleanRoute = route.toLowerCase().replace(/\.html$/, '').replace(/\/$/, '');
+      return cleanPath.endsWith(cleanRoute) || rawPath.includes(cleanRoute + '.html') || rawPath.endsWith(cleanRoute);
+    };
 
     // ───────────────────────────────────────────
     // 1. TEACHER DASHBOARD (teacher/dashboard.html)
     // ───────────────────────────────────────────
-    if (path.includes('/teacher/dashboard.html')) {
+    if (isPage('/teacher/dashboard')) {
       const classrooms = await this.fetchClassrooms();
       const pendingReqs = await this.fetchJoinRequests({ status: 'pending' });
       const students = await this.fetchStudentsForTeacher();
@@ -1558,8 +1585,8 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     // 2. TEACHER SCHEDULE / CALENDAR (teacher/schedule.html, student/schedule.html) (Bug 23)
     // ───────────────────────────────────────────
-    if (path.includes('/teacher/schedule.html') || path.includes('/student/schedule.html')) {
-      const isStudent = path.includes('/student/');
+    if (isPage('/teacher/schedule') || isPage('/student/schedule')) {
+      const isStudent = isPage('/student/schedule') || cleanPath.includes('/student/');
       // Clear all demo timetable session badges!
       document.querySelectorAll('.timetable-grid .slot-cell').forEach(cell => {
         cell.innerHTML = '';
@@ -1584,18 +1611,22 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     // 3. TEACHER EXAMINATIONS (teacher/exams.html)
     // ───────────────────────────────────────────
-    if (path.includes('/teacher/exams.html')) {
+    if (isPage('/teacher/exams')) {
+      const exams = await this.fetchExams();
       const stats = document.querySelectorAll('.card-stat');
       if (stats.length >= 3) {
         const s0 = stats[0].querySelector('div > div:first-child');
         const s1 = stats[1].querySelector('div > div:first-child');
         const s2 = stats[2].querySelector('div > div:first-child');
-        if (s0) s0.textContent = '0';
-        if (s1) s1.textContent = '0';
-        if (s2) s2.textContent = '0';
+        const now = new Date();
+        const upcoming = exams.filter(e => e.exam_date && new Date(e.exam_date) >= now);
+        const completed = exams.filter(e => e.status === 'completed');
+        if (s0) s0.textContent = exams.length;
+        if (s1) s1.textContent = upcoming.length;
+        if (s2) s2.textContent = completed.length;
       }
       const tbody = document.querySelector('.table-wrapper table tbody');
-      if (tbody) {
+      if (tbody && (!exams || exams.length === 0)) {
         tbody.innerHTML = `
           <tr>
             <td colspan="6" style="text-align:center; padding:56px 20px;">
@@ -1612,7 +1643,7 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     // 4. TEACHER HOMEWORK (teacher/homework.html)
     // ───────────────────────────────────────────
-    if (path.includes('/teacher/homework.html')) {
+    if (isPage('/teacher/homework')) {
       const hwGrid = document.querySelector('.dash-content .grid');
       if (hwGrid) {
         hwGrid.innerHTML = `
@@ -1629,7 +1660,7 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     // 5. TEACHER STUDENTS (teacher/students.html)
     // ───────────────────────────────────────────
-    if (path.includes('/teacher/students.html')) {
+    if (isPage('/teacher/students')) {
       const students = await this.fetchStudentsForTeacher();
       const classrooms = await this.fetchClassrooms();
       const filter = document.getElementById('class-filter');
@@ -1687,7 +1718,7 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     // 6. TEACHER JOIN REQUESTS (teacher/join-requests.html)
     // ───────────────────────────────────────────
-    if (path.includes('/teacher/join-requests.html')) {
+    if (isPage('/teacher/join-requests')) {
       const container = document.querySelector('.dash-content .grid') || document.querySelector('.dash-content > div:last-child');
       if (container) {
         container.innerHTML = `
@@ -1703,54 +1734,63 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     // 7. TEACHER CLASSROOMS (teacher/classrooms.html)
     // ───────────────────────────────────────────
-    if (path.includes('/teacher/classrooms.html')) {
-      const container = document.getElementById('classrooms-container');
-      if (container) {
-        const classrooms = await this.fetchClassrooms();
-        container.innerHTML = '';
-        if (classrooms.length === 0) {
-          container.innerHTML = `
-            <div style="grid-column:1/-1; text-align:center; padding:64px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
-              <div style="font-size:3rem; margin-bottom:12px;">🏫</div>
-              <h3 style="margin-bottom:6px; color:var(--gray-800);">Your Classroom Roster is Empty</h3>
-              <p style="font-size:0.9rem; color:var(--gray-500); max-width:440px; margin:0 auto 20px;">
-                Create your first class to generate a unique Class Code and start organizing subjects, students, and materials.
-              </p>
-              <button class="btn btn-primary" onclick="openModal('modal-new-class')">➕ Create First Classroom</button>
-            </div>
-          `;
-        } else {
-          classrooms.forEach(c => {
-            const card = document.createElement('div');
-            card.className = 'class-card';
-            card.dataset.category = 'active';
-            card.innerHTML = `
-              <div class="class-card-header card-grad-1">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                  <span class="badge" style="background:rgba(255,255,255,0.2); color:#fff;">${c.section || 'General'}</span>
-                  <span class="badge" style="background:rgba(255,255,255,0.25); color:#fff;">Code: ${c.class_code}</span>
-                </div>
-                <h3 style="color:#fff; margin-top:12px; margin-bottom:4px;">${c.name}</h3>
-                <div style="font-size:0.85rem; opacity:0.85;">${c.subject || 'Academic'}</div>
-              </div>
-              <div class="class-card-body">
-                <div class="class-meta-row">
-                  <span>👥 Enrolled Students</span>
-                  <strong style="color:var(--gray-900);">0 Students</strong>
-                </div>
-                <div class="class-meta-row">
-                  <span>📝 Description</span>
-                  <strong style="color:var(--gray-900);">${c.description || 'Active classroom'}</strong>
-                </div>
-                <div style="display:flex; gap:8px; margin-top:auto; padding-top:12px; align-items:center;">
-                  <a href="students.html?class=${c.class_code}" class="btn btn-secondary btn-sm" style="flex:1;">View Students</a>
-                  <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${c.class_code}', 'Class Code Copied!')" title="Copy Class Code">📋 Code</button>
-                  <button class="btn btn-ghost btn-sm" onclick="confirmDeleteClassroom('${c.id || c.class_code}', '${(c.name || 'Classroom').replace(/'/g, "\\'")}')" title="Delete Classroom" style="color:var(--danger-600); border-color:rgba(220,38,38,0.25);">🗑️ Delete</button>
-                </div>
+    if (isPage('/teacher/classrooms')) {
+      if (typeof window.loadTeacherClassrooms === 'function') {
+        await window.loadTeacherClassrooms();
+      } else {
+        const container = document.getElementById('classrooms-container');
+        if (container) {
+          const classrooms = await this.fetchClassrooms();
+          container.innerHTML = '';
+          if (classrooms.length === 0) {
+            container.innerHTML = `
+              <div style="grid-column:1/-1; text-align:center; padding:64px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
+                <div style="font-size:3rem; margin-bottom:12px;">🏫</div>
+                <h3 style="margin-bottom:6px; color:var(--gray-800);">Your Classroom Roster is Empty</h3>
+                <p style="font-size:0.9rem; color:var(--gray-500); max-width:440px; margin:0 auto 20px;">
+                  Create your first class to generate a unique Class Code and start organizing subjects, students, and materials.
+                </p>
+                <button class="btn btn-primary" onclick="openModal('modal-new-class')">➕ Create First Classroom</button>
               </div>
             `;
-            container.appendChild(card);
-          });
+          } else {
+            const grads = ['card-grad-1', 'card-grad-2', 'card-grad-3', 'card-grad-4'];
+            classrooms.forEach((c, idx) => {
+              const card = document.createElement('div');
+              card.className = 'class-card';
+              card.dataset.category = 'active';
+              const rawId = c.id || c.class_code;
+              const escName = (c.name || 'Classroom').replace(/'/g, "\\'");
+              const g = grads[idx % grads.length];
+              card.innerHTML = `
+                <div class="class-card-header ${g}" style="cursor:pointer;" onclick="if(typeof openClassroomDetails==='function') openClassroomDetails('${rawId}')">
+                  <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <span class="badge" style="background:rgba(255,255,255,0.2); color:#fff;">${c.section || 'General'}</span>
+                    <span class="badge" style="background:rgba(255,255,255,0.25); color:#fff;">Code: ${c.class_code}</span>
+                  </div>
+                  <h3 style="color:#fff; margin-top:12px; margin-bottom:4px;">${c.name}</h3>
+                  <div style="font-size:0.85rem; opacity:0.85;">${c.subject || 'Academic'}</div>
+                </div>
+                <div class="class-card-body">
+                  <div class="class-meta-row">
+                    <span>👥 Class Code</span>
+                    <strong style="color:var(--primary-700); font-family:monospace;">${c.class_code}</strong>
+                  </div>
+                  <div class="class-meta-row">
+                    <span>📝 Description</span>
+                    <strong style="color:var(--gray-900);">${c.description || 'Active classroom'}</strong>
+                  </div>
+                  <div style="display:flex; gap:8px; margin-top:auto; padding-top:12px; align-items:center; flex-wrap:wrap;">
+                    <button class="btn btn-primary btn-sm" onclick="if(typeof openClassroomDetails==='function') openClassroomDetails('${rawId}')" style="flex:1;">🔍 Inside Class</button>
+                    <a href="students.html?class=${c.class_code}" class="btn btn-secondary btn-sm">👥 Students</a>
+                    <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${c.class_code}', 'Class Code Copied!')" title="Copy Class Code">📋</button>
+                    <button class="btn btn-ghost btn-sm" onclick="confirmDeleteClassroom('${rawId}', '${escName}')" title="Delete Classroom" style="color:var(--danger-600); border-color:rgba(220,38,38,0.25);">🗑️</button>
+                  </div>
+                </div>
+              `;
+              container.appendChild(card);
+            });
+          }
         }
       }
     }
@@ -1758,21 +1798,10 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     // 8. TEACHER RESULTS & PROGRESS (teacher/results.html, teacher/progress.html)
     // ───────────────────────────────────────────
-    if (path.includes('/teacher/results.html')) {
-      const tbody = document.querySelector('table tbody');
-      if (tbody) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" style="text-align:center; padding:56px 20px;">
-              <div style="font-size:2.5rem; margin-bottom:8px;">📊</div>
-              <h4 style="color:var(--gray-800); margin-bottom:4px;">No Exam Results Recorded</h4>
-              <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">Results will be recorded here once you conduct an exam and grade student papers.</p>
-            </td>
-          </tr>
-        `;
-      }
+    if (isPage('/teacher/results')) {
+      // Do not wipe out results table if user is managing exam rosters
     }
-    if (path.includes('/teacher/progress.html')) {
+    if (isPage('/teacher/progress')) {
       const card = document.querySelector('.dash-content .card');
       if (card) {
         card.innerHTML = `
@@ -1788,23 +1817,16 @@ class ClassoraAuthService {
     // ───────────────────────────────────────────
     // 9. TEACHER NOTIFICATIONS (teacher/notifications.html)
     // ───────────────────────────────────────────
-    if (path.includes('/teacher/notifications.html')) {
-      const list = document.getElementById('notif-list');
-      if (list) {
-        list.innerHTML = `
-          <div style="text-align:center; padding:56px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
-            <div style="font-size:2.5rem; margin-bottom:8px;">🔔</div>
-            <h4 style="color:var(--gray-800); margin-bottom:4px;">No Notifications</h4>
-            <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">You are all caught up! System alerts and student activities will appear here.</p>
-          </div>
-        `;
+    if (isPage('/teacher/notifications')) {
+      if (typeof window.loadTeacherNotifications === 'function') {
+        await window.loadTeacherNotifications();
       }
     }
 
     // ───────────────────────────────────────────
     // 10. STUDENT WORKSPACE (student/*.html)
     // ───────────────────────────────────────────
-    if (path.includes('/student/dashboard.html')) {
+    if (isPage('/student/dashboard')) {
       const classrooms = isAdmin ? await this.fetchClassrooms() : await this.fetchEnrolledClassrooms();
       const assignments = await this.fetchAssignments();
       const exams = await this.fetchExams();
@@ -1830,7 +1852,7 @@ class ClassoraAuthService {
 
           const s3_1 = stats[3].querySelector('div > div:first-child');
           const s3_2 = stats[3].querySelector('div > div:nth-child(2)');
-          if (s3_1) s3_1.textContent = '100%';
+          if (s3_1) s3_1.textContent = '--';
           if (s3_2) s3_2.textContent = 'Attendance Rate';
         }
       }
@@ -1890,10 +1912,13 @@ class ClassoraAuthService {
       }
     }
 
-    if (path.includes('/student/classrooms.html') && isAdmin) {
-      const grid = document.querySelector('.dash-content .grid') || document.getElementById('classrooms-container');
-      if (grid) {
-        const classrooms = await this.fetchClassrooms();
+    if (isPage('/student/classrooms')) {
+      if (typeof window.loadStudentClassrooms === 'function') {
+        await window.loadStudentClassrooms();
+      } else if (isAdmin) {
+        const grid = document.querySelector('.dash-content .grid') || document.getElementById('classrooms-container');
+        if (grid) {
+          const classrooms = await this.fetchClassrooms();
         if (classrooms.length > 0) {
           grid.innerHTML = '';
           classrooms.forEach(c => {
@@ -1933,8 +1958,9 @@ class ClassoraAuthService {
         }
       }
     }
+  }
 
-    if (path.includes('/student/homework.html')) {
+    if (isPage('/student/homework')) {
       const assignments = await this.fetchAssignments();
       if (!assignments || assignments.length === 0) {
         const grid = document.querySelector('.dash-content .grid');
@@ -1950,25 +1976,13 @@ class ClassoraAuthService {
       }
     }
 
-    if (path.includes('/student/exams.html')) {
-      const exams = await this.fetchExams();
-      if (!exams || exams.length === 0) {
-        const tbody = document.querySelector('table tbody');
-        if (tbody) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="6" style="text-align:center; padding:56px 20px;">
-                <div style="font-size:2.5rem; margin-bottom:8px;">📝</div>
-                <h4 style="color:var(--gray-800); margin-bottom:4px;">No Upcoming Exams</h4>
-                <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">Your exam schedule is completely clear.</p>
-              </td>
-            </tr>
-          `;
-        }
+    if (isPage('/student/exams')) {
+      if (typeof window.loadStudentExams === 'function') {
+        await window.loadStudentExams();
       }
     }
 
-    if (path.includes('/student/teachers.html')) {
+    if (isPage('/student/teachers')) {
       const enrolled = await this.fetchEnrolledClassrooms();
       const grid = document.querySelector('.dash-content .grid');
       if (grid) {
@@ -2025,19 +2039,17 @@ class ClassoraAuthService {
         }
       }
     }
-    if (path.includes('/student/results.html')) {
-      const card = document.querySelector('.dash-content .card');
-      if (card) {
-        card.innerHTML = `
-          <div style="text-align:center; padding:48px 20px;">
-            <div style="font-size:2.5rem; margin-bottom:8px;">📊</div>
-            <h4 style="color:var(--gray-800); margin-bottom:4px;">No Results Yet</h4>
-            <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">Your test scores and report cards will appear here after examinations are graded.</p>
-          </div>
-        `;
+    if (isPage('/student/results')) {
+      if (typeof window.loadStudentResults === 'function') {
+        await window.loadStudentResults();
       }
     }
-    if (path.includes('/teacher/notes.html') || path.includes('/student/notes.html')) {
+    if (isPage('/student/notifications')) {
+      if (typeof window.loadStudentNotifications === 'function') {
+        await window.loadStudentNotifications();
+      }
+    }
+    if (isPage('/teacher/notes') || isPage('/student/notes')) {
       const grid = document.querySelector('.dash-content .grid');
       if (grid) {
         grid.innerHTML = `
@@ -2049,7 +2061,7 @@ class ClassoraAuthService {
         `;
       }
     }
-    if (path.includes('/student/downloads.html')) {
+    if (isPage('/student/downloads')) {
       const grid = document.querySelector('.dash-content .grid') || document.querySelector('.dash-content > div:last-child');
       if (grid) {
         grid.innerHTML = `
@@ -2259,6 +2271,7 @@ class ClassoraAuthService {
       exam_id,
       student_id,
       marks_obtained,
+      score: marks_obtained,
       grade,
       remarks
     };
@@ -2284,15 +2297,23 @@ class ClassoraAuthService {
     if (!user) return [];
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
+    const profile = this.getActiveProfile();
+    const isStudent = profile && profile.role === 'student' && !this.isAdmin();
     try {
-      // Fetch requests for classrooms owned by this teacher
-      const url = `${this.url}/rest/v1/join_requests?select=*,classrooms(name,class_code,teacher_id),profiles!join_requests_student_id_fkey(full_name,email,classora_id)&status=eq.${status}&order=created_at.desc`;
+      let url = `${this.url}/rest/v1/join_requests?select=*,classrooms(name,class_code,teacher_id),profiles!join_requests_student_id_fkey(full_name,email,classora_id)&order=created_at.desc`;
+      if (status && status !== 'all') {
+        url += `&status=eq.${status}`;
+      }
+      if (isStudent) {
+        url += `&student_id=eq.${user.id}`;
+      }
       const resp = await fetch(url, {
         headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
       });
       if (resp.ok) {
         const all = await resp.json();
-        // Filter to only this teacher's classrooms
+        if (isStudent) return all;
+        // Teacher view: filter to only this teacher's classrooms
         return all.filter(r => r.classrooms && r.classrooms.teacher_id === user.id);
       }
       return [];
@@ -2306,13 +2327,31 @@ class ClassoraAuthService {
     await this.fetchAndStoreProfile(user.id, { email: user.email, role: 'student' });
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
-    // Find classroom by code
-    const clsResp = await fetch(`${this.url}/rest/v1/classrooms?class_code=eq.${classroomCode}&select=id,name,teacher_id`, {
+    // Find classroom by code or teacher Classora ID
+    const cleanCode = (classroomCode || '').trim().toUpperCase();
+    let clsResp = await fetch(`${this.url}/rest/v1/classrooms?class_code=eq.${encodeURIComponent(cleanCode)}&select=id,name,teacher_id`, {
       headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
     });
-    if (!clsResp.ok) throw new Error('Classroom not found');
-    const clsList = await clsResp.json();
-    if (!clsList.length) throw new Error('Invalid classroom code. Please check with your teacher.');
+    let clsList = clsResp.ok ? await clsResp.json() : [];
+
+    // Fallback: If not found by class_code, check if student entered teacher's Classora ID (e.g. TC... or ADM-001)
+    if (!clsList.length && (cleanCode.startsWith('TC') || cleanCode.startsWith('ADM') || cleanCode.startsWith('TCH'))) {
+      const profResp = await fetch(`${this.url}/rest/v1/profiles?classora_id=eq.${encodeURIComponent(cleanCode)}&select=id`, {
+        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      });
+      if (profResp.ok) {
+        const profs = await profResp.json();
+        if (profs.length) {
+          const teacherId = profs[0].id;
+          const tchClsResp = await fetch(`${this.url}/rest/v1/classrooms?teacher_id=eq.${teacherId}&select=id,name,teacher_id&order=created_at.desc&limit=1`, {
+            headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+          });
+          if (tchClsResp.ok) clsList = await tchClsResp.json();
+        }
+      }
+    }
+
+    if (!clsList.length) throw new Error('Invalid classroom code or Teacher ID. Please verify with your educator.');
     const classroom = clsList[0];
 
     // Check if student is already enrolled in this classroom (Bug 5)
@@ -2452,28 +2491,46 @@ class ClassoraAuthService {
 
   // ─── DIRECTORY SEARCH ────────────────────────────────────────────────────
 
-  async searchDirectory(query = '') {
+  async searchDirectory(query = '', filterRole = 'all') {
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
     try {
-      let url = `${this.url}/rest/v1/profiles?select=id,full_name,email,phone,role,classora_id,subject,grade,avatar_url,institute,bio,privacy_settings&full_name=not.is.null&order=full_name.asc`;
-      if (query.trim()) {
-        const q = encodeURIComponent(query.trim());
-        url += `&or=(full_name.ilike.*${q}*,classora_id.ilike.*${q}*,email.ilike.*${q}*)`;
-      }
       let results = [];
-      const resp = await fetch(url, {
-        headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+      const resp = await fetch(`${this.url}/rest/v1/rpc/search_directory`, {
+        method: 'POST',
+        headers: {
+          'apikey': this.anonKey,
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          search_query: query ? query.trim() : '',
+          filter_role: filterRole || 'all'
+        })
       });
-      if (resp.ok) results = await resp.json();
+      if (resp.ok) {
+        results = await resp.json();
+      } else {
+        // Fallback to table query if RPC is unavailable
+        let url = `${this.url}/rest/v1/profiles?select=id,full_name,role,classora_id,subject,grade,avatar_url,institute,bio&full_name=not.is.null&order=full_name.asc`;
+        if (query && query.trim()) {
+          const q = encodeURIComponent(query.trim());
+          url += `&or=(full_name.ilike.*${q}*,classora_id.ilike.*${q}*)`;
+        }
+        const fallbackResp = await fetch(url, {
+          headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
+        });
+        if (fallbackResp.ok) results = await fallbackResp.json();
+      }
 
       // Merge active user profile if matches query (for instant demo / local testing)
       const local = this.getActiveProfile();
       if (local && !results.some(r => r.id === local.id || r.classora_id === local.classora_id)) {
-        const qClean = query.trim().toLowerCase();
+        const qClean = (query || '').trim().toLowerCase();
         const matchName = (local.full_name || '').toLowerCase().includes(qClean);
         const matchCid = (local.classora_id || '').toLowerCase().includes(qClean);
-        if (!qClean || matchName || matchCid) {
+        const matchRole = !filterRole || filterRole === 'all' || local.role === filterRole.toLowerCase();
+        if ((!qClean || matchName || matchCid) && matchRole) {
           results.unshift(local);
         }
       }

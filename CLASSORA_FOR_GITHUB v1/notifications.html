@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -145,6 +145,106 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
+  async function loadStudentNotifications() {
+    const list = document.getElementById('student-notifs-list');
+    if (!list) return;
+    const user = ClassoraAuth.getCurrentUser();
+    if (!user) return;
+    try {
+      const joinReqs = await ClassoraAuth.fetchJoinRequests({ status: 'all' });
+      const assignments = await ClassoraAuth.fetchAssignments();
+      const results = await ClassoraAuth.fetchExamResults({ studentId: user.id });
+
+      const notifs = [];
+
+      (joinReqs || []).forEach(r => {
+        const c = r.classrooms || {};
+        const isApproved = r.status === 'approved';
+        notifs.push({
+          type: 'homework',
+          icon: isApproved ? '🎉' : '📩',
+          title: isApproved ? 'Join Request Approved' : 'Join Request Sent',
+          desc: isApproved ? `You were accepted into ${c.name || 'classroom'}! Class Code: ${c.class_code || '—'}` : `Your request to join ${c.name || 'classroom'} is pending educator approval.`,
+          time: r.created_at ? new Date(r.created_at).toLocaleString() : 'Recent',
+          unread: isApproved,
+          created: r.created_at ? new Date(r.created_at).getTime() : 0
+        });
+      });
+
+      (assignments || []).forEach(a => {
+        const c = a.classrooms || {};
+        notifs.push({
+          type: 'homework',
+          icon: '📚',
+          title: `Homework Assigned: ${a.title}`,
+          desc: `${c.name || 'Class'} • Due Date: ${a.due_date ? new Date(a.due_date).toLocaleDateString() : 'Upcoming'} (${a.points || 100} Pts)`,
+          time: a.created_at ? new Date(a.created_at).toLocaleString() : 'Recent',
+          unread: false,
+          created: a.created_at ? new Date(a.created_at).getTime() : 0
+        });
+      });
+
+      (results || []).forEach(r => {
+        const ex = r.exams || {};
+        const obtM = r.marks_obtained != null ? r.marks_obtained : (r.score != null ? r.score : 0);
+        notifs.push({
+          type: 'exam',
+          icon: '🏆',
+          title: `Results Published: ${ex.title || 'Exam'}`,
+          desc: `Score: ${obtM}/${ex.total_marks || 100} • Grade: ${r.grade || 'Evaluated'} • Remark: ${r.remarks || 'Good job!'}`,
+          time: r.created_at ? new Date(r.created_at).toLocaleString() : 'Recent',
+          unread: true,
+          created: r.created_at ? new Date(r.created_at).getTime() : 0
+        });
+      });
+
+      notifs.sort((a, b) => b.created - a.created);
+
+      // Update tabs count
+      const hwCount = notifs.filter(n => n.type === 'homework').length;
+      const exCount = notifs.filter(n => n.type === 'exam').length;
+      const tabs = document.querySelectorAll('.tabs .tab');
+      if (tabs.length >= 3) {
+        tabs[0].textContent = `All Notifications (${notifs.length})`;
+        tabs[1].textContent = `Homework (${hwCount})`;
+        tabs[2].textContent = `Exams & Results (${exCount})`;
+      }
+
+      const unreadCount = notifs.filter(n => n.unread).length;
+      const topCount = document.getElementById('student-notif-count');
+      if (topCount) topCount.textContent = unreadCount;
+
+      if (notifs.length === 0) {
+        list.innerHTML = `
+          <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
+            <div style="font-size:3rem; margin-bottom:12px;">🔔</div>
+            <h3>No Notifications Yet</h3>
+            <p style="color:var(--gray-500); max-width:420px; margin:8px auto 0;">
+              When educators publish homework, schedules, or results, notices will appear here in real time.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = notifs.map(n => `
+        <div class="notif-row ${n.unread ? 'unread' : ''}" data-type="${n.type}">
+          <div style="font-size:1.75rem;">${n.icon}</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
+              <strong style="color:var(--gray-900); font-size:0.95rem;">${escapeHTML(n.title)}</strong>
+              <span style="font-size:0.75rem; color:var(--gray-400);">${escapeHTML(n.time)}</span>
+            </div>
+            <div style="font-size:0.85rem; color:var(--gray-600);">${escapeHTML(n.desc)}</div>
+          </div>
+        </div>
+      `).join('');
+    } catch(e) {
+      console.warn('loadStudentNotifications error:', e);
+    }
+  }
+  window.loadStudentNotifications = loadStudentNotifications;
+
   function markStudentAllRead() {
     document.querySelectorAll('.notif-row.unread').forEach(r => r.classList.remove('unread'));
     document.getElementById('student-notif-count').textContent = '0';
@@ -158,6 +258,8 @@
       row.style.display = (type === 'all' || row.dataset.type === type) ? 'flex' : 'none';
     });
   }
+
+  document.addEventListener('DOMContentLoaded', loadStudentNotifications);
 </script>
 </body>
 </html>

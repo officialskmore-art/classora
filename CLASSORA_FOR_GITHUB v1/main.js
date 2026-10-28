@@ -162,9 +162,9 @@ function initSidebar() {
   });
 
   // Mark active link
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  const currentPage = (window.location.pathname.split('/').pop() || 'index').replace(/\.html$/, '');
   sidebar.querySelectorAll('.sidebar-link').forEach(link => {
-    const href = link.getAttribute('href')?.split('/').pop() || '';
+    const href = (link.getAttribute('href')?.split('/').pop() || '').replace(/\.html$/, '');
     if (href === currentPage) link.classList.add('active');
   });
 }
@@ -325,15 +325,38 @@ let CLASSORA_DIRECTORY = [];
 async function loadClassoraDirectory() {
   try {
     let list = [];
-    try {
-      const resp = await fetch('https://xmlzcntqxerfarsdeedf.supabase.co/rest/v1/profiles?select=id,full_name,email,phone,role,classora_id,avatar_url,subject,grade,institute,bio,privacy_settings', {
-        headers: {
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtbHpjbnRxeGVyZmFyc2RlZWRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMzg2ODQsImV4cCI6MjEwNjgxNDY4NH0.0eyVcRHkuoBBQVPwjnYgpn9MnM21RM1vqeZaMu_0ECg'
-        }
-      });
-      if (resp.ok) list = await resp.json();
-    } catch(e) {
-      console.warn('Network fetch profiles warning:', e);
+    if (window.ClassoraAuth && typeof window.ClassoraAuth.searchDirectory === 'function') {
+      try {
+        list = await window.ClassoraAuth.searchDirectory('', 'all');
+      } catch (e) {}
+    }
+
+    if (!list || list.length === 0) {
+      try {
+        const resp = await fetch('https://xmlzcntqxerfarsdeedf.supabase.co/rest/v1/rpc/search_directory', {
+          method: 'POST',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtbHpjbnRxeGVyZmFyc2RlZWRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMzg2ODQsImV4cCI6MjEwNjgxNDY4NH0.0eyVcRHkuoBBQVPwjnYgpn9MnM21RM1vqeZaMu_0ECg',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ search_query: '', filter_role: 'all' })
+        });
+        if (resp.ok) list = await resp.json();
+      } catch(e) {
+        console.warn('Network fetch profiles warning:', e);
+      }
+    }
+
+    // Fallback if RPC returned empty
+    if (!list || list.length === 0) {
+      try {
+        const fallbackResp = await fetch('https://xmlzcntqxerfarsdeedf.supabase.co/rest/v1/profiles?select=id,full_name,role,classora_id,avatar_url,subject,grade,institute,bio&limit=50', {
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtbHpjbnRxeGVyZmFyc2RlZWRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMzg2ODQsImV4cCI6MjEwNjgxNDY4NH0.0eyVcRHkuoBBQVPwjnYgpn9MnM21RM1vqeZaMu_0ECg'
+          }
+        });
+        if (fallbackResp.ok) list = await fallbackResp.json();
+      } catch(e) {}
     }
 
     // Merge active user profile if available
@@ -376,6 +399,11 @@ async function loadClassoraDirectory() {
       };
     });
     if (typeof filterDirectory === 'function') filterDirectory();
+    const globalModal = document.getElementById('global-search-modal');
+    if (globalModal && globalModal.classList.contains('open')) {
+      const globalInput = document.getElementById('global-search-input');
+      renderSearchResults(globalInput ? globalInput.value : '');
+    }
   } catch (err) {
     console.warn('Could not fetch public directory:', err);
   }
@@ -464,7 +492,24 @@ function openGlobalSearch(initialQuery = '') {
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     input.value = initialQuery;
-    renderSearchResults(initialQuery);
+    if (CLASSORA_DIRECTORY.length === 0) {
+      const list = document.getElementById('search-results-list');
+      if (list) {
+        list.innerHTML = `
+          <div style="text-align:center; padding:36px 16px; color:var(--gray-500);">
+            <div style="font-size:2rem; margin-bottom:8px;">⏳</div>
+            <h4 style="margin-bottom:4px; color:var(--gray-800);">Loading Directory…</h4>
+            <p style="font-size:0.85rem;">Retrieving registered teachers and students from Supabase…</p>
+          </div>
+        `;
+      }
+      loadClassoraDirectory().then(() => {
+        const curInput = document.getElementById('global-search-input');
+        renderSearchResults(curInput ? curInput.value : initialQuery);
+      });
+    } else {
+      renderSearchResults(initialQuery);
+    }
     setTimeout(() => input.focus(), 100);
   }
 }
@@ -758,15 +803,15 @@ function initMobileBottomNav() {
   if (!isTeacher && !isStudent) return;
   if (document.querySelector('.mobile-bottom-nav')) return;
 
-  const currentPath = window.location.pathname.split('/').pop() || 'dashboard.html';
+  const currentPath = (window.location.pathname.split('/').pop() || 'dashboard').replace(/\.html$/, '');
 
   const navHtml = isTeacher ? `
     <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
-      <a href="dashboard.html" class="mobile-nav-item ${currentPath === 'dashboard.html' ? 'active' : ''}">
+      <a href="dashboard.html" class="mobile-nav-item ${currentPath === 'dashboard' ? 'active' : ''}">
         <span class="mobile-nav-icon">🏠</span>
         <span>Dashboard</span>
       </a>
-      <a href="classrooms.html" class="mobile-nav-item ${currentPath === 'classrooms.html' ? 'active' : ''}">
+      <a href="classrooms.html" class="mobile-nav-item ${currentPath === 'classrooms' ? 'active' : ''}">
         <span class="mobile-nav-icon">🏫</span>
         <span>Classes</span>
       </a>
@@ -774,22 +819,22 @@ function initMobileBottomNav() {
         <span class="mobile-nav-icon">🔍</span>
         <span>Search</span>
       </a>
-      <a href="schedule.html" class="mobile-nav-item ${currentPath === 'schedule.html' ? 'active' : ''}">
+      <a href="schedule.html" class="mobile-nav-item ${currentPath === 'schedule' ? 'active' : ''}">
         <span class="mobile-nav-icon">📅</span>
         <span>Schedule</span>
       </a>
-      <a href="profile.html" class="mobile-nav-item ${currentPath === 'profile.html' ? 'active' : ''}">
+      <a href="profile.html" class="mobile-nav-item ${currentPath === 'profile' ? 'active' : ''}">
         <span class="mobile-nav-icon">👤</span>
         <span>Profile</span>
       </a>
     </nav>
   ` : `
     <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
-      <a href="dashboard.html" class="mobile-nav-item ${currentPath === 'dashboard.html' ? 'active' : ''}">
+      <a href="dashboard.html" class="mobile-nav-item ${currentPath === 'dashboard' ? 'active' : ''}">
         <span class="mobile-nav-icon">🏠</span>
         <span>Dashboard</span>
       </a>
-      <a href="classrooms.html" class="mobile-nav-item ${currentPath === 'classrooms.html' ? 'active' : ''}">
+      <a href="classrooms.html" class="mobile-nav-item ${currentPath === 'classrooms' ? 'active' : ''}">
         <span class="mobile-nav-icon">🏫</span>
         <span>Classes</span>
       </a>
@@ -797,11 +842,11 @@ function initMobileBottomNav() {
         <span class="mobile-nav-icon">🔍</span>
         <span>Search</span>
       </a>
-      <a href="homework.html" class="mobile-nav-item ${currentPath === 'homework.html' ? 'active' : ''}">
+      <a href="homework.html" class="mobile-nav-item ${currentPath === 'homework' ? 'active' : ''}">
         <span class="mobile-nav-icon">📚</span>
         <span>Homework</span>
       </a>
-      <a href="profile.html" class="mobile-nav-item ${currentPath === 'profile.html' ? 'active' : ''}">
+      <a href="profile.html" class="mobile-nav-item ${currentPath === 'profile' ? 'active' : ''}">
         <span class="mobile-nav-icon">👤</span>
         <span>Profile</span>
       </a>
@@ -906,8 +951,47 @@ window.confirmDeleteClassroom = window.confirmDeleteClassroom || async function(
   }
 };
 
+/* ─── Email Verification & Flash Toasts ───────────────── */
+function checkEmailVerificationToast() {
+  try {
+    const flash = sessionStorage.getItem('classora_flash_toast');
+    if (flash) {
+      sessionStorage.removeItem('classora_flash_toast');
+      const parsed = JSON.parse(flash);
+      setTimeout(() => {
+        showToast(parsed.message, parsed.type || 'success', parsed.duration || 6000);
+      }, 400);
+    }
+  } catch (e) {}
+
+  const hash = window.location.hash || '';
+  const search = window.location.search || '';
+  const full = hash + '&' + search;
+
+  if (full.includes('type=signup') || full.includes('type=email_change') || full.includes('email_confirmed=true')) {
+    const msg = '🎉 Email verified successfully! Welcome to Classora.';
+    setTimeout(() => {
+      showToast(msg, 'success', 8000);
+    }, 500);
+    try {
+      sessionStorage.setItem('classora_flash_toast', JSON.stringify({ message: msg, type: 'success', duration: 8000 }));
+    } catch (e) {}
+    if (window.history && window.history.replaceState) {
+      const cleanUrl = window.location.pathname + (search ? '?' + search.replace(/^[?&]/, '').replace(/type=signup&?/, '') : '');
+      window.history.replaceState(null, '', cleanUrl);
+    }
+  } else if (full.includes('error=') && (full.includes('error_code=') || full.includes('error_description='))) {
+    const params = new URLSearchParams(hash.replace(/^#/, '') || search.replace(/^\?/, ''));
+    const desc = params.get('error_description') || 'Authentication or verification error.';
+    setTimeout(() => {
+      showToast('⚠️ ' + decodeURIComponent(desc.replace(/\+/g, ' ')), 'error', 8000);
+    }, 500);
+  }
+}
+
 /* ─── Init ────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+  checkEmailVerificationToast();
   initPasswordToggles();
   initSidebar();
   initDropdowns();

@@ -236,7 +236,11 @@
     try {
       const students = await ClassoraAuth.fetchStudentsForTeacher();
       const existingResults = await ClassoraAuth.fetchExamResults({ examId: exam.id });
-      const resultMap = new Map(existingResults.map(r => [r.student_id, r]));
+      const resultMap = new Map();
+      existingResults.forEach(r => {
+        if (r.student_id) resultMap.set(r.student_id, r);
+        if (r.profiles && r.profiles.classora_id) resultMap.set(r.profiles.classora_id, r);
+      });
 
       examRoster = students;
       const maxMarks = exam.total_marks || 100;
@@ -262,9 +266,10 @@
         const studentProfile = s.profiles || {};
         const stName = studentProfile.full_name || 'Student';
         const stCid = studentProfile.classora_id || s.student_id;
-        const res = resultMap.get(s.student_id) || {};
+        const res = resultMap.get(s.student_id) || resultMap.get(stCid) || {};
         const draft = draftData[s.student_id] || {};
-        const obt = res.marks_obtained !== undefined ? res.marks_obtained : (draft.marks !== undefined ? draft.marks : '');
+        const rawObt = (res.marks_obtained != null && res.marks_obtained !== '') ? res.marks_obtained : ((res.score != null && res.score !== '') ? res.score : (draft.marks != null ? draft.marks : ''));
+        const obt = rawObt !== '' ? rawObt : '';
         const pct = obt !== '' ? Math.min(100, Math.round((parseFloat(obt) / maxMarks) * 100)) : 0;
         const grade = res.grade || (pct >= 80 ? 'A' : pct >= 60 ? 'B' : 'C');
         const remark = res.remarks || (draft.remarks || '');

@@ -132,11 +132,11 @@
 
             <div style="display: flex; justify-content: space-around; border-top: 1px solid var(--gray-100); padding-top: 16px;">
               <div>
-                <div style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;">0</div>
+                <div style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;" id="profile-classes-count">0</div>
                 <div style="font-size: 0.75rem; color: var(--gray-500);">Classes</div>
               </div>
               <div>
-                <div style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;">0</div>
+                <div style="font-weight: 700; color: var(--gray-900); font-size: 1.125rem;" id="profile-students-count">0</div>
                 <div style="font-size: 0.75rem; color: var(--gray-500);">Students</div>
               </div>
               <div>
@@ -542,6 +542,7 @@
 
   async function saveProfile() {
     const fullName = document.getElementById('prof-name').value.trim();
+    const title = document.getElementById('prof-title')?.value.trim() || '';
     const phone = document.getElementById('prof-phone').value.trim();
     const qual = document.getElementById('prof-qual').value.trim();
     const bio = document.getElementById('prof-bio').value.trim();
@@ -564,6 +565,7 @@
     showToast('Saving profile to Supabase…', 'info');
     const res = await ClassoraAuth.updateProfile({
       full_name: fullName,
+      title: title,
       phone: phone,
       qualification: qual,
       bio: bio,
@@ -573,6 +575,10 @@
     });
 
     if (res.success) {
+      if (title) {
+        const titleDisp = document.getElementById('profile-display-title');
+        if (titleDisp) titleDisp.textContent = title;
+      }
       showToast('Profile updated and saved to Supabase backend!', 'success');
     } else {
       showToast(res.error || 'Failed to save changes', 'error');
@@ -659,13 +665,20 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('DOMContentLoaded', async () => {
     if (ClassoraAuth.isAdmin()) {
       const dangerCard = document.getElementById('danger-zone-card');
       if (dangerCard) dangerCard.style.display = 'none';
     }
     const profile = ClassoraAuth.getActiveProfile();
     if (profile) {
+      if (profile.title || profile.headline) {
+        const titleVal = profile.title || profile.headline;
+        const titleInp = document.getElementById('prof-title');
+        const titleDisp = document.getElementById('profile-display-title');
+        if (titleInp) titleInp.value = titleVal;
+        if (titleDisp) titleDisp.textContent = titleVal;
+      }
       if (profile.subject) {
         const select = document.getElementById('prof-subject');
         let matched = false;
@@ -694,6 +707,18 @@
       if (profile.privacy_settings) {
         setPrivacySettingsToUI(profile.privacy_settings);
       }
+    }
+
+    // Populate live counts in profile header (N2)
+    try {
+      const classrooms = await ClassoraAuth.fetchClassrooms();
+      const students = await ClassoraAuth.fetchStudentsForTeacher();
+      const clsEl = document.getElementById('profile-classes-count');
+      const stdEl = document.getElementById('profile-students-count');
+      if (clsEl) clsEl.textContent = classrooms.length;
+      if (stdEl) stdEl.textContent = students.length;
+    } catch (e) {
+      console.warn('Could not populate teacher profile counts:', e);
     }
   });
 </script>
