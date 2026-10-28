@@ -82,7 +82,7 @@
         <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
         <div style="flex:1; min-width:0;">
           <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
-          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Active</div>
+          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
       </div>
@@ -107,6 +107,7 @@
           🔔<span class="notif-dot" style="display:none;"></span>
         </a>
         <a href="classrooms.html" class="btn btn-primary btn-sm">➕ Join Class</a>
+        <a href="profile.html" class="user-avatar avatar-sm topbar-user-avatar" style="cursor:pointer; font-size:0.8rem; text-decoration:none;" title="My Profile">S</a>
       </div>
     </div>
 
@@ -125,10 +126,10 @@
             <a href="schedule.html" class="btn btn-ghost btn-sm" style="color:#fff; border:1px solid rgba(255,255,255,0.3);">Check Schedule</a>
           </div>
         </div>
-        <div style="display:flex; flex-direction:column; align-items:center; background:rgba(255,255,255,0.1); border-radius:16px; padding:18px 24px; border:1px solid rgba(255,255,255,0.15); text-align:center;">
-          <div style="font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:600; text-transform:uppercase;">Classora Student ID</div>
-          <code style="font-size:1.25rem; font-weight:800; color:#34D399; margin:6px 0;" id="user-display-id">STD-ACTIVE</code>
-          <button class="btn btn-sm btn-ghost" style="color:#fff; padding:2px 8px; font-size:0.75rem;" onclick="copyToClipboard(document.getElementById('user-display-id').textContent, 'Student ID Copied!')">📋 Copy ID</button>
+        <div style="display:flex; flex-direction:column; align-items:center; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); border-radius:16px; padding:18px 24px; border:1px solid rgba(255,255,255,0.2); text-align:center; min-width:210px;">
+          <div style="font-size:0.75rem; color:rgba(255,255,255,0.8); font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Classora Student ID</div>
+          <code style="font-size:1.25rem; font-weight:800; color:#34D399; margin:6px 0; letter-spacing:0.04em;" id="user-display-id" class="classora-id">Loading ID...</code>
+          <button class="btn btn-sm btn-ghost" style="color:#fff; padding:4px 10px; font-size:0.78rem; border:1px solid rgba(255,255,255,0.25); border-radius:var(--radius-sm);" onclick="copyToClipboard(document.getElementById('user-display-id').textContent, 'Student ID Copied!')">📋 Copy ID</button>
         </div>
       </div>
 

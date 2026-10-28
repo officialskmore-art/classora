@@ -124,7 +124,15 @@
           Sign In
         </button>
 
-        <p style="text-align:center; margin-top:20px; font-size:0.875rem; color:var(--gray-500);">
+        <div style="margin-top:20px; padding:12px; background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-md); text-align:center;">
+          <div style="font-size:0.75rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">⚡ 1-Click Instant Demo Login</div>
+          <div style="display:flex; gap:8px; justify-content:center;">
+            <button type="button" class="btn btn-sm btn-secondary" onclick="quickLoginDemo('teacher')" style="flex:1; font-size:0.8rem; padding:6px 10px;">🧑‍🏫 Demo Teacher</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="quickLoginDemo('student')" style="flex:1; font-size:0.8rem; padding:6px 10px;">🎒 Demo Student</button>
+          </div>
+        </div>
+
+        <p style="text-align:center; margin-top:16px; font-size:0.875rem; color:var(--gray-500);">
           New to Classora? 
           <a id="register-link" href="register-teacher.html" style="color:var(--primary-600); font-weight:600;">Create an account</a>
         </p>
@@ -224,6 +232,16 @@
       showToast('Could not start Google Sign-In: ' + err.message, 'error');
     }
   });
+
+  function quickLoginDemo(role) {
+    if (window.ClassoraAuth) {
+      window.ClassoraAuth.quickDemoLogin(role);
+      showToast(`Logged in as demo ${role}! Launching portal…`, 'success');
+      setTimeout(() => {
+        window.location.href = role === 'teacher' ? 'teacher/dashboard.html' : 'student/dashboard.html';
+      }, 350);
+    }
+  }
 </script>
 </body>
 </html>

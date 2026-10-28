@@ -141,6 +141,7 @@
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
         <button class="btn btn-primary btn-sm" onclick="openModal('modal-new-class')">➕ Create Classroom</button>
+        <a href="profile.html" class="user-avatar avatar-sm" style="cursor:pointer; font-size:0.8rem; text-decoration:none;" title="My Profile">T</a>
       </div>
     </div>
 
@@ -345,6 +346,23 @@
       showToast('Error: ' + err.message, 'error');
     }
   }
+
+  async function confirmDeleteClassroom(id, name) {
+    if (!confirm(`Are you sure you want to permanently delete classroom "${name}"?\n\nThis will remove the classroom and its class code. This action cannot be undone.`)) {
+      return;
+    }
+    showToast(`Deleting classroom "${name}"…`, 'info');
+    try {
+      if (window.ClassoraAuth) {
+        await window.ClassoraAuth.deleteClassroom(id);
+        showToast(`Classroom "${name}" deleted successfully.`, 'success');
+        window.ClassoraAuth.syncAuthUI();
+      }
+    } catch (err) {
+      showToast('Error deleting classroom: ' + err.message, 'error');
+    }
+  }
+  window.confirmDeleteClassroom = confirmDeleteClassroom;
 </script>
 </body>
 </html>

@@ -264,6 +264,10 @@
   }
 
   function viewLiveProfile(id) {
+    if (typeof openInstagramProfile === 'function') {
+      openInstagramProfile(id);
+      return;
+    }
     var p = LIVE_DIRECTORY.find(function(m){return m.id===id;});
     if (!p) { showToast("Profile not found","error"); return; }
     var role = p.role || "teacher";

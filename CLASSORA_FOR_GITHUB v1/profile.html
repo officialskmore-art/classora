@@ -75,7 +75,7 @@
         <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
         <div style="flex:1; min-width:0;">
           <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
-          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Active</div>
+          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
       </div>
@@ -230,6 +230,86 @@
             </div>
           </div>
 
+          <!-- Public Profile & Privacy Settings (Instagram-Style Directory Visibility) -->
+          <div class="card" id="privacy-settings-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; flex-wrap:wrap; gap:12px;">
+              <div>
+                <h4 style="margin:0 0 4px; display:flex; align-items:center; gap:8px;">
+                  <span>🛡️</span> Public Profile & Privacy Controls
+                </h4>
+                <p style="font-size:0.85rem; color:var(--gray-500); margin:0;">
+                  Control which information appears on your Instagram-style public profile when other teachers or students find you.
+                </p>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="previewMyInstagramProfile()" style="display:flex; align-items:center; gap:6px;">
+                <span>👁️</span> Preview Public Profile
+              </button>
+            </div>
+
+            <div class="privacy-settings-box">
+              <div class="privacy-item-card">
+                <div class="privacy-item-info">
+                  <h5><span>📧</span> Public Email Address</h5>
+                  <p>Allow other verified members to see your contact email in search</p>
+                </div>
+                <label class="privacy-toggle-switch">
+                  <input type="checkbox" id="priv-show-email"/>
+                  <span class="privacy-slider"></span>
+                </label>
+              </div>
+
+              <div class="privacy-item-card">
+                <div class="privacy-item-info">
+                  <h5><span>📱</span> Public Phone Number</h5>
+                  <p>Display your mobile phone number on your public profile</p>
+                </div>
+                <label class="privacy-toggle-switch">
+                  <input type="checkbox" id="priv-show-phone"/>
+                  <span class="privacy-slider"></span>
+                </label>
+              </div>
+
+              <div class="privacy-item-card">
+                <div class="privacy-item-info">
+                  <h5><span>🏫</span> School / Institute Affiliation</h5>
+                  <p>Display your associated school or college</p>
+                </div>
+                <label class="privacy-toggle-switch">
+                  <input type="checkbox" id="priv-show-institute" checked/>
+                  <span class="privacy-slider"></span>
+                </label>
+              </div>
+
+              <div class="privacy-item-card">
+                <div class="privacy-item-info">
+                  <h5><span>🎓</span> Grade Level & Stream</h5>
+                  <p>Show your academic class grade on your public profile</p>
+                </div>
+                <label class="privacy-toggle-switch">
+                  <input type="checkbox" id="priv-show-classes" checked/>
+                  <span class="privacy-slider"></span>
+                </label>
+              </div>
+
+              <div class="privacy-item-card">
+                <div class="privacy-item-info">
+                  <h5><span>✍️</span> Public Bio & Interests</h5>
+                  <p>Display your self-written student bio in the directory</p>
+                </div>
+                <label class="privacy-toggle-switch">
+                  <input type="checkbox" id="priv-show-bio" checked/>
+                  <span class="privacy-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="savePrivacySettings()" style="font-weight:700;">
+                💾 Save Privacy Preferences
+              </button>
+            </div>
+          </div>
+
           <!-- Danger Zone: Account Deletion -->
           <div class="card" id="danger-zone-card" style="border: 1.5px solid var(--danger-300, #FCA5A5); background: #FEF2F2;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
@@ -286,6 +366,44 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
+  function getPrivacySettingsFromUI() {
+    return {
+      show_email: document.getElementById('priv-show-email')?.checked || false,
+      show_phone: document.getElementById('priv-show-phone')?.checked || false,
+      show_institute: document.getElementById('priv-show-institute')?.checked ?? true,
+      show_classes: document.getElementById('priv-show-classes')?.checked ?? true,
+      show_bio: document.getElementById('priv-show-bio')?.checked ?? true
+    };
+  }
+
+  function setPrivacySettingsToUI(priv) {
+    if (!priv) return;
+    if (document.getElementById('priv-show-email')) document.getElementById('priv-show-email').checked = Boolean(priv.show_email);
+    if (document.getElementById('priv-show-phone')) document.getElementById('priv-show-phone').checked = Boolean(priv.show_phone);
+    if (document.getElementById('priv-show-institute')) document.getElementById('priv-show-institute').checked = priv.show_institute !== false;
+    if (document.getElementById('priv-show-classes')) document.getElementById('priv-show-classes').checked = priv.show_classes !== false;
+    if (document.getElementById('priv-show-bio')) document.getElementById('priv-show-bio').checked = priv.show_bio !== false;
+  }
+
+  async function savePrivacySettings() {
+    const priv = getPrivacySettingsFromUI();
+    showToast('Updating student privacy preferences…', 'info');
+    try {
+      const res = await ClassoraAuth.updateProfile({ privacy_settings: priv });
+      showToast('Privacy preferences saved successfully!', 'success');
+    } catch(err) {
+      showToast('Error saving privacy preferences: ' + err.message, 'error');
+    }
+  }
+
+  function previewMyInstagramProfile() {
+    const profile = ClassoraAuth.getActiveProfile();
+    const cid = profile ? (profile.classora_id || profile.id) : null;
+    if (typeof openInstagramProfile === 'function') {
+      openInstagramProfile(cid);
+    }
+  }
+
   async function saveStudentProfile() {
     const fullName = document.getElementById('prof-name').value.trim();
     const phone = document.getElementById('prof-phone').value.trim();
@@ -301,7 +419,8 @@
     const res = await ClassoraAuth.updateProfile({
       full_name: fullName,
       phone: phone,
-      grade: grade
+      grade: grade,
+      privacy_settings: getPrivacySettingsFromUI()
     });
 
     if (res.success) {
@@ -313,13 +432,18 @@
 
   window.addEventListener('DOMContentLoaded', () => {
     const profile = ClassoraAuth.getActiveProfile();
-    if (profile && profile.grade) {
-      const gradeSelect = document.getElementById('class-level');
-      for (let i = 0; i < gradeSelect.options.length; i++) {
-        if (gradeSelect.options[i].value === profile.grade) {
-          gradeSelect.selectedIndex = i;
-          break;
+    if (profile) {
+      if (profile.grade) {
+        const gradeSelect = document.getElementById('class-level');
+        for (let i = 0; i < gradeSelect.options.length; i++) {
+          if (gradeSelect.options[i].value === profile.grade) {
+            gradeSelect.selectedIndex = i;
+            break;
+          }
         }
+      }
+      if (profile.privacy_settings) {
+        setPrivacySettingsToUI(profile.privacy_settings);
       }
     }
   });

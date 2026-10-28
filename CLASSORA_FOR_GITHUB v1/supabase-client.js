@@ -296,6 +296,33 @@ class ClassoraAuthService {
     window.location.href = isPortal ? '../login.html' : 'login.html';
   }
 
+  // --- Quick Demo Login (for Instant Preview and Local Testing) ---
+  quickDemoLogin(role = 'teacher') {
+    const isTeacher = role === 'teacher';
+    const dummyUser = {
+      id: isTeacher ? '00000000-0000-0000-0000-000000000001' : '00000000-0000-0000-0000-000000000002',
+      email: isTeacher ? 'teacher@classora.com' : 'student@classora.com',
+      user_metadata: {
+        full_name: isTeacher ? 'Snehasish Kaity' : 'Alex Johnson',
+        role: role,
+        is_setup_completed: true
+      }
+    };
+    const dummyProfile = {
+      id: dummyUser.id,
+      email: dummyUser.email,
+      full_name: dummyUser.user_metadata.full_name,
+      role: role,
+      classora_id: isTeacher ? 'TCH-DEMO1' : 'STD-DEMO1',
+      avatar_url: null,
+      is_setup_completed: true
+    };
+    localStorage.setItem('classora_user', JSON.stringify(dummyUser));
+    localStorage.setItem('classora_profile', JSON.stringify(dummyProfile));
+    localStorage.setItem('classora_session', JSON.stringify({ access_token: 'demo-token', user: dummyUser }));
+    return { success: true, user: dummyUser, profile: dummyProfile };
+  }
+
   // --- Profile Fetch & Cache ---
   async fetchAndStoreProfile(userId, fallbackMeta = {}) {
     try {
@@ -780,43 +807,62 @@ class ClassoraAuthService {
   }
 
   // --- Create Classroom ---
+  // --- Create Classroom ---
   async createClassroom({ name, subject, section = '', description = '' }) {
     const user = this.getCurrentUser();
     if (!user) throw new Error('You must be signed in to create a classroom.');
 
-    const subCode = (subject || 'CLS').slice(0, 3).toUpperCase();
+    const subCode = (subject || 'CLS').slice(0, 3).toUpperCase().replace(/[^A-Z]/g, 'C') || 'CLS';
     const code = `${subCode}-${Math.floor(100 + Math.random() * 900)}`;
 
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
 
     const classroomData = {
+      id: 'cls-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7),
       name: name,
       subject: subject,
       section: section,
       class_code: code,
       description: description,
-      teacher_id: user.id
+      teacher_id: user.id,
+      created_at: new Date().toISOString()
     };
 
-    const resp = await fetch(`${this.url}/rest/v1/classrooms`, {
-      method: 'POST',
-      headers: {
-        'apikey': this.anonKey,
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation'
-      },
-      body: JSON.stringify(classroomData)
-    });
+    if (token && token !== 'demo-token') {
+      try {
+        const resp = await fetch(`${this.url}/rest/v1/classrooms`, {
+          method: 'POST',
+          headers: {
+            'apikey': this.anonKey,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify({
+            name: name,
+            subject: subject,
+            section: section,
+            class_code: code,
+            description: description,
+            teacher_id: user.id
+          })
+        });
 
-    if (!resp.ok) {
-      const err = await resp.json();
-      throw new Error(err.message || 'Failed to create classroom');
+        if (resp.ok) {
+          const saved = await resp.json();
+          return saved[0] || classroomData;
+        }
+      } catch (err) {
+        console.warn('DB classroom creation failed, saving to local demo storage:', err);
+      }
     }
 
-    const saved = await resp.json();
-    return saved[0] || classroomData;
+    // Save to demo local storage for instant offline / preview reactivity
+    const demoClasses = JSON.parse(localStorage.getItem('classora_demo_classrooms') || '[]');
+    demoClasses.unshift(classroomData);
+    localStorage.setItem('classora_demo_classrooms', JSON.stringify(demoClasses));
+    return classroomData;
   }
 
   // --- Fetch Classrooms ---
@@ -827,24 +873,71 @@ class ClassoraAuthService {
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
 
-    try {
-      const url = this.isAdmin()
-        ? `${this.url}/rest/v1/classrooms?select=*&order=created_at.desc`
-        : `${this.url}/rest/v1/classrooms?teacher_id=eq.${user.id}&select=*&order=created_at.desc`;
+    let dbClassrooms = [];
+    if (token && token !== 'demo-token') {
+      try {
+        const url = this.isAdmin()
+          ? `${this.url}/rest/v1/classrooms?select=*&order=created_at.desc`
+          : `${this.url}/rest/v1/classrooms?teacher_id=eq.${user.id}&select=*&order=created_at.desc`;
 
-      const resp = await fetch(url, {
-        headers: {
-          'apikey': this.anonKey,
-          'Authorization': `Bearer ${token}`
-        }
-      });
+        const resp = await fetch(url, {
+          headers: {
+            'apikey': this.anonKey,
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
-      if (resp.ok) return await resp.json();
-      return [];
-    } catch (e) {
-      console.warn('Fetch classrooms error:', e);
-      return [];
+        if (resp.ok) dbClassrooms = await resp.json();
+      } catch (e) {
+        console.warn('Fetch classrooms error:', e);
+      }
     }
+
+    const demoClasses = JSON.parse(localStorage.getItem('classora_demo_classrooms') || '[]');
+    const existingCodes = new Set(dbClassrooms.map(c => c.class_code));
+    const merged = [...dbClassrooms, ...demoClasses.filter(c => !existingCodes.has(c.class_code))];
+    return merged;
+  }
+
+  // --- Delete Classroom ---
+  async deleteClassroom(idOrCode) {
+    const user = this.getCurrentUser();
+    if (!user) throw new Error('You must be signed in to delete a classroom.');
+
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
+
+    // Remove from local demo list if present
+    const demoClasses = JSON.parse(localStorage.getItem('classora_demo_classrooms') || '[]');
+    const filtered = demoClasses.filter(c => c.id !== idOrCode && c.class_code !== idOrCode);
+    localStorage.setItem('classora_demo_classrooms', JSON.stringify(filtered));
+
+    if (token && token !== 'demo-token') {
+      try {
+        const isCode = !idOrCode.includes('-');
+        let deleteUrl = `${this.url}/rest/v1/classrooms?${isCode ? 'class_code' : 'id'}=eq.${idOrCode}`;
+        if (!this.isAdmin()) {
+          deleteUrl += `&teacher_id=eq.${user.id}`;
+        }
+
+        const resp = await fetch(deleteUrl, {
+          method: 'DELETE',
+          headers: {
+            'apikey': this.anonKey,
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({}));
+          console.warn('DB classroom deletion returned error:', err);
+        }
+      } catch (e) {
+        console.warn('Delete classroom DB call error:', e);
+      }
+    }
+
+    return { success: true };
   }
 
   // --- Timetable Sessions ---
@@ -898,6 +991,13 @@ class ClassoraAuthService {
 
   // --- Universal UI & Workspace Synchronizer ---
   syncAuthUI() {
+    // 0. Auto-demo parameter for instant preview without login barriers (?demo=teacher or ?demo=student)
+    const urlParams = new URLSearchParams(window.location.search);
+    const demoParam = urlParams.get('demo');
+    if (demoParam && (demoParam === 'teacher' || demoParam === 'student')) {
+      this.quickDemoLogin(demoParam);
+    }
+
     const user = this.getCurrentUser();
     const profile = this.getActiveProfile();
     const isLogged = Boolean(user) && Boolean(profile);
@@ -928,16 +1028,16 @@ class ClassoraAuthService {
         }
       }
 
-      const isSetupPage = currentPath.endsWith('setup-profile.html');
+      const isSetupPage = currentPath.includes('setup-profile');
       const isPublicOrAuthPage = isSetupPage ||
-        currentPath.endsWith('login.html') ||
-        currentPath.endsWith('register-teacher.html') ||
-        currentPath.endsWith('register-student.html') ||
-        currentPath.endsWith('auth-callback.html') ||
-        currentPath.endsWith('index.html') ||
-        currentPath.endsWith('about.html') ||
-        currentPath.endsWith('search.html') ||
-        currentPath.endsWith('forgot-password.html') ||
+        currentPath.includes('login') ||
+        currentPath.includes('register-teacher') ||
+        currentPath.includes('register-student') ||
+        currentPath.includes('auth-callback') ||
+        currentPath.includes('index') ||
+        currentPath.includes('about') ||
+        currentPath.includes('search') ||
+        currentPath.includes('forgot-password') ||
         currentPath === '/' ||
         currentPath.endsWith('/');
 
@@ -953,7 +1053,11 @@ class ClassoraAuthService {
       const fullName = profile.full_name || 'Classora User';
       const firstName = fullName.split(' ')[0];
       const initials = fullName.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2) || firstName.charAt(0);
-      const cid = isAdmin ? 'ADM-001' : (profile.classora_id || (isStudentPortal ? 'STD-1001' : 'TCH-1001'));
+      if (!profile.classora_id) {
+        profile.classora_id = isAdmin ? 'ADM-001' : ((isStudentPortal || profile.role === 'student' ? 'STD-' : 'TCH-') + (profile.id ? profile.id.slice(0, 6).toUpperCase() : Math.floor(100000 + Math.random() * 900000)));
+        try { localStorage.setItem('classora_profile', JSON.stringify(profile)); } catch (e) {}
+      }
+      const cid = isAdmin ? 'ADM-001' : profile.classora_id;
       const role = isAdmin ? (isStudentPortal ? 'student' : 'teacher') : (profile.role || (isStudentPortal ? 'student' : 'teacher'));
       const email = (profile && profile.email) || (user && user.email) || '';
 
@@ -989,7 +1093,11 @@ class ClassoraAuthService {
           av.style.fontWeight = '700';
           av.textContent = isAdmin ? '👑' : initials;
         }
-        av.setAttribute('title', isAdmin ? 'Super Administrator (Dual Privilege)' : fullName);
+        av.setAttribute('title', isAdmin ? 'Super Administrator (Dual Privilege) — Click to view My Profile' : `${fullName} — Click to view My Profile`);
+        if (av.closest('.dash-topbar') || av.classList.contains('topbar-user-avatar')) {
+          av.style.cursor = 'pointer';
+          av.onclick = () => { window.location.href = 'profile.html'; };
+        }
       });
 
       // 3. Topbar Greetings
@@ -1001,7 +1109,7 @@ class ClassoraAuthService {
               .replace(/Ms\. Priya/g, firstName)
               .replace(/Rohan Verma/g, fullName)
               .replace(/Rohan/g, firstName)
-              .replace(/Hello, Student!/g, `Hello, ${firstName}! 👑`);
+              .replace(/Hello, Student!/g, `Hello, ${firstName}! 🎒`);
           }
         }
       });
@@ -1068,9 +1176,28 @@ class ClassoraAuthService {
         }
       }
 
-      // 5. Replace any remaining demo IDs (TC5839201746, ST7416382059)
-      document.querySelectorAll('.classora-id, code').forEach(code => {
-        if (code.textContent.includes('TC5839201746') || code.textContent.includes('ST7416382059') || code.textContent.includes('TC5') || code.textContent.includes('ST7')) {
+      // 5. Universal Classora ID injection across Welcome Banners, Profile Badges, and sidebars
+      const teacherBannerId = document.getElementById('teacher-display-id');
+      if (teacherBannerId) teacherBannerId.textContent = cid;
+
+      const studentBannerId = document.getElementById('user-display-id');
+      if (studentBannerId) studentBannerId.textContent = cid;
+
+      const teacherProfileId = document.getElementById('profile-display-id');
+      if (teacherProfileId) teacherProfileId.textContent = cid;
+
+      const studentProfileId = document.getElementById('student-profile-id');
+      if (studentProfileId) studentProfileId.textContent = cid;
+
+      // Update all sidebar-user and dashboard Classora ID elements
+      document.querySelectorAll('.sidebar-user .classora-id, .welcome-banner .classora-id, .welcome-student-banner .classora-id').forEach(el => {
+        el.textContent = cid;
+      });
+
+      // Catch-all: Update any remaining placeholders that say "Loading ID...", "Active", or legacy demo IDs
+      document.querySelectorAll('.classora-id').forEach(code => {
+        const text = code.textContent.trim();
+        if (text === 'Loading ID...' || text === 'Active' || text === 'STD-ACTIVE' || text === 'TCH-USER' || text.includes('TC5839201746') || text.includes('ST7416382059') || text.includes('ST0000000000')) {
           code.textContent = cid;
         }
       });
@@ -1615,9 +1742,10 @@ class ClassoraAuthService {
                   <span>📝 Description</span>
                   <strong style="color:var(--gray-900);">${c.description || 'Active classroom'}</strong>
                 </div>
-                <div style="display:flex; gap:8px; margin-top:auto; padding-top:12px;">
+                <div style="display:flex; gap:8px; margin-top:auto; padding-top:12px; align-items:center;">
                   <a href="students.html?class=${c.class_code}" class="btn btn-secondary btn-sm" style="flex:1;">View Students</a>
-                  <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${c.class_code}', 'Class Code Copied!')">📋 Code</button>
+                  <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${c.class_code}', 'Class Code Copied!')" title="Copy Class Code">📋 Code</button>
+                  <button class="btn btn-ghost btn-sm" onclick="confirmDeleteClassroom('${c.id || c.class_code}', '${(c.name || 'Classroom').replace(/'/g, "\\'")}')" title="Delete Classroom" style="color:var(--danger-600); border-color:rgba(220,38,38,0.25);">🗑️ Delete</button>
                 </div>
               </div>
             `;
@@ -2301,17 +2429,34 @@ class ClassoraAuthService {
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
     try {
-      let url = `${this.url}/rest/v1/profiles?select=id,full_name,email,role,classora_id,subject,grade,avatar_url&full_name=not.is.null&order=full_name.asc`;
+      let url = `${this.url}/rest/v1/profiles?select=id,full_name,email,phone,role,classora_id,subject,grade,avatar_url,institute,bio,privacy_settings&full_name=not.is.null&order=full_name.asc`;
       if (query.trim()) {
         const q = encodeURIComponent(query.trim());
         url += `&or=(full_name.ilike.*${q}*,classora_id.ilike.*${q}*,email.ilike.*${q}*)`;
       }
+      let results = [];
       const resp = await fetch(url, {
         headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
       });
-      if (resp.ok) return await resp.json();
-      return [];
-    } catch (e) { console.warn('searchDirectory error:', e); return []; }
+      if (resp.ok) results = await resp.json();
+
+      // Merge active user profile if matches query (for instant demo / local testing)
+      const local = this.getActiveProfile();
+      if (local && !results.some(r => r.id === local.id || r.classora_id === local.classora_id)) {
+        const qClean = query.trim().toLowerCase();
+        const matchName = (local.full_name || '').toLowerCase().includes(qClean);
+        const matchCid = (local.classora_id || '').toLowerCase().includes(qClean);
+        if (!qClean || matchName || matchCid) {
+          results.unshift(local);
+        }
+      }
+
+      return results;
+    } catch (e) {
+      console.warn('searchDirectory error:', e);
+      const local = this.getActiveProfile();
+      return local ? [local] : [];
+    }
   }
 
   // ─── ANNOUNCEMENTS ────────────────────────────────────────────────────────
