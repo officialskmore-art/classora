@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -14,35 +14,24 @@
       padding: 18px 22px;
       margin-bottom: 12px;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 16px;
       transition: var(--transition);
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
     }
     .notif-row.unread {
       border-left: 4px solid var(--primary-600);
       background: rgba(238, 242, 255, 0.4);
     }
-    .notif-row:hover { box-shadow: var(--shadow-sm); transform: translateY(-1px); }
-    .notif-icon {
-      width: 40px; height: 40px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; flex-shrink: 0;
+    .notif-row:hover {
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
     }
-    .live-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #10B981; display: inline-block; margin-right: 6px;
-      animation: pulse-dot 1.5s ease-in-out infinite;
-    }
-    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
   </style>
 </head>
 <body>
 <div class="layout-dashboard">
 
-  <!-- STUDENT SIDEBAR -->
+  <!-- ════ STUDENT SIDEBAR ════ -->
   <aside class="sidebar" id="sidebar" aria-label="Student navigation">
     <div class="sidebar-header">
       <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
@@ -50,29 +39,59 @@
         <span style="color:var(--gray-900); font-size:1.125rem; font-weight:800;">Classora</span>
       </a>
     </div>
+
     <nav class="sidebar-nav">
       <span class="sidebar-section-label">Main</span>
-      <a href="dashboard.html" class="sidebar-link" id="nav-dashboard"><span class="sidebar-icon">🏠</span> Dashboard</a>
-      <a href="profile.html" class="sidebar-link" id="nav-profile"><span class="sidebar-icon">👤</span> My Profile</a>
+      <a href="dashboard.html" class="sidebar-link" id="nav-dashboard">
+        <span class="sidebar-icon">🏠</span> Dashboard
+      </a>
+      <a href="profile.html" class="sidebar-link" id="nav-profile">
+        <span class="sidebar-icon">👤</span> My Profile
+      </a>
+
       <span class="sidebar-section-label">Academics</span>
-      <a href="classrooms.html" class="sidebar-link" id="nav-classrooms"><span class="sidebar-icon">🏫</span> My Classrooms<span class="sidebar-badge"></span></a>
-      <a href="teachers.html" class="sidebar-link" id="nav-teachers"><span class="sidebar-icon">🧑‍🏫</span> My Teachers</a>
-      <a href="schedule.html" class="sidebar-link" id="nav-schedule"><span class="sidebar-icon">📅</span> Schedule</a>
+      <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
+        <span class="sidebar-icon">🏫</span> My Classrooms
+        <span class="sidebar-badge">0</span>
+      </a>
+      <a href="teachers.html" class="sidebar-link" id="nav-teachers">
+        <span class="sidebar-icon">🧑‍🏫</span> My Teachers
+      </a>
+      <a href="schedule.html" class="sidebar-link" id="nav-schedule">
+        <span class="sidebar-icon">📅</span> Schedule
+      </a>
+
       <span class="sidebar-section-label">Performance</span>
-      <a href="homework.html" class="sidebar-link" id="nav-homework"><span class="sidebar-icon">📚</span> Homework<span class="sidebar-badge" style="background:#F59E0B;"></span></a>
-      <a href="exams.html" class="sidebar-link" id="nav-exams"><span class="sidebar-icon">📝</span> Examinations</a>
-      <a href="results.html" class="sidebar-link" id="nav-results"><span class="sidebar-icon">📊</span> Results</a>
-      <a href="progress.html" class="sidebar-link" id="nav-progress"><span class="sidebar-icon">📈</span> Progress</a>
+      <a href="homework.html" class="sidebar-link" id="nav-homework">
+        <span class="sidebar-icon">📚</span> Homework
+        <span class="sidebar-badge" style="background:#F59E0B;">0</span>
+      </a>
+      <a href="exams.html" class="sidebar-link" id="nav-exams">
+        <span class="sidebar-icon">📝</span> Examinations
+      </a>
+      <a href="results.html" class="sidebar-link" id="nav-results">
+        <span class="sidebar-icon">📊</span> Results
+      </a>
+      <a href="progress.html" class="sidebar-link" id="nav-progress">
+        <span class="sidebar-icon">📈</span> Progress
+      </a>
+
       <span class="sidebar-section-label">Resources</span>
-      <a href="downloads.html" class="sidebar-link" id="nav-downloads"><span class="sidebar-icon">📥</span> Downloads</a>
-      <a href="notifications.html" class="sidebar-link active" id="nav-notif"><span class="sidebar-icon">🔔</span> Notifications<span class="sidebar-badge" id="student-notif-count"></span></a>
+      <a href="downloads.html" class="sidebar-link" id="nav-downloads">
+        <span class="sidebar-icon">📥</span> Downloads
+      </a>
+      <a href="notifications.html" class="sidebar-link active" id="nav-notif">
+        <span class="sidebar-icon">🔔</span> Notifications
+        <span class="sidebar-badge" id="student-notif-count">0</span>
+      </a>
     </nav>
+
     <div class="sidebar-footer">
       <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
         <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
         <div style="flex:1; min-width:0;">
           <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
-          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Active</div>
+          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
       </div>
@@ -83,33 +102,40 @@
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- ════ MAIN CONTENT ════ -->
   <main class="dash-main" id="main-content">
     <div class="dash-topbar">
       <div style="display:flex; align-items:center; gap:16px;">
         <div>
-          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Inbox &amp; Alerts</div>
-          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">
-            <span class="live-dot" id="live-dot" style="display:none;"></span>My Notifications
-          </div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Inbox & Alerts</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">My Notifications</div>
         </div>
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
-        <button class="btn btn-secondary btn-sm" onclick="markAllRead()">✅ Mark All as Read</button>
+        <button class="btn btn-secondary btn-sm" onclick="markStudentAllRead()">Mark all as read</button>
       </div>
     </div>
 
     <div class="dash-content">
+      
       <div class="tabs">
-        <div class="tab active" id="tab-all-btn" onclick="filterNotifs('all', this)">All (<span id="count-all">0</span>)</div>
-        <div class="tab" id="tab-class-btn" onclick="filterNotifs('approved', this)">Class Updates (<span id="count-class">0</span>)</div>
-        <div class="tab" id="tab-unread-btn" onclick="filterNotifs('unread', this)">Unread (<span id="count-unread">0</span>)</div>
+        <div class="tab active" onclick="filterStudentNotifs('all', this)">All Notifications (0)</div>
+        <div class="tab" onclick="filterStudentNotifs('homework', this)">Homework (0)</div>
+        <div class="tab" onclick="filterStudentNotifs('exam', this)">Exams & Results (0)</div>
       </div>
+
       <div id="student-notifs-list">
-        <div id="notif-loading" style="text-align:center; padding:40px 20px; color:var(--gray-400);">
-          <div style="font-size:2rem; margin-bottom:8px;">⏳</div><p>Loading notifications…</p>
+        
+        <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
+          <div style="font-size:3rem; margin-bottom:12px;">🔔</div>
+          <h3>No Notifications Yet</h3>
+          <p style="color:var(--gray-500); max-width:420px; margin:8px auto 0;">
+            When educators publish homework, schedules, or results, notices will appear here in real time.
+          </p>
         </div>
+
       </div>
+
     </div>
   </main>
 </div>
@@ -119,136 +145,19 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  var _allNotifs = [];
-  var _activeFilter = 'all';
-
-  var NOTIF_META = {
-    join_request: { icon: '📩', bg: '#EEF2FF', label: 'Join Request' },
-    approved:     { icon: '✅', bg: '#ECFDF5', label: 'Enrolled!' },
-    rejected:     { icon: '❌', bg: '#FEF2F2', label: 'Declined' },
-    announcement: { icon: '📢', bg: '#FFFBEB', label: 'Announcement' },
-    assignment:   { icon: '📚', bg: '#F0FDF4', label: 'Homework' },
-    exam_result:  { icon: '📊', bg: '#F5F3FF', label: 'Result' }
-  };
-
-  function getMeta(type) {
-    return NOTIF_META[type] || { icon: '🔔', bg: '#F3F4F6', label: 'Update' };
-  }
-
-  function escHtml(s) {
-    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  function timeAgo(d) {
-    var diff = (Date.now() - new Date(d).getTime()) / 1000;
-    if (diff < 60) return 'Just now';
-    if (diff < 3600) return Math.floor(diff/60) + 'm ago';
-    if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
-    return new Date(d).toLocaleDateString('en-IN', {day:'numeric',month:'short'});
-  }
-
-  function renderNotifications(notifs) {
-    var list = document.getElementById('student-notifs-list');
-    var loading = document.getElementById('notif-loading');
-    if (loading) loading.remove();
-
-    var total  = notifs.length;
-    var unread = notifs.filter(function(n){ return !n.is_read; }).length;
-    var classUpdates = notifs.filter(function(n){ return n.type === 'approved' || n.type === 'rejected'; }).length;
-
-    document.getElementById('count-all').textContent    = total;
-    document.getElementById('count-class').textContent  = classUpdates;
-    document.getElementById('count-unread').textContent = unread;
-
-    var badge = document.getElementById('student-notif-count');
-    if (badge) { badge.textContent = unread || ''; badge.style.display = unread ? '' : 'none'; }
-
-    var filtered = notifs;
-    if (_activeFilter === 'approved') filtered = notifs.filter(function(n){ return n.type === 'approved' || n.type === 'rejected'; });
-    else if (_activeFilter === 'unread') filtered = notifs.filter(function(n){ return !n.is_read; });
-
-    if (!filtered.length) {
-      list.innerHTML = '<div style="text-align:center;padding:60px 20px;background:#fff;border-radius:var(--radius-lg);border:1px solid var(--gray-200);">' +
-        '<div style="font-size:3rem;margin-bottom:12px;">🔔</div>' +
-        '<h3 style="color:var(--gray-800);">No Notifications Yet</h3>' +
-        '<p style="color:var(--gray-500);max-width:420px;margin:8px auto 0;">When educators publish homework, schedules, or results, notices will appear here in real time.</p>' +
-        '</div>';
-      return;
-    }
-
-    list.innerHTML = filtered.map(function(n) {
-      var m = getMeta(n.type);
-      var href = n.link || '#';
-      return '<a href="' + escHtml(href) + '" class="notif-row' + (n.is_read ? '' : ' unread') + '" id="notif-' + n.id + '" ' +
-        'onclick="handleNotifClick(event,\'' + n.id + '\')">' +
-        '<div class="notif-icon" style="background:' + m.bg + ';">' + m.icon + '</div>' +
-        '<div style="flex:1;">' +
-          '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">' +
-            '<div style="font-weight:' + (n.is_read ? '500' : '700') + ';color:var(--gray-900);font-size:0.95rem;">' + escHtml(n.title) + '</div>' +
-            '<div style="font-size:0.75rem;color:var(--gray-400);white-space:nowrap;flex-shrink:0;">' + timeAgo(n.created_at) + '</div>' +
-          '</div>' +
-          (n.body ? '<div style="font-size:0.875rem;color:var(--gray-600);margin-top:4px;">' + escHtml(n.body) + '</div>' : '') +
-          '<div style="margin-top:6px;">' +
-            '<span class="badge" style="background:' + m.bg + ';color:var(--gray-700);font-size:0.7rem;">' + m.label + '</span>' +
-            (!n.is_read ? '<span class="badge badge-primary" style="margin-left:6px;font-size:0.7rem;">New</span>' : '') +
-          '</div>' +
-        '</div></a>';
-    }).join('');
-  }
-
-  async function handleNotifClick(e, id) {
-    var notif = _allNotifs.find(function(n){ return n.id === id; });
-    if (notif && !notif.is_read) {
-      notif.is_read = true;
-      renderNotifications(_allNotifs);
-      await ClassoraAuth.markNotificationRead(id);
-    }
-  }
-
-  async function markAllRead() {
-    await ClassoraAuth.markAllNotificationsRead();
-    _allNotifs.forEach(function(n){ n.is_read = true; });
-    renderNotifications(_allNotifs);
+  function markStudentAllRead() {
+    document.querySelectorAll('.notif-row.unread').forEach(r => r.classList.remove('unread'));
+    document.getElementById('student-notif-count').textContent = '0';
     showToast('All notifications marked as read', 'success');
   }
 
-  function filterNotifs(type, btn) {
-    _activeFilter = type;
-    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  function filterStudentNotifs(type, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
-    renderNotifications(_allNotifs);
+    document.querySelectorAll('.notif-row').forEach(row => {
+      row.style.display = (type === 'all' || row.dataset.type === type) ? 'flex' : 'none';
+    });
   }
-
-  async function loadNotifications() {
-    _allNotifs = await ClassoraAuth.fetchNotifications({ limit: 100 });
-    renderNotifications(_allNotifs);
-  }
-
-  document.addEventListener('DOMContentLoaded', async function() {
-    await loadNotifications();
-    var user = ClassoraAuth.getCurrentUser();
-    if (user && ClassoraAuth.realtime) {
-      document.getElementById('live-dot').style.display = 'inline-block';
-      ClassoraAuth.realtime.subscribeToNotifications({
-        userId: user.id,
-        onInsert: function(n) {
-          showToast('🔔 ' + (n.title || 'New notification'), 'info');
-          _allNotifs.unshift(n);
-          renderNotifications(_allNotifs);
-        },
-        onUpdate: function(n) {
-          var idx = _allNotifs.findIndex(function(x){ return x.id === n.id; });
-          if (idx !== -1) { _allNotifs[idx] = n; renderNotifications(_allNotifs); }
-        },
-        onReconnect: function() { loadNotifications(); }
-      });
-    }
-  });
-
-  window.addEventListener('beforeunload', function() {
-    var user = ClassoraAuth.getCurrentUser();
-    if (user && ClassoraAuth.realtime) ClassoraAuth.realtime.removeChannel('cr-notifs-u-' + user.id);
-  });
 </script>
 </body>
 </html>

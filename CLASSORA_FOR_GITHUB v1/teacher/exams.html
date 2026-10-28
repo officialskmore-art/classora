@@ -197,7 +197,7 @@
       </div>
       <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
         <button type="button" class="btn btn-ghost" data-modal-close="modal-create-exam">Cancel</button>
-        <button type="submit" class="btn btn-primary">Schedule & Notify Students</button>
+        <button type="submit" id="exam-submit-btn" class="btn btn-primary">Schedule & Notify Students</button>
       </div>
     </form>
   </div>
@@ -256,6 +256,18 @@
       var duration_minutes = parseInt(document.getElementById("exam-duration").value)||60;
       var total_marks = parseInt(document.getElementById("exam-total").value)||100;
       var passing_marks = parseInt(document.getElementById("exam-pass").value)||40;
+      if (total_marks <= 0) {
+        showToast("Total marks must be greater than 0", "warning");
+        return;
+      }
+      if (passing_marks > total_marks) {
+        showToast("Passing marks (" + passing_marks + ") cannot exceed total marks (" + total_marks + ")", "warning");
+        return;
+      }
+      if (passing_marks < 0) {
+        showToast("Passing marks cannot be negative", "warning");
+        return;
+      }
       await ClassoraAuth.createExam({title:title, classroom_id:classroom_id, exam_date:exam_date, duration_minutes:duration_minutes, total_marks:total_marks, passing_marks:passing_marks});
       closeModal("modal-create-exam"); showToast("Exam scheduled!","success"); e.target.reset(); await loadExams();
     } catch(err){ showToast(err.message||"Failed","error"); }

@@ -158,7 +158,7 @@
         <button class="notif-btn btn" id="notif-btn" aria-label="Notifications">
           🔔
         </button>
-        <div class="user-avatar avatar-sm" style="cursor:pointer; font-size:0.8rem;" title="Profile">T</div>
+        <a href="profile.html" class="user-avatar avatar-sm topbar-user-avatar" style="cursor:pointer; font-size:0.8rem; text-decoration:none;" title="My Profile">T</a>
       </div>
     </div>
 
@@ -166,8 +166,8 @@
     <div class="dash-content">
 
       <!-- Welcome Banner -->
-      <div class="welcome-banner animate-fade-up" role="banner">
-        <div style="position:relative; z-index:1;">
+      <div class="welcome-banner animate-fade-up" role="banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+        <div style="position:relative; z-index:1; flex:1; min-width:260px;">
           <div style="font-size:0.8125rem; opacity:0.8; margin-bottom:6px; font-weight:500;">🎓 Teacher Dashboard</div>
           <h2 style="color:#fff; font-size:1.625rem; margin-bottom:8px;">Welcome to your Official Workspace</h2>
           <p style="color:rgba(255,255,255,0.75); font-size:0.9375rem;">Create your classrooms, schedule lectures, manage examinations, and invite students.</p>
@@ -176,43 +176,47 @@
             <a href="exams.html" class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.25);" id="banner-exams">Schedule Exam</a>
           </div>
         </div>
-        <div style="font-size:6rem; opacity:0.12; position:absolute; right:32px; bottom:-10px; line-height:1;">🎓</div>
+        <div style="position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); border-radius:16px; padding:18px 24px; border:1px solid rgba(255,255,255,0.2); text-align:center; min-width:210px;">
+          <div style="font-size:0.75rem; color:rgba(255,255,255,0.8); font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Official Classora ID</div>
+          <code style="font-size:1.25rem; font-weight:800; color:#FDE68A; margin:6px 0; letter-spacing:0.04em;" id="teacher-display-id" class="classora-id">Loading ID...</code>
+          <button class="btn btn-sm btn-ghost" style="color:#fff; padding:4px 10px; font-size:0.78rem; border:1px solid rgba(255,255,255,0.25); border-radius:var(--radius-sm);" onclick="copyToClipboard(document.getElementById('teacher-display-id').textContent, 'Classora Teacher ID Copied!')">📋 Copy ID</button>
+        </div>
       </div>
 
       <!-- Stats Grid -->
       <div class="stats-grid">
-        <div class="card-stat animate-fade-up delay-1">
+        <a href="classrooms.html" class="card-stat animate-fade-up delay-1" id="stat-classrooms" title="View all classrooms">
           <div class="card-stat-icon stat-icon-1">🏫</div>
           <div>
             <div style="font-size:2rem; font-weight:800; color:var(--gray-900); line-height:1;">0</div>
             <div style="font-size:0.875rem; color:var(--gray-500); margin-top:2px;">Active Classrooms</div>
-            <div style="font-size:0.75rem; color:var(--primary-600); margin-top:4px;">Ready to create</div>
+            <div style="font-size:0.75rem; color:var(--primary-600); margin-top:4px;">Manage & create →</div>
           </div>
-        </div>
-        <div class="card-stat animate-fade-up delay-2">
+        </a>
+        <a href="students.html" class="card-stat animate-fade-up delay-2" id="stat-students" title="View enrolled students">
           <div class="card-stat-icon stat-icon-2">👥</div>
           <div>
             <div style="font-size:2rem; font-weight:800; color:var(--gray-900); line-height:1;">0</div>
             <div style="font-size:0.875rem; color:var(--gray-500); margin-top:2px;">Active Students</div>
-            <div style="font-size:0.75rem; color:var(--primary-600); margin-top:4px;">Invite with Classora ID</div>
+            <div style="font-size:0.75rem; color:var(--primary-600); margin-top:4px;">View roster →</div>
           </div>
-        </div>
-        <div class="card-stat animate-fade-up delay-3">
+        </a>
+        <a href="join-requests.html" class="card-stat animate-fade-up delay-3" id="stat-requests" title="View pending join requests">
           <div class="card-stat-icon stat-icon-3">📩</div>
           <div>
             <div style="font-size:2rem; font-weight:800; color:var(--gray-900); line-height:1;">0</div>
             <div style="font-size:0.875rem; color:var(--gray-500); margin-top:2px;">Pending Requests</div>
-            <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">All caught up</div>
+            <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">Review requests →</div>
           </div>
-        </div>
-        <div class="card-stat animate-fade-up delay-4">
+        </a>
+        <a href="exams.html" class="card-stat animate-fade-up delay-4" id="stat-exams" title="View examination schedule">
           <div class="card-stat-icon stat-icon-4">📝</div>
           <div>
             <div style="font-size:2rem; font-weight:800; color:var(--gray-900); line-height:1;">0</div>
             <div style="font-size:0.875rem; color:var(--gray-500); margin-top:2px;">Upcoming Exams</div>
-            <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">Schedule when needed</div>
+            <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">View exams →</div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- Quick Actions -->

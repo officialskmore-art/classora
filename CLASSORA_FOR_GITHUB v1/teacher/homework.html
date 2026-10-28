@@ -185,13 +185,39 @@
     var btn = document.getElementById("hw-submit-btn");
     btn.disabled = true; btn.textContent = "Publishing...";
     try {
-      var cls = await ClassoraAuth.fetchClassrooms();
+      var classId = document.getElementById("hw-class").value;
+      var dueVal = document.getElementById("hw-due").value;
+      var pointsVal = parseInt(document.getElementById("hw-points").value);
+
+      if (!classId) {
+        showToast("Please select a classroom", "warning");
+        btn.disabled = false; btn.textContent = "Publish Assignment";
+        return;
+      }
+      if (!dueVal) {
+        showToast("Please select a valid due date", "warning");
+        btn.disabled = false; btn.textContent = "Publish Assignment";
+        return;
+      }
+      var today = new Date();
+      today.setHours(0,0,0,0);
+      if (new Date(dueVal) < today) {
+        showToast("Due date cannot be in the past", "warning");
+        btn.disabled = false; btn.textContent = "Publish Assignment";
+        return;
+      }
+      if (isNaN(pointsVal) || pointsVal <= 0) {
+        showToast("Points must be greater than 0", "warning");
+        btn.disabled = false; btn.textContent = "Publish Assignment";
+        return;
+      }
+
       await ClassoraAuth.createAssignment({
         title: document.getElementById("hw-title").value.trim(),
-        classroom_id: document.getElementById("hw-class").value,
+        classroom_id: classId,
         description: document.getElementById("hw-desc").value.trim(),
-        due_date: document.getElementById("hw-due").value,
-        total_points: parseInt(document.getElementById("hw-points").value)||20
+        due_date: dueVal,
+        total_points: pointsVal
       });
       closeModal("modal-create-hw"); showToast("Assignment published!", "success"); e.target.reset(); await loadHomework();
     } catch (err) { showToast(err.message||"Failed","error"); }

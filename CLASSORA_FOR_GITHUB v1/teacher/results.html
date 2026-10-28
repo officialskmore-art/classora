@@ -118,7 +118,7 @@
           </div>
           
           <div style="display:flex; gap:8px;">
-            <button class="btn btn-ghost btn-sm" onclick="showToast('Exporting results sheet to CSV…', 'info')">📥 Export CSV</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportResultsCSV()">📥 Export CSV</button>
             <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ Print Sheet</button>
           </div>
         </div>
@@ -163,13 +163,38 @@
   let examRoster = [];
 
   function updateRow(input, max) {
-    const val = parseFloat(input.value) || 0;
+    const val = parseFloat(input.value);
     const row = input.closest('tr');
-    const pct = Math.min(100, Math.round((val / max) * 100));
     const calcEl = row.querySelector('.calc-pct');
-    if (calcEl) calcEl.textContent = pct + '%';
-
     const badge = row.querySelector('.grade-badge');
+
+    if (isNaN(val) || input.value.trim() === '') {
+      input.style.borderColor = '';
+      if (calcEl) calcEl.textContent = '--';
+      if (badge) { badge.textContent = '--'; badge.className = 'badge badge-primary grade-badge'; }
+      return;
+    }
+
+    if (val > max) {
+      input.style.borderColor = 'var(--danger-500)';
+      if (calcEl) { calcEl.textContent = 'Exceeds Max!'; calcEl.style.color = 'var(--danger-600)'; }
+      if (badge) { badge.textContent = 'Invalid'; badge.className = 'badge badge-danger grade-badge'; }
+      showToast(`Marks (${val}) cannot exceed maximum exam marks (${max})`, 'warning');
+      return;
+    }
+
+    if (val < 0) {
+      input.style.borderColor = 'var(--danger-500)';
+      if (calcEl) { calcEl.textContent = 'Invalid'; calcEl.style.color = 'var(--danger-600)'; }
+      if (badge) { badge.textContent = 'Invalid'; badge.className = 'badge badge-danger grade-badge'; }
+      showToast('Marks cannot be negative', 'warning');
+      return;
+    }
+
+    input.style.borderColor = '';
+    const pct = Math.round((val / max) * 100);
+    if (calcEl) { calcEl.textContent = pct + '%'; calcEl.style.color = 'var(--primary-700)'; }
+
     if (badge) {
       if (pct >= 90) {
         badge.textContent = 'A+'; badge.className = 'badge badge-success grade-badge';
@@ -271,6 +296,39 @@
     showToast('Grades saved locally as draft.', 'info');
   }
 
+  function exportResultsCSV() {
+    if (!currentExam) {
+      showToast('Please select an active examination first.', 'warning');
+      return;
+    }
+    const rows = document.querySelectorAll('.table-wrapper table tbody tr[data-student-id]');
+    if (!rows.length) {
+      showToast('No student results available to export.', 'warning');
+      return;
+    }
+    let csv = 'Student Name,Classora ID,Max Marks,Obtained Marks,Percentage,Grade,Teacher Remark\n';
+    rows.forEach(r => {
+      const name = r.cells[0]?.innerText?.trim() || '';
+      const cid = r.cells[1]?.innerText?.trim() || '';
+      const maxM = r.cells[2]?.innerText?.trim() || '';
+      const obt = r.querySelector('.score-input')?.value || '';
+      const pct = r.querySelector('.calc-pct')?.innerText?.trim() || '';
+      const grade = r.querySelector('.grade-badge')?.innerText?.trim() || '';
+      const rem = r.querySelector('.remark-input')?.value?.replace(/"/g, '""') || '';
+      csv += `"${name}","${cid}",${maxM},"${obt}","${pct}","${grade}","${rem}"\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${(currentExam.title || 'results').replace(/[^a-zA-Z0-9_-]/g, '_')}_results.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Results CSV downloaded successfully!', 'success');
+  }
+
   async function publishResults() {
     if (!currentExam) {
       showToast('Please select an active examination first.', 'warning');
@@ -280,6 +338,24 @@
     if (!rows.length) {
       showToast('No students to grade.', 'warning');
       return;
+    }
+
+    const maxMarks = currentExam.total_marks || 100;
+    for (const row of rows) {
+      const scoreInput = row.querySelector('.score-input');
+      const marks = parseFloat(scoreInput.value);
+      if (!isNaN(marks)) {
+        if (marks > maxMarks) {
+          showToast(`Marks (${marks}) cannot exceed maximum exam marks (${maxMarks}).`, 'error');
+          scoreInput.focus();
+          return;
+        }
+        if (marks < 0) {
+          showToast('Marks cannot be negative.', 'error');
+          scoreInput.focus();
+          return;
+        }
+      }
     }
 
     const btn = document.querySelector('button[onclick="publishResults()"]');

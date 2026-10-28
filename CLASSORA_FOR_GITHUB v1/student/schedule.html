@@ -107,7 +107,7 @@
         <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
         <div style="flex:1; min-width:0;">
           <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
-          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Active</div>
+          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
       </div>
@@ -194,5 +194,55 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
+<script>
+  let currentWeekOffset = 0;
+  async function loadStudentSessions() {
+    try {
+      const sessions = await ClassoraAuth.fetchSessions({ weekOffset: currentWeekOffset });
+      const emptyNote = document.getElementById('schedule-empty-note') || document.querySelector('.dash-content > div[style*="dashed"]');
+      
+      document.querySelectorAll('.timetable-grid .slot-cell').forEach(c => c.innerHTML = '');
+
+      if (!sessions || sessions.length === 0) {
+        if (emptyNote) emptyNote.style.display = 'block';
+        return;
+      }
+
+      if (emptyNote) emptyNote.style.display = 'none';
+
+      const dayIndexMap = { 'monday': 0, 'tuesday': 1, 'wednesday': 2, 'thursday': 3, 'friday': 4, 'saturday': 5 };
+      const cells = document.querySelectorAll('.timetable-grid .slot-cell');
+
+      sessions.forEach(s => {
+        const dIdx = dayIndexMap[(s.day_of_week || '').toLowerCase()];
+        if (dIdx === undefined) return;
+
+        let rIdx = 0;
+        const timeHour = parseInt((s.start_time || '09:00').split(':')[0]);
+        if (timeHour >= 13) rIdx = 2;
+        else if (timeHour >= 11) rIdx = 1;
+
+        const cellIndex = (rIdx * 6) + dIdx;
+        const targetCell = cells[cellIndex];
+        if (targetCell) {
+          const clsName = (s.classrooms && s.classrooms.name) ? s.classrooms.name : 'Class';
+          const card = document.createElement('div');
+          card.style.cssText = 'background:var(--grad-primary); color:#fff; border-radius:var(--radius-md); padding:8px 10px; font-size:0.75rem; box-shadow:var(--shadow-sm); margin-bottom:4px;';
+          card.innerHTML = `
+            <div style="font-weight:700;">${escapeHTML(s.topic || 'Class Session')}</div>
+            <div style="opacity:0.85; font-size:0.7rem;">${escapeHTML(clsName)} • ${escapeHTML(s.start_time || '')}</div>
+          `;
+          targetCell.appendChild(card);
+        }
+      });
+    } catch(e) {
+      console.warn('loadStudentSessions error:', e);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadStudentSessions();
+  });
+</script>
 </body>
 </html>

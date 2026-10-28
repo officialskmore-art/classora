@@ -4,6 +4,18 @@
 
 'use strict';
 
+/* ─── Security: HTML Sanitizer / Escaping Utility ────────── */
+function escapeHTML(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+window.escapeHTML = escapeHTML;
+
 /* ─── Toast Notifications ─────────────────── */
 function showToast(message, type = 'success', duration = 3500) {
   const container = document.getElementById('toast-container');
@@ -85,9 +97,16 @@ function initPasswordToggles() {
 function initSidebar() {
   const toggle = document.getElementById('sidebar-toggle');
   const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
+  let overlay = document.getElementById('sidebar-overlay');
 
-  if (!toggle || !sidebar) return;
+  if (!sidebar) return;
+
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'sidebar-overlay';
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+  }
 
   function open() {
     sidebar.classList.add('open');
@@ -100,8 +119,47 @@ function initSidebar() {
     document.body.style.overflow = '';
   }
 
-  toggle.addEventListener('click', () => sidebar.classList.contains('open') ? close() : open());
-  if (overlay) overlay.addEventListener('click', close);
+  if (toggle && !toggle.dataset.sidebarBound) {
+    toggle.dataset.sidebarBound = 'true';
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sidebar.classList.contains('open') ? close() : open();
+    });
+  }
+  if (overlay && !overlay.dataset.sidebarBound) {
+    overlay.dataset.sidebarBound = 'true';
+    overlay.addEventListener('click', close);
+  }
+
+  // Ensure "Log Out" link exists in sidebar across all portal pages (Bug N7)
+  const nav = sidebar.querySelector('.sidebar-nav');
+  if (nav && !sidebar.querySelector('.sidebar-logout-link')) {
+    const logoutSec = document.createElement('span');
+    logoutSec.className = 'sidebar-section-label';
+    logoutSec.style.marginTop = '16px';
+    logoutSec.textContent = 'Account';
+    
+    const logoutLink = document.createElement('a');
+    logoutLink.href = '#';
+    logoutLink.className = 'sidebar-link sidebar-logout-link';
+    logoutLink.style.color = 'var(--danger-600, #DC2626)';
+    logoutLink.innerHTML = '<span class="sidebar-icon">🚪</span> Log Out';
+    logoutLink.onclick = (e) => {
+      e.preventDefault();
+      if (window.ClassoraAuth) window.ClassoraAuth.signOut();
+      else window.location.href = '../login.html';
+    };
+    
+    nav.appendChild(logoutSec);
+    nav.appendChild(logoutLink);
+  }
+
+  // Close sidebar on link click on mobile
+  sidebar.querySelectorAll('.sidebar-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 1024) close();
+    });
+  });
 
   // Mark active link
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -266,32 +324,58 @@ let CLASSORA_DIRECTORY = [];
 // Dynamically populate directory with real registered users from Supabase
 async function loadClassoraDirectory() {
   try {
-    const resp = await fetch('https://xmlzcntqxerfarsdeedf.supabase.co/rest/v1/profiles?select=id,full_name,role,classora_id,avatar_url,subject,grade,institute', {
-      headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtbHpjbnRxeGVyZmFyc2RlZWRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMzg2ODQsImV4cCI6MjEwNjgxNDY4NH0.0eyVcRHkuoBBQVPwjnYgpn9MnM21RM1vqeZaMu_0ECg'
-      }
-    });
-    if (resp.ok) {
-      const list = await resp.json();
-      CLASSORA_DIRECTORY = (list || []).map(p => {
-        const isAdmin = p.role === 'admin' || p.classora_id === 'ADM-001';
-        const roleName = isAdmin ? 'Admin' : (p.role === 'teacher' ? 'Teacher' : 'Student');
-        const fullName = p.full_name || 'Classora Member';
-        const initials = fullName.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2) || 'U';
-        return {
-          id: p.classora_id || (isAdmin ? 'ADM-001' : (p.role === 'teacher' ? 'TCH-USER' : 'STD-USER')),
-          name: fullName,
-          role: roleName,
-          title: isAdmin ? 'Platform Administrator' : (p.role === 'teacher' ? 'Classora Verified Educator' : 'Enrolled Student'),
-          classes: p.grade || (p.role === 'teacher' ? 'Academic Classes' : 'Enrolled Classes'),
-          subjects: p.subject || (p.role === 'teacher' ? 'General Curriculum' : 'Active Studies'),
-          avatar: initials,
-          avatarColor: isAdmin ? 'linear-gradient(135deg, #F59E0B, #DC2626)' : 'linear-gradient(135deg, #4F46E5, #7C3AED)',
-          status: 'Verified Member'
-        };
+    let list = [];
+    try {
+      const resp = await fetch('https://xmlzcntqxerfarsdeedf.supabase.co/rest/v1/profiles?select=id,full_name,email,phone,role,classora_id,avatar_url,subject,grade,institute,bio,privacy_settings', {
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtbHpjbnRxeGVyZmFyc2RlZWRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMzg2ODQsImV4cCI6MjEwNjgxNDY4NH0.0eyVcRHkuoBBQVPwjnYgpn9MnM21RM1vqeZaMu_0ECg'
+        }
       });
-      if (typeof filterDirectory === 'function') filterDirectory();
+      if (resp.ok) list = await resp.json();
+    } catch(e) {
+      console.warn('Network fetch profiles warning:', e);
     }
+
+    // Merge active user profile if available
+    let localProfile = null;
+    try {
+      localProfile = JSON.parse(localStorage.getItem('classora_profile') || 'null');
+    } catch(e) {}
+    if (localProfile && !list.some(p => p.id === localProfile.id || p.classora_id === localProfile.classora_id)) {
+      list.unshift(localProfile);
+    }
+
+    CLASSORA_DIRECTORY = (list || []).map(p => {
+      const isAdmin = p.role === 'admin' || p.classora_id === 'ADM-001';
+      const roleName = isAdmin ? 'Admin' : (p.role === 'teacher' ? 'Teacher' : 'Student');
+      const fullName = p.full_name || 'Classora Member';
+      const initials = fullName.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2) || 'U';
+      return {
+        id: p.classora_id || (isAdmin ? 'ADM-001' : (p.role === 'teacher' ? 'TCH-USER' : 'STD-USER')),
+        uid: p.id,
+        name: fullName,
+        role: roleName,
+        title: isAdmin ? 'Platform Administrator' : (p.role === 'teacher' ? 'Classora Verified Educator' : 'Enrolled Student'),
+        classes: p.grade || (p.role === 'teacher' ? 'Academic Classes' : 'Enrolled Classes'),
+        subjects: p.subject || (p.role === 'teacher' ? 'General Curriculum' : 'Active Studies'),
+        institute: p.institute || '',
+        bio: p.bio || '',
+        avatar: initials,
+        avatar_url: p.avatar_url || null,
+        avatarColor: isAdmin ? 'linear-gradient(135deg, #F59E0B, #DC2626)' : 'linear-gradient(135deg, #4F46E5, #7C3AED)',
+        email: p.email || '',
+        phone: p.phone || '',
+        privacy: p.privacy_settings || {
+          show_email: false,
+          show_phone: false,
+          show_institute: true,
+          show_classes: true,
+          show_bio: true
+        },
+        status: 'Verified Member'
+      };
+    });
+    if (typeof filterDirectory === 'function') filterDirectory();
   } catch (err) {
     console.warn('Could not fetch public directory:', err);
   }
@@ -320,7 +404,7 @@ function createGlobalSearchModal() {
       <div class="search-modal-card">
         <div class="search-modal-header">
           <span style="font-size:1.25rem; color:var(--primary-600);">🔍</span>
-          <input type="text" class="search-modal-input" id="global-search-input" placeholder="Search members by name or Classora ID (e.g. ADM..., TCH..., STD...)" autocomplete="off"/>
+          <input type="text" class="search-modal-input" id="global-search-input" placeholder="Search members by name or Classora ID (e.g. TC..., ST...)" autocomplete="off"/>
           <button class="btn btn-ghost btn-sm" id="close-search-btn" style="padding:4px 8px; font-size:1.1rem;" aria-label="Close search">✕</button>
         </div>
 
@@ -436,13 +520,235 @@ function renderSearchResults(query = '') {
 }
 
 function handleSearchResultClick(id, name, role) {
-  const modal = document.getElementById('global-search-modal');
-  if (modal) {
-    modal.classList.remove('open');
+  openInstagramProfile(id);
+}
+
+/* ─── Instagram-Style Profile Viewer ─────────────────────── */
+function openInstagramProfile(targetId) {
+  // 1. Close search modal if open
+  const searchModal = document.getElementById('global-search-modal');
+  if (searchModal) {
+    searchModal.classList.remove('open');
+  }
+
+  // 2. Find target user in global directory
+  let member = CLASSORA_DIRECTORY.find(m => m.id === targetId || m.uid === targetId);
+
+  // If not found in directory, check local active user or demo session
+  if (!member && window.ClassoraAuth) {
+    const curProfile = window.ClassoraAuth.getActiveProfile();
+    if (curProfile && (curProfile.classora_id === targetId || curProfile.id === targetId || !targetId)) {
+      member = {
+        id: curProfile.classora_id || 'TCH-DEMO',
+        uid: curProfile.id,
+        name: curProfile.full_name || 'Classora User',
+        role: curProfile.role === 'student' ? 'Student' : (curProfile.role === 'admin' ? 'Admin' : 'Teacher'),
+        title: curProfile.role === 'teacher' ? 'Classora Verified Educator' : 'Enrolled Student',
+        classes: curProfile.grade || 'Active Classes',
+        subjects: curProfile.subject || 'General Studies',
+        institute: curProfile.institute || '',
+        bio: curProfile.bio || '',
+        avatar: (curProfile.full_name || 'U').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(),
+        avatar_url: curProfile.avatar_url || null,
+        avatarColor: 'linear-gradient(135deg, #4F46E5, #7C3AED)',
+        email: curProfile.email || '',
+        phone: curProfile.phone || '',
+        privacy: curProfile.privacy_settings || {
+          show_email: false,
+          show_phone: false,
+          show_institute: true,
+          show_classes: true,
+          show_bio: true
+        }
+      };
+    }
+  }
+
+  if (!member) {
+    showToast('Member profile not found in directory.', 'warning');
+    return;
+  }
+
+  // Ensure modal DOM element exists
+  let overlay = document.getElementById('ig-profile-modal-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'ig-profile-modal-overlay';
+    overlay.className = 'ig-profile-overlay';
+    overlay.onclick = (e) => {
+      if (e.target === overlay) closeInstagramProfile();
+    };
+    document.body.appendChild(overlay);
+  }
+
+  // Parse Privacy Settings
+  const priv = member.privacy || {
+    show_email: false,
+    show_phone: false,
+    show_institute: true,
+    show_classes: true,
+    show_bio: true
+  };
+
+  const isTeacher = member.role === 'Teacher' || member.role === 'Admin';
+  const roleBadge = isTeacher ? '🧑‍🏫 Verified Teacher' : '🎒 Enrolled Student';
+  const roleBadgeClass = isTeacher ? 'badge-primary' : 'badge-success';
+  const safeId = escapeHTML(member.id);
+  const safeName = escapeHTML(member.name);
+  const safeBio = priv.show_bio !== false && member.bio ? escapeHTML(member.bio) : (isTeacher ? 'Verified Academic Educator on Classora.' : 'Student actively engaged in enrolled curriculum and classes.');
+
+  // Mask or show email according to user's privacy choices
+  let emailDisplay = '';
+  if (priv.show_email && member.email) {
+    emailDisplay = escapeHTML(member.email);
+  } else {
+    emailDisplay = '<span style="color:var(--gray-400); font-style:italic;">🔒 Hidden by user</span>';
+  }
+
+  // Mask or show phone
+  let phoneDisplay = '';
+  if (priv.show_phone && member.phone) {
+    phoneDisplay = escapeHTML(member.phone);
+  } else {
+    phoneDisplay = '<span style="color:var(--gray-400); font-style:italic;">🔒 Hidden by user</span>';
+  }
+
+  // Institute display
+  let instituteDisplay = '';
+  if (priv.show_institute !== false && member.institute) {
+    instituteDisplay = escapeHTML(member.institute);
+  } else if (priv.show_institute === false) {
+    instituteDisplay = '<span style="color:var(--gray-400); font-style:italic;">🔒 Private</span>';
+  } else {
+    instituteDisplay = 'Classora Academic Network';
+  }
+
+  // Classes display
+  let classesDisplay = '';
+  if (priv.show_classes !== false) {
+    classesDisplay = escapeHTML(member.classes || (isTeacher ? 'WB / CBSE' : 'Enrolled'));
+  } else {
+    classesDisplay = '<span style="color:var(--gray-400); font-style:italic;">🔒 Private</span>';
+  }
+
+  // Avatar style
+  const avatarBg = member.avatar_url ? `url("${member.avatar_url}")` : member.avatarColor;
+  const avatarText = member.avatar_url ? '' : member.avatar;
+
+  // Instagram Stat Counters
+  const stat1Num = isTeacher ? 'Active' : 'Enrolled';
+  const stat1Label = isTeacher ? 'Educator' : 'Status';
+  const stat2Num = escapeHTML((member.subjects || 'General').split(',')[0].slice(0, 10));
+  const stat2Label = isTeacher ? 'Subject' : 'Course';
+  const stat3Num = 'Verified';
+  const stat3Label = 'Account';
+
+  overlay.innerHTML = `
+    <div class="ig-profile-card animate-fade-up" onclick="event.stopPropagation()">
+      <div class="ig-profile-cover">
+        <button class="ig-profile-close" onclick="closeInstagramProfile()" aria-label="Close profile">✕</button>
+      </div>
+
+      <div class="ig-profile-body">
+        <div class="ig-avatar-row">
+          <div class="ig-avatar-ring">
+            <div class="ig-avatar-img" style="background:${avatarBg}; background-size:cover; background-position:center;">
+              ${avatarText}
+            </div>
+          </div>
+          <span class="badge ${roleBadgeClass}" style="font-size:0.78rem; padding:4px 10px; margin-bottom:8px;">${roleBadge}</span>
+        </div>
+
+        <div class="ig-header-meta">
+          <h3 class="ig-user-name">${safeName} ${isTeacher ? '👑' : ''}</h3>
+          <div class="ig-user-handle">
+            <span>Classora ID:</span>
+            <code>${safeId}</code>
+            <button class="btn btn-ghost btn-sm" style="padding:2px 6px; font-size:0.75rem;" onclick="copyToClipboard('${safeId}', 'ID Copied!')" title="Copy ID">📋</button>
+          </div>
+        </div>
+
+        <div class="ig-stats-row">
+          <div class="ig-stat-col">
+            <strong>${stat1Num}</strong>
+            <span>${stat1Label}</span>
+          </div>
+          <div class="ig-stat-col">
+            <strong>${stat2Num}</strong>
+            <span>${stat2Label}</span>
+          </div>
+          <div class="ig-stat-col">
+            <strong style="color:#059669;">${stat3Num}</strong>
+            <span>${stat3Label}</span>
+          </div>
+        </div>
+
+        <div class="ig-bio-box">
+          ${safeBio}
+        </div>
+
+        <div class="ig-academic-grid">
+          <div class="ig-academic-pill">
+            <span>📚 Focus / Subjects</span>
+            <strong>${escapeHTML(member.subjects || 'Academics')}</strong>
+          </div>
+          <div class="ig-academic-pill">
+            <span>🏫 Institution / School</span>
+            <strong>${instituteDisplay}</strong>
+          </div>
+          <div class="ig-academic-pill">
+            <span>🎓 Grade / Level</span>
+            <strong>${classesDisplay}</strong>
+          </div>
+          <div class="ig-academic-pill">
+            <span>📧 Email Address</span>
+            <strong>${emailDisplay}</strong>
+          </div>
+        </div>
+
+        <div class="ig-privacy-badge">
+          <span>🛡️</span>
+          <span>Privacy Protected: Profile owner controls visible public information.</span>
+        </div>
+
+        <div class="ig-actions-row">
+          <button class="btn btn-primary" onclick="copyToClipboard('${safeId}', 'Classora ID Copied!')">
+            📋 Copy Classora ID
+          </button>
+          <button class="btn btn-secondary" onclick="shareUserProfile('${safeId}', '${safeName}')">
+            🔗 Share Profile
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.style.overflow = 'hidden';
+  overlay.classList.add('open');
+}
+window.openInstagramProfile = openInstagramProfile;
+
+function closeInstagramProfile() {
+  const overlay = document.getElementById('ig-profile-modal-overlay');
+  if (overlay) {
+    overlay.classList.remove('open');
     document.body.style.overflow = '';
   }
-  showToast(`Selected: ${name} (${id})`, 'info', 2500);
 }
+window.closeInstagramProfile = closeInstagramProfile;
+
+function shareUserProfile(id, name) {
+  const url = `${window.location.origin}/search.html?q=${encodeURIComponent(id)}`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      showToast(`Direct profile link for ${name} copied!`, 'success');
+    });
+  } else {
+    showToast(`Share link: ${url}`, 'info');
+  }
+}
+window.shareUserProfile = shareUserProfile;
+
 
 /* ─── Mobile Bottom Nav Auto-Mount ─────────── */
 function initMobileBottomNav() {
@@ -505,19 +811,100 @@ function initMobileBottomNav() {
   document.body.insertAdjacentHTML('beforeend', navHtml);
 }
 
-/* ─── Mobile Portal Topbar Brand ────────────── */
+/* ─── Mobile Portal Topbar Brand & Sidebar Toggle ────────────── */
 function initMobileTopbarBrand() {
   const topbar = document.querySelector('.dash-topbar');
   if (!topbar || topbar.querySelector('.mobile-topbar-brand')) return;
   const firstDiv = topbar.querySelector(':scope > div:first-child');
   if (!firstDiv) return;
+
+  // Add hamburger toggle button for mobile (Bug N5)
+  if (!document.getElementById('sidebar-toggle')) {
+    const sidebarToggle = document.createElement('button');
+    sidebarToggle.id = 'sidebar-toggle';
+    sidebarToggle.className = 'btn btn-ghost btn-sm mobile-menu-btn';
+    sidebarToggle.style.cssText = 'font-size:1.4rem; padding:4px 8px; margin-right:6px; line-height:1; color:var(--gray-800);';
+    sidebarToggle.innerHTML = '☰';
+    sidebarToggle.setAttribute('aria-label', 'Open navigation menu');
+    firstDiv.insertBefore(sidebarToggle, firstDiv.firstChild);
+  }
+
   const brand = document.createElement('a');
   brand.href = '../index.html';
   brand.className = 'navbar-logo mobile-topbar-brand';
   brand.title = 'Classora Home';
   brand.innerHTML = '<div class="logo-icon" style="width:28px; height:28px; font-size:0.8rem; border-radius:8px; margin-right:4px;">C</div>';
-  firstDiv.insertBefore(brand, firstDiv.firstChild);
+  const toggle = document.getElementById('sidebar-toggle');
+  if (toggle) {
+    firstDiv.insertBefore(brand, toggle.nextSibling);
+  } else {
+    firstDiv.insertBefore(brand, firstDiv.firstChild);
+  }
+
+  // Ensure sidebar overlay exists
+  if (!document.getElementById('sidebar-overlay')) {
+    const overlay = document.createElement('div');
+    overlay.id = 'sidebar-overlay';
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  initSidebar();
 }
+
+/* ─── Topbar Profile Picture / Avatar Navigation ────────────── */
+function initTopbarProfileAvatar() {
+  const topbar = document.querySelector('.dash-topbar');
+  if (!topbar) return;
+
+  const rightActions = topbar.querySelector(':scope > div:last-child');
+  if (!rightActions) return;
+
+  const isPortal = window.location.pathname.includes('/teacher/') || window.location.pathname.includes('/student/');
+  if (!isPortal) return;
+
+  // Keep right actions in a single clean row
+  rightActions.style.flexWrap = 'nowrap';
+  rightActions.style.flexShrink = '0';
+
+  let avatarEl = rightActions.querySelector('.user-avatar');
+  if (!avatarEl) {
+    const link = document.createElement('a');
+    link.href = 'profile.html';
+    link.className = 'user-avatar avatar-sm topbar-user-avatar';
+    link.title = 'My Profile';
+    link.style.cssText = 'cursor:pointer; text-decoration:none; flex-shrink:0 !important; font-size:0.8rem; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; z-index:10;';
+    link.innerHTML = '👤';
+    rightActions.appendChild(link);
+    avatarEl = link;
+  } else {
+    avatarEl.classList.add('topbar-user-avatar');
+    avatarEl.style.cursor = 'pointer';
+    avatarEl.style.flexShrink = '0';
+    avatarEl.title = 'My Profile';
+    if (avatarEl.tagName !== 'A') {
+      avatarEl.onclick = () => {
+        window.location.href = 'profile.html';
+      };
+    }
+  }
+}
+
+window.confirmDeleteClassroom = window.confirmDeleteClassroom || async function(id, name) {
+  if (!confirm(`Are you sure you want to permanently delete classroom "${name}"?\n\nThis will remove the classroom and its class code. This action cannot be undone.`)) {
+    return;
+  }
+  showToast(`Deleting classroom "${name}"…`, 'info');
+  try {
+    if (window.ClassoraAuth) {
+      await window.ClassoraAuth.deleteClassroom(id);
+      showToast(`Classroom "${name}" deleted successfully.`, 'success');
+      window.ClassoraAuth.syncAuthUI();
+    }
+  } catch (err) {
+    showToast('Error deleting classroom: ' + err.message, 'error');
+  }
+};
 
 /* ─── Init ────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -531,6 +918,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createGlobalSearchModal();
   initMobileBottomNav();
   initMobileTopbarBrand();
+  initTopbarProfileAvatar();
   initDesktopModeSuggestion();
 
   // Attach search triggers
@@ -688,14 +1076,9 @@ function showDesktopReminder() {
 }
 
 function initDesktopModeSuggestion() {
-  if (!isSmartphoneDevice()) return;
-  if (localStorage.getItem('classora_desktop_reminder_seen') === 'true') return;
-  if (!isUserLoggedIn()) return;
-
-  // Show only once when user launches the account for the first time
-  setTimeout(() => {
-    showDesktopReminder();
-  }, 1200);
+  // Bug 19: Disabled automatic desktop popup on mobile.
+  // The layout is fully responsive and optimized for phones.
+  return;
 }
 
 window.closeDesktopSuggestion = function() {

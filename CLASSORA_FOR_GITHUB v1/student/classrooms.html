@@ -70,7 +70,7 @@
         <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
         <div style="flex:1; min-width:0;">
           <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
-          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Active</div>
+          <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
       </div>
@@ -167,30 +167,39 @@
       return;
     }
 
-    container.innerHTML = stored.map(c => `
+    container.innerHTML = stored.map(c => {
+      const escName = escapeHTML(c.name || 'Classroom');
+      const escSubject = escapeHTML(c.subject || 'General');
+      const escStatus = escapeHTML(c.status || 'Enrolled');
+      const escDate = escapeHTML(c.joined_at || 'Active');
+      const escCode = escapeHTML(c.code || '');
+      const escTeacher = escapeHTML(c.teacher || 'Classora Educator');
+      const safeCode = encodeURIComponent(c.code || '');
+      return `
       <div class="card class-card" style="display:flex; flex-direction:column; justify-content:space-between;">
         <div>
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
             <div>
-              <span class="badge ${c.status === 'Enrolled' ? 'badge-success' : 'badge-primary'}" style="margin-bottom:6px;">${c.status || 'Enrolled'}</span>
-              <h3 style="margin:0 0 4px; font-size:1.15rem;">${c.name}</h3>
-              <div style="font-size:0.8rem; color:var(--gray-500);">${c.subject || 'General'} • ${c.joined_at || 'Active'}</div>
+              <span class="badge ${c.status === 'Enrolled' ? 'badge-success' : 'badge-primary'}" style="margin-bottom:6px;">${escStatus}</span>
+              <h3 style="margin:0 0 4px; font-size:1.15rem;">${escName}</h3>
+              <div style="font-size:0.8rem; color:var(--gray-500);">${escSubject} • ${escDate}</div>
             </div>
             <div class="user-avatar avatar-md" style="background:var(--grad-primary); font-size:1rem; color:#fff;">🏫</div>
           </div>
 
           <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 12px; margin-bottom:14px; font-size:0.85rem;">
-            <div style="color:var(--gray-500); font-size:0.75rem;">Classroom Code: <strong>${c.code}</strong></div>
-            <div style="color:var(--gray-700); margin-top:4px;">Instructor: <strong>${c.teacher || 'Classora Educator'}</strong></div>
+            <div style="color:var(--gray-500); font-size:0.75rem;">Classroom Code: <strong>${escCode}</strong></div>
+            <div style="color:var(--gray-700); margin-top:4px;">Instructor: <strong>${escTeacher}</strong></div>
           </div>
         </div>
 
         <div style="display:flex; gap:10px; border-top:1px solid var(--gray-100); padding-top:12px;">
           <button class="btn btn-secondary btn-sm flex-1" onclick="showToast('Classroom materials & schedule are synced!', 'info')">View Details</button>
-          <button class="btn btn-ghost btn-sm" style="color:var(--danger-600);" onclick="leaveClassroom('${c.code}')">Leave</button>
+          <button class="btn btn-ghost btn-sm" style="color:var(--danger-600);" onclick="leaveClassroom(decodeURIComponent('${safeCode}'))">Leave</button>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
   }
 
   function leaveClassroom(code) {
@@ -244,18 +253,22 @@
     const grads = ['card-grad-1','card-grad-2','card-grad-3','card-grad-4'];
     grid.innerHTML = classrooms.map((c,i) => {
       const g = grads[i % grads.length];
+      const escName = escapeHTML(c.name);
+      const escSection = escapeHTML(c.section || 'General');
+      const escSubject = escapeHTML(c.subject || 'Academic');
+      const escCode = escapeHTML(c.class_code);
       return `<div class="class-card animate-fade-up">
         <div class="class-card-header ${g}">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <span class="badge" style="background:rgba(255,255,255,0.25);color:#fff">${c.section||'General'}</span>
-            <span class="badge" style="background:rgba(255,255,255,0.2);color:#fff">Code: ${c.class_code}</span>
+            <span class="badge" style="background:rgba(255,255,255,0.25);color:#fff">${escSection}</span>
+            <span class="badge" style="background:rgba(255,255,255,0.2);color:#fff">Code: ${escCode}</span>
           </div>
-          <h3 style="color:#fff;margin-top:12px;margin-bottom:4px">${c.name}</h3>
-          <div style="font-size:0.85rem;opacity:0.85">${c.subject||'Academic'}</div>
+          <h3 style="color:#fff;margin-top:12px;margin-bottom:4px">${escName}</h3>
+          <div style="font-size:0.85rem;opacity:0.85">${escSubject}</div>
         </div>
         <div class="class-card-body">
-          <div class="class-meta-row"><span>Classroom Code</span><strong>${c.class_code}</strong></div>
-          <div class="class-meta-row"><span>Subject</span><strong>${c.subject||'General'}</strong></div>
+          <div class="class-meta-row"><span>Classroom Code</span><strong>${escCode}</strong></div>
+          <div class="class-meta-row"><span>Subject</span><strong>${escSubject}</strong></div>
           <div style="display:flex;gap:10px;margin-top:auto;padding-top:12px">
             <a href="homework.html" class="btn btn-primary btn-sm" style="flex:1">View Homework</a>
             <a href="exams.html" class="btn btn-secondary btn-sm" style="flex:1">Exams</a>
