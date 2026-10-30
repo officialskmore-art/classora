@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Learning Progress — Student Portal — Classora</title>
+  <title>Progress Analytics — Teacher Portal — Classora</title>
   <link rel="stylesheet" href="../css/style.css"/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
 </head>
 <body>
 <div class="layout-dashboard">
 
-  <!-- ════ STUDENT SIDEBAR ════ -->
-  <aside class="sidebar" id="sidebar" aria-label="Student navigation">
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Teacher navigation">
     <div class="sidebar-header">
       <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
         <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
@@ -28,25 +28,28 @@
         <span class="sidebar-icon">👤</span> My Profile
       </a>
 
-      <span class="sidebar-section-label">Academics</span>
+      <span class="sidebar-section-label">Classroom</span>
       <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
-        <span class="sidebar-icon">🏫</span> My Classrooms
-        <span class="sidebar-badge">0</span>
+        <span class="sidebar-icon">🏫</span> Classrooms
+        <span class="sidebar-badge">3</span>
       </a>
-      <a href="teachers.html" class="sidebar-link" id="nav-teachers">
-        <span class="sidebar-icon">🧑‍🏫</span> My Teachers
+      <a href="students.html" class="sidebar-link" id="nav-students">
+        <span class="sidebar-icon">👥</span> Students
       </a>
+      <a href="join-requests.html" class="sidebar-link" id="nav-join">
+        <span class="sidebar-icon">📩</span> Join Requests
+        <span class="sidebar-badge">2</span>
+      </a>
+
+      <span class="sidebar-section-label">Academic</span>
       <a href="schedule.html" class="sidebar-link" id="nav-schedule">
         <span class="sidebar-icon">📅</span> Schedule
       </a>
-
-      <span class="sidebar-section-label">Performance</span>
-      <a href="homework.html" class="sidebar-link" id="nav-homework">
-        <span class="sidebar-icon">📚</span> Homework
-        <span class="sidebar-badge" style="background:#F59E0B;">0</span>
-      </a>
       <a href="exams.html" class="sidebar-link" id="nav-exams">
         <span class="sidebar-icon">📝</span> Examinations
+      </a>
+      <a href="homework.html" class="sidebar-link" id="nav-homework">
+        <span class="sidebar-icon">📚</span> Homework
       </a>
       <a href="results.html" class="sidebar-link" id="nav-results">
         <span class="sidebar-icon">📊</span> Results
@@ -54,22 +57,22 @@
       <a href="progress.html" class="sidebar-link active" id="nav-progress">
         <span class="sidebar-icon">📈</span> Progress
       </a>
-
-      <span class="sidebar-section-label">Resources</span>
-      <a href="downloads.html" class="sidebar-link" id="nav-downloads">
-        <span class="sidebar-icon">📥</span> Downloads
+      <a href="notes.html" class="sidebar-link" id="nav-notes">
+        <span class="sidebar-icon">🗒️</span> Notes
       </a>
+
+      <span class="sidebar-section-label">System</span>
       <a href="notifications.html" class="sidebar-link" id="nav-notif">
         <span class="sidebar-icon">🔔</span> Notifications
-        <span class="sidebar-badge">0</span>
+        <span class="sidebar-badge">5</span>
       </a>
     </nav>
 
     <div class="sidebar-footer">
       <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
-        <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
+        <div class="user-avatar avatar-sm">T</div>
         <div style="flex:1; min-width:0;">
-          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Educator Portal</div>
           <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
@@ -86,64 +89,78 @@
     <div class="dash-topbar">
       <div style="display:flex; align-items:center; gap:16px;">
         <div>
-          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Learning Growth</div>
-          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">My Academic Progress Tracker</div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Learning Insights</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Academic Progress & Growth Matrix</div>
         </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <select class="form-input" style="padding:7px 14px; font-size:0.85rem;" onchange="showToast('Filtered progress report', 'info')">
+          <option>All Enrolled Classes</option>
+        </select>
       </div>
     </div>
 
     <div class="dash-content">
       
-      <!-- Growth Cards -->
-      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
-        
-        <!-- Subject Masteries -->
-        <div class="card">
-          <h4 style="margin-bottom: 18px;">Topic & Subject Mastery</h4>
-          <div style="text-align:center; padding: 40px 16px; color:var(--gray-500);">
-            <div style="font-size:2.5rem; margin-bottom:8px;">📈</div>
-            <p style="margin:0;">Topic masteries will populate here as exam scores and homework grades are logged.</p>
+      <!-- High Level KPI Cards -->
+      <div class="stats-grid">
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#EEF2FF; color:var(--primary-700);">📈</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--gray-900);">--</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Cohort Overall Average</div>
           </div>
         </div>
-
-        <!-- Consistency & Habits -->
-        <div class="card">
-          <h4 style="margin-bottom: 18px;">Academic Consistency</h4>
-
-          <div style="background:var(--gray-50); border-radius:var(--radius-md); padding:16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="display:block; color:var(--gray-900);">Class Session Attendance</strong>
-              <div style="font-size:0.75rem; color:var(--gray-500);">Calculated based on scheduled lectures</div>
-            </div>
-            <div style="font-size:1.5rem; font-weight:800; color:var(--accent-600);">--%</div>
-          </div>
-
-          <div style="background:var(--gray-50); border-radius:var(--radius-md); padding:16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="display:block; color:var(--gray-900);">Homework Submission Rate</strong>
-              <div style="font-size:0.75rem; color:var(--gray-500);">Calculated from turned-in assignments</div>
-            </div>
-            <div style="font-size:1.5rem; font-weight:800; color:var(--primary-600);">--%</div>
-          </div>
-
-          <div style="background:var(--gray-50); border-radius:var(--radius-md); padding:16px; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="display:block; color:var(--gray-900);">Exam Pass Rate</strong>
-              <div style="font-size:0.75rem; color:var(--gray-500);">Published examination scores</div>
-            </div>
-            <div style="font-size:1.5rem; font-weight:800; color:var(--accent-600);">--%</div>
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#D1FAE5; color:#065F46;">🎒</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--accent-600);">--</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Homework Completion</div>
           </div>
         </div>
-
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#FEF3C7; color:#92400E;">⏱️</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:#D97706;">--</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Session Attendance</div>
+          </div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#FCE7F3; color:#9D174D;">⭐</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:#BE185D;">0 / 0</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Achieving Grade A/A+</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Recommendation Card -->
-      <div class="card" style="background:linear-gradient(135deg, #EEF2FF, #E0E7FF); border:1px solid #C7D2FE;">
-        <h4 style="color:var(--primary-900); margin-bottom:6px;">💡 Mentor Learning Guidance</h4>
-        <p style="color:var(--primary-800); font-size:0.9rem; margin-bottom:12px; line-height:1.6;">
-          Personalized academic insights and study advice will appear here once your educators evaluate course assessments.
-        </p>
-        <a href="classrooms.html" class="btn btn-primary btn-sm">Explore Enrolled Classrooms</a>
+      <!-- Student Progress Roster -->
+      <div class="table-wrapper">
+        <div class="table-header">
+          <h4>Individual Student Progress Breakdown</h4>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Classora ID</th>
+              <th>Homework Rate</th>
+              <th>Attendance Rate</th>
+              <th>Exam Mastery</th>
+              <th>Overall Progress</th>
+              <th>Intervention Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="7" style="text-align:center; padding:56px 20px;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">📈</div>
+                <h4 style="color:var(--gray-800); margin-bottom:4px;">No Progress Analytics Yet</h4>
+                <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">Student attendance and academic performance graphs will generate after classes begin.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
     </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Student Schedule — Classora</title>
+  <title>Schedule & Timetable — Teacher Portal — Classora</title>
   <link rel="stylesheet" href="../css/style.css"/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
   <style>
@@ -33,6 +33,7 @@
       border-radius: var(--radius-md);
       min-height: 90px;
       padding: 8px;
+      position: relative;
     }
     .session-badge {
       background: var(--primary-50);
@@ -41,14 +42,20 @@
       padding: 8px;
       font-size: 0.8rem;
       margin-bottom: 6px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .session-badge:hover {
+      background: var(--primary-100);
+      transform: translateY(-1px);
     }
   </style>
 </head>
 <body>
 <div class="layout-dashboard">
 
-  <!-- ════ STUDENT SIDEBAR ════ -->
-  <aside class="sidebar" id="sidebar" aria-label="Student navigation">
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Teacher navigation">
     <div class="sidebar-header">
       <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
         <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
@@ -65,25 +72,28 @@
         <span class="sidebar-icon">👤</span> My Profile
       </a>
 
-      <span class="sidebar-section-label">Academics</span>
+      <span class="sidebar-section-label">Classroom</span>
       <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
-        <span class="sidebar-icon">🏫</span> My Classrooms
-        <span class="sidebar-badge">0</span>
+        <span class="sidebar-icon">🏫</span> Classrooms
+        <span class="sidebar-badge">3</span>
       </a>
-      <a href="teachers.html" class="sidebar-link" id="nav-teachers">
-        <span class="sidebar-icon">🧑‍🏫</span> My Teachers
+      <a href="students.html" class="sidebar-link" id="nav-students">
+        <span class="sidebar-icon">👥</span> Students
       </a>
+      <a href="join-requests.html" class="sidebar-link" id="nav-join">
+        <span class="sidebar-icon">📩</span> Join Requests
+        <span class="sidebar-badge">2</span>
+      </a>
+
+      <span class="sidebar-section-label">Academic</span>
       <a href="schedule.html" class="sidebar-link active" id="nav-schedule">
         <span class="sidebar-icon">📅</span> Schedule
       </a>
-
-      <span class="sidebar-section-label">Performance</span>
-      <a href="homework.html" class="sidebar-link" id="nav-homework">
-        <span class="sidebar-icon">📚</span> Homework
-        <span class="sidebar-badge" style="background:#F59E0B;">0</span>
-      </a>
       <a href="exams.html" class="sidebar-link" id="nav-exams">
         <span class="sidebar-icon">📝</span> Examinations
+      </a>
+      <a href="homework.html" class="sidebar-link" id="nav-homework">
+        <span class="sidebar-icon">📚</span> Homework
       </a>
       <a href="results.html" class="sidebar-link" id="nav-results">
         <span class="sidebar-icon">📊</span> Results
@@ -91,22 +101,22 @@
       <a href="progress.html" class="sidebar-link" id="nav-progress">
         <span class="sidebar-icon">📈</span> Progress
       </a>
-
-      <span class="sidebar-section-label">Resources</span>
-      <a href="downloads.html" class="sidebar-link" id="nav-downloads">
-        <span class="sidebar-icon">📥</span> Downloads
+      <a href="notes.html" class="sidebar-link" id="nav-notes">
+        <span class="sidebar-icon">🗒️</span> Notes
       </a>
+
+      <span class="sidebar-section-label">System</span>
       <a href="notifications.html" class="sidebar-link" id="nav-notif">
         <span class="sidebar-icon">🔔</span> Notifications
-        <span class="sidebar-badge">0</span>
+        <span class="sidebar-badge">5</span>
       </a>
     </nav>
 
     <div class="sidebar-footer">
       <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
-        <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
+        <div class="user-avatar avatar-sm">T</div>
         <div style="flex:1; min-width:0;">
-          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Educator Portal</div>
           <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
@@ -123,9 +133,12 @@
     <div class="dash-topbar">
       <div style="display:flex; align-items:center; gap:16px;">
         <div>
-          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Weekly Class Timetable</div>
-          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">My Class Schedule</div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Academic Timetable</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Weekly Schedule & Live Sessions</div>
         </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-event')">➕ Schedule Session</button>
       </div>
     </div>
 
@@ -133,16 +146,21 @@
       
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:16px;">
         <div style="display:flex; align-items:center; gap:12px;">
-          <h3 style="margin:0;">Weekly Timetable</h3>
-          <span class="badge badge-primary">Current Term</span>
+          <h3 style="margin:0;">Academic Week</h3>
+          <span class="badge badge-primary">Term Timetable</span>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-ghost btn-sm" onclick="changeStudentWeek(-1)">◀ Previous</button>
-          <button class="btn btn-secondary btn-sm" onclick="resetStudentWeek()">Current Week</button>
-          <button class="btn btn-ghost btn-sm" onclick="changeStudentWeek(1)">Next ▶</button>
+          <button class="btn btn-ghost btn-sm" onclick="changeWeek(-1)">◀ Previous</button>
+          <button class="btn btn-secondary btn-sm" onclick="resetWeek()">Current Week</button>
+          <button class="btn btn-ghost btn-sm" onclick="changeWeek(1)">Next ▶</button>
         </div>
       </div>
 
+      <div style="background:var(--gray-50); border:1.5px dashed var(--gray-200); border-radius:var(--radius-lg); padding:16px; margin-bottom:20px; text-align:center; font-size:0.875rem; color:var(--gray-600);">
+        📅 <strong>Your official weekly timetable is clear.</strong> Click <strong>"➕ Schedule Session"</strong> above to schedule live classes or events.
+      </div>
+
+      <!-- Weekly Schedule Grid -->
       <div class="timetable-wrapper table-wrapper">
         <div class="timetable-grid">
         <div></div>
@@ -151,8 +169,8 @@
           <div style="font-weight:700; color:var(--gray-900);">Day 1</div>
         </div>
         <div class="schedule-col-header">
-          <div style="font-size:0.75rem; color:var(--gray-400);">TUE</div>
-          <div style="font-weight:700; color:var(--gray-900);">Day 2</div>
+          <div style="font-size:0.75rem; color:var(--primary-600); font-weight:700;">TUE</div>
+          <div style="font-weight:800; color:var(--primary-700);">Day 2</div>
         </div>
         <div class="schedule-col-header">
           <div style="font-size:0.75rem; color:var(--gray-400);">WED</div>
@@ -171,7 +189,7 @@
           <div style="font-weight:700; color:var(--gray-900);">Day 6</div>
         </div>
 
-        <!-- 09:00 AM -->
+        <!-- Row 09:00 AM -->
         <div class="time-slot-label">09:00 AM</div>
         <div class="slot-cell"></div>
         <div class="slot-cell"></div>
@@ -180,8 +198,17 @@
         <div class="slot-cell"></div>
         <div class="slot-cell"></div>
 
-        <!-- 11:30 AM -->
+        <!-- Row 11:30 AM -->
         <div class="time-slot-label">11:30 AM</div>
+        <div class="slot-cell"></div>
+        <div class="slot-cell"></div>
+        <div class="slot-cell"></div>
+        <div class="slot-cell"></div>
+        <div class="slot-cell"></div>
+        <div class="slot-cell"></div>
+
+        <!-- Row 02:00 PM -->
+        <div class="time-slot-label">02:00 PM</div>
         <div class="slot-cell"></div>
         <div class="slot-cell"></div>
         <div class="slot-cell"></div>
@@ -195,6 +222,49 @@
   </main>
 </div>
 
+<!-- Modal: Schedule Event -->
+<div class="modal-overlay" id="modal-add-event">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 style="margin:0;">Schedule Class Session</h3>
+      <button class="btn btn-ghost btn-sm" data-modal-close="modal-add-event">✕</button>
+    </div>
+    <form onsubmit="handleScheduleSession(event)">
+      <div class="form-group">
+        <label class="form-label">Select Classroom</label>
+        <select class="form-input" id="sched-class" required>
+          <option value="" disabled selected>Select active classroom</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Lesson Topic / Agenda</label>
+        <input class="form-input" type="text" id="sched-topic" placeholder="e.g. Quadratic Equations Drill" required/>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Day</label>
+          <select class="form-input" id="sched-day" required>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Start Time</label>
+          <input class="form-input" type="time" id="sched-time" value="09:00" required/>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+        <button type="button" class="btn btn-ghost" data-modal-close="modal-add-event">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save to Timetable</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="toast-container" id="toast-container"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-client.js"></script>
@@ -202,19 +272,7 @@
 <script>
   let currentWeekOffset = 0;
 
-  function changeStudentWeek(d) {
-    currentWeekOffset += d;
-    updateStudentWeekDatesUI();
-    loadStudentSessions();
-  }
-
-  function resetStudentWeek() {
-    currentWeekOffset = 0;
-    updateStudentWeekDatesUI();
-    loadStudentSessions();
-  }
-
-  function updateStudentWeekDatesUI() {
+  function updateWeekDatesUI() {
     const now = new Date();
     const day = now.getDay();
     const diffToMonday = (day === 0 ? -6 : 1) - day;
@@ -228,17 +286,50 @@
       d.setDate(monday.getDate() + i);
       const isToday = currentWeekOffset === 0 && d.toDateString() === now.toDateString();
       if (dayHeaders[i]) {
-        dayHeaders[i].style.borderColor = isToday ? 'var(--primary-300)' : '';
-        dayHeaders[i].style.background = isToday ? 'var(--primary-50)' : '';
         dayHeaders[i].innerHTML = `
           <div style="font-size:0.75rem; color:${isToday ? 'var(--primary-600); font-weight:700;' : 'var(--gray-400);'}">${name} ${isToday ? '(TODAY)' : ''}</div>
           <div style="font-weight:${isToday ? '800' : '700'}; color:${isToday ? 'var(--primary-700)' : 'var(--gray-900)'};">${d.toLocaleDateString('en-IN', { month:'short', day:'numeric' })}</div>
         `;
       }
     });
+
+    const statusBadge = document.querySelector('.dash-content span.badge-primary');
+    if (statusBadge) {
+      if (currentWeekOffset === 0) statusBadge.textContent = 'Current Week';
+      else if (currentWeekOffset > 0) statusBadge.textContent = `+${currentWeekOffset} Week${currentWeekOffset > 1 ? 's' : ''}`;
+      else statusBadge.textContent = `${currentWeekOffset} Week${currentWeekOffset < -1 ? 's' : ''}`;
+    }
   }
 
-  async function loadStudentSessions() {
+  function changeWeek(delta) {
+    currentWeekOffset += delta;
+    updateWeekDatesUI();
+    loadSessions();
+  }
+
+  function resetWeek() {
+    currentWeekOffset = 0;
+    updateWeekDatesUI();
+    loadSessions();
+  }
+
+  async function populateScheduleClassDropdown() {
+    const sel = document.getElementById('sched-class');
+    if (!sel) return;
+    try {
+      const classrooms = await ClassoraAuth.fetchClassrooms();
+      if (!classrooms || !classrooms.length) {
+        sel.innerHTML = '<option value="" disabled selected>No active classrooms yet</option>';
+        return;
+      }
+      sel.innerHTML = '<option value="" disabled selected>Select active classroom</option>' +
+        classrooms.map(c => `<option value="${c.id}">${c.name} (${c.class_code})</option>`).join('');
+    } catch(e) {
+      console.warn('Classrooms error:', e);
+    }
+  }
+
+  async function loadSessions() {
     try {
       const sessions = await ClassoraAuth.fetchSessions({ weekOffset: currentWeekOffset });
       const emptyNote = document.getElementById('schedule-empty-note') || document.querySelector('.dash-content > div[style*="dashed"]');
@@ -271,23 +362,51 @@
           const card = document.createElement('div');
           card.style.cssText = 'background:var(--grad-primary); color:#fff; border-radius:var(--radius-md); padding:8px 10px; font-size:0.75rem; box-shadow:var(--shadow-sm); margin-bottom:4px;';
           card.innerHTML = `
-            <div style="font-weight:700;">${escapeHTML(s.topic || 'Class Session')}</div>
-            <div style="opacity:0.85; font-size:0.7rem;">${escapeHTML(clsName)} • ${escapeHTML(s.start_time || '')}</div>
+            <div style="font-weight:700;">${s.topic}</div>
+            <div style="opacity:0.85; font-size:0.7rem;">${clsName} • ${s.start_time}</div>
           `;
           targetCell.appendChild(card);
         }
       });
     } catch(e) {
-      console.warn('loadStudentSessions error:', e);
+      console.warn('loadSessions error:', e);
     }
   }
-  window.loadStudentSessions = loadStudentSessions;
+
+  async function handleScheduleSession(e) {
+    e.preventDefault();
+    const topic = document.getElementById('sched-topic').value.trim();
+    const classroom_id = document.getElementById('sched-class').value;
+    const day_of_week = document.getElementById('sched-day').value;
+    const start_time = document.getElementById('sched-time')?.value || '09:00';
+
+    if (!classroom_id) {
+      showToast('Please select a valid classroom', 'warning');
+      return;
+    }
+
+    try {
+      await ClassoraAuth.createSession({
+        classroom_id,
+        topic,
+        day_of_week,
+        start_time,
+        week_offset: currentWeekOffset
+      });
+      closeModal('modal-add-event');
+      showToast(`Session "${topic}" scheduled successfully!`, 'success');
+      e.target.reset();
+      await loadSessions();
+    } catch(err) {
+      showToast('Error: ' + err.message, 'error');
+    }
+  }
 
   document.addEventListener('DOMContentLoaded', async () => {
-    updateStudentWeekDatesUI();
-    await loadStudentSessions();
+    updateWeekDatesUI();
+    await populateScheduleClassDropdown();
+    await loadSessions();
   });
-  updateStudentWeekDatesUI();
 </script>
 </body>
 </html>

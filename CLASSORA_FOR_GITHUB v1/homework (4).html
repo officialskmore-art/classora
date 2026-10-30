@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Homework & Assignments — Teacher Portal — Classora</title>
+  <title>Homework & Tasks — Student Portal — Classora</title>
   <link rel="stylesheet" href="../css/style.css"/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
 </head>
 <body>
 <div class="layout-dashboard">
 
-  <!-- ════ SIDEBAR ════ -->
-  <aside class="sidebar" id="sidebar" aria-label="Teacher navigation">
+  <!-- ════ STUDENT SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Student navigation">
     <div class="sidebar-header">
       <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
         <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
@@ -28,28 +28,25 @@
         <span class="sidebar-icon">👤</span> My Profile
       </a>
 
-      <span class="sidebar-section-label">Classroom</span>
+      <span class="sidebar-section-label">Academics</span>
       <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
-        <span class="sidebar-icon">🏫</span> Classrooms
-        <span class="sidebar-badge">3</span>
+        <span class="sidebar-icon">🏫</span> My Classrooms
+        <span class="sidebar-badge">0</span>
       </a>
-      <a href="students.html" class="sidebar-link" id="nav-students">
-        <span class="sidebar-icon">👥</span> Students
+      <a href="teachers.html" class="sidebar-link" id="nav-teachers">
+        <span class="sidebar-icon">🧑‍🏫</span> My Teachers
       </a>
-      <a href="join-requests.html" class="sidebar-link" id="nav-join">
-        <span class="sidebar-icon">📩</span> Join Requests
-        <span class="sidebar-badge">2</span>
-      </a>
-
-      <span class="sidebar-section-label">Academic</span>
       <a href="schedule.html" class="sidebar-link" id="nav-schedule">
         <span class="sidebar-icon">📅</span> Schedule
       </a>
-      <a href="exams.html" class="sidebar-link" id="nav-exams">
-        <span class="sidebar-icon">📝</span> Examinations
-      </a>
+
+      <span class="sidebar-section-label">Performance</span>
       <a href="homework.html" class="sidebar-link active" id="nav-homework">
         <span class="sidebar-icon">📚</span> Homework
+        <span class="sidebar-badge" style="background:#F59E0B;" id="hw-badge">0</span>
+      </a>
+      <a href="exams.html" class="sidebar-link" id="nav-exams">
+        <span class="sidebar-icon">📝</span> Examinations
       </a>
       <a href="results.html" class="sidebar-link" id="nav-results">
         <span class="sidebar-icon">📊</span> Results
@@ -57,22 +54,22 @@
       <a href="progress.html" class="sidebar-link" id="nav-progress">
         <span class="sidebar-icon">📈</span> Progress
       </a>
-      <a href="notes.html" class="sidebar-link" id="nav-notes">
-        <span class="sidebar-icon">🗒️</span> Notes
-      </a>
 
-      <span class="sidebar-section-label">System</span>
+      <span class="sidebar-section-label">Resources</span>
+      <a href="downloads.html" class="sidebar-link" id="nav-downloads">
+        <span class="sidebar-icon">📥</span> Downloads
+      </a>
       <a href="notifications.html" class="sidebar-link" id="nav-notif">
         <span class="sidebar-icon">🔔</span> Notifications
-        <span class="sidebar-badge">5</span>
+        <span class="sidebar-badge">0</span>
       </a>
     </nav>
 
     <div class="sidebar-footer">
       <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
-        <div class="user-avatar avatar-sm">T</div>
+        <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
         <div style="flex:1; min-width:0;">
-          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Educator Portal</div>
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
           <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
@@ -89,24 +86,38 @@
     <div class="dash-topbar">
       <div style="display:flex; align-items:center; gap:16px;">
         <div>
-          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Coursework & Tasks</div>
-          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Homework Assignments Tracker</div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Assignments & Submissions</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">My Homework Tasks</div>
         </div>
-      </div>
-      <div style="display:flex; align-items:center; gap:12px;">
-        <button class="btn btn-primary btn-sm" onclick="openModal('modal-create-hw')">➕ Assign Homework</button>
       </div>
     </div>
 
     <div class="dash-content">
       
-      <!-- Homework List -->
-      <div id="hw-grid" class="grid" style="grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;">
-        <div style="grid-column:1/-1; text-align:center; padding:56px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
-          <div style="font-size:2.5rem; margin-bottom:8px;">📚</div>
-          <h4 style="color:var(--gray-800); margin-bottom:4px;">No Homework Assigned Yet</h4>
-          <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:16px;">Create assignments, attach worksheets/PDFs, and review submissions.</p>
-          <button class="btn btn-primary btn-sm" onclick="openModal('modal-create-hw')">➕ Assign First Homework</button>
+      <div class="tabs">
+        <div class="tab active" onclick="switchHwTab('pending', this)">Pending Assignments (<span id="hw-count">0</span>)</div>
+        <div class="tab" onclick="switchHwTab('submitted', this)">Completed & Graded (0)</div>
+      </div>
+
+      <!-- Pending List -->
+      <div id="hw-pending">
+        <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
+          <div style="font-size:3rem; margin-bottom:12px;">🎉</div>
+          <h3>No Pending Homework</h3>
+          <p style="color:var(--gray-500); max-width:440px; margin:8px auto 0;">
+            You're all caught up! New homework tasks will appear here as soon as your teachers assign them.
+          </p>
+        </div>
+      </div>
+
+      <!-- Submitted List -->
+      <div id="hw-submitted" style="display:none;">
+        <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
+          <div style="font-size:3rem; margin-bottom:12px;">📚</div>
+          <h3>No Past Submissions</h3>
+          <p style="color:var(--gray-500); max-width:440px; margin:8px auto 0;">
+            Completed and graded assignments will be archived here.
+          </p>
         </div>
       </div>
 
@@ -114,41 +125,34 @@
   </main>
 </div>
 
-<!-- Modal: Assign Homework -->
-<div class="modal-overlay" id="modal-create-hw">
+<!-- Modal: Submit Homework -->
+<div class="modal-overlay" id="modal-submit-hw">
   <div class="modal">
     <div class="modal-header">
-      <h3 style="margin:0;">Assign New Homework</h3>
-      <button class="btn btn-ghost btn-sm" data-modal-close="modal-create-hw">✕</button>
+      <h3 style="margin:0;">Submit Assignment</h3>
+      <button class="btn btn-ghost btn-sm" data-modal-close="modal-submit-hw">✕</button>
     </div>
-    <form onsubmit="handleCreateHw(event)">
+    <form onsubmit="handleSubmitAssignment(event)">
       <div class="form-group">
-        <label class="form-label">Homework Title</label>
-        <input class="form-input" type="text" id="hw-title" placeholder="e.g. Chapter 6 Geometry Problems" required/>
+        <label class="form-label">Assignment</label>
+        <input class="form-input" id="hw-modal-title" type="text" placeholder="Select an assignment" disabled style="background:var(--gray-100); font-weight:600;"/>
       </div>
       <div class="form-group">
-        <label class="form-label">Classroom</label>
-        <select class="form-input" id="hw-class" required>
-          <option value="" disabled selected>Select active classroom</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Instructions & Questions</label>
-        <textarea class="form-input" id="hw-desc" rows="3" placeholder="Provide detailed instructions or problem sets..." required></textarea>
-      </div>
-      <div class="grid" style="grid-template-columns:1fr 1fr; gap:12px;">
-        <div class="form-group">
-          <label class="form-label">Due Date</label>
-          <input class="form-input" type="date" id="hw-due" required/>
+        <label class="form-label">Upload Solution File (PDF, Image, DOCX)</label>
+        <div style="border:2px dashed var(--gray-300); border-radius:var(--radius-md); padding:24px; text-align:center; background:var(--gray-50); cursor:pointer;" onclick="document.getElementById('hw-file-input').click()">
+          <div style="font-size:2rem; margin-bottom:8px;">📎</div>
+          <div style="font-weight:600; color:var(--gray-700);" id="upload-label">Click to select files from device</div>
+          <div style="font-size:0.75rem; color:var(--gray-400); margin-top:4px;">Supported files: PDF, PNG, JPG up to 10MB</div>
+          <input type="file" id="hw-file-input" style="display:none;" onchange="handleFileSelect(this)"/>
         </div>
-        <div class="form-group">
-          <label class="form-label">Total Points</label>
-          <input class="form-input" type="number" id="hw-points" value="20" min="1" required/>
-        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Student Remarks / Note for Teacher</label>
+        <textarea class="form-input" id="hw-modal-remarks" rows="2" placeholder="e.g. Any questions or remarks..."></textarea>
       </div>
       <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-        <button type="button" class="btn btn-ghost" data-modal-close="modal-create-hw">Cancel</button>
-        <button type="submit" class="btn btn-primary" id="hw-submit-btn">Publish Assignment</button>
+        <button type="button" class="btn btn-ghost" data-modal-close="modal-submit-hw">Cancel</button>
+        <button type="submit" class="btn btn-primary">Turn In Assignment</button>
       </div>
     </form>
   </div>
@@ -159,98 +163,168 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  var hwRealtimeChannel = null;
-
-  function renderHwCards(a) {
-    var g = document.getElementById("hw-grid"); if (!g) return;
-    if (!a || !a.length) { g.innerHTML = "<div style=\"grid-column:1/-1;text-align:center;padding:56px 20px;border:2px dashed #E5E7EB;border-radius:12px;background:#F9FAFB;\"><div style=\"font-size:2.5rem;margin-bottom:8px\">&#128218;</div><h4 style=\"margin-bottom:4px\">No Homework Assigned Yet</h4><p style=\"font-size:0.875rem;color:#6B7280;margin-bottom:16px\">Create assignments and review submissions.</p><button class=\"btn btn-primary btn-sm\" onclick=\"openModal('modal-create-hw')\">+ Assign First Homework</button></div>"; return; }
-    g.innerHTML = a.map(function(item) {
-      var cls = (item.classrooms && item.classrooms.name) ? item.classrooms.name : "N/A";
-      var due = item.due_date ? new Date(item.due_date).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}) : "No due date";
-      var past = item.due_date && new Date(item.due_date) < new Date();
-      return "<div class=\"card animate-fade-up\" style=\"border-left:4px solid " + (past?"#EF4444":"#4F46E5") + "\"><div style=\"display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px\"><span class=\"badge\" style=\"font-size:0.72rem;background:" + (past?"#FEE2E2":"#EEF2FF") + ";color:" + (past?"#B91C1C":"#4338CA") + "\">" + (past?"Overdue":"Active") + "</span><button class=\"btn btn-ghost btn-sm\" onclick=\"deleteHw('"+item.id+"')\" style=\"color:#EF4444;padding:2px 6px;font-size:0.8rem\">Delete</button></div><h4 style=\"color:#111827;margin-bottom:6px;font-size:1rem\">" + item.title + "</h4><p style=\"font-size:0.825rem;color:#4B5563;margin-bottom:12px;line-height:1.5\">" + (item.description||"No instructions.") + "</p><div style=\"font-size:0.8rem;color:#6B7280;border-top:1px solid #F3F4F6;padding-top:10px\">Classroom: " + cls + " | Due: " + due + " | Points: " + (item.total_points||0) + "</div></div>";
-    }).join("");
+  function switchHwTab(type, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('hw-pending').style.display = type === 'pending' ? 'block' : 'none';
+    document.getElementById('hw-submitted').style.display = type === 'submitted' ? 'block' : 'none';
   }
 
-  async function loadHomework() { var r = await ClassoraAuth.fetchAssignments(); renderHwCards(r); }
-
-  async function deleteHw(id) {
-    if (!confirm("Delete this assignment?")) return;
-    try { await ClassoraAuth.deleteAssignment(id); showToast("Deleted.","success"); await loadHomework(); }
-    catch (e) { showToast(e.message||"Error","error"); }
+  function handleFileSelect(input) {
+    if (input.files && input.files[0]) {
+      document.getElementById('upload-label').textContent = 'Selected: ' + input.files[0].name;
+    }
   }
 
-  async function handleCreateHw(e) {
+  let activeAssignmentId = null;
+
+  function openSubmitModal(id, title) {
+    activeAssignmentId = id;
+    const titleInput = document.getElementById('hw-modal-title');
+    if (titleInput) titleInput.value = title;
+    const label = document.getElementById('upload-label');
+    if (label) label.textContent = 'Click to select files from device';
+    const fileInp = document.getElementById('hw-file-input');
+    if (fileInp) fileInp.value = '';
+    const rem = document.getElementById('hw-modal-remarks');
+    if (rem) rem.value = '';
+    openModal('modal-submit-hw');
+  }
+
+  async function handleSubmitAssignment(e) {
     e.preventDefault();
-    var btn = document.getElementById("hw-submit-btn");
-    btn.disabled = true; btn.textContent = "Publishing...";
+    if (!activeAssignmentId) {
+      showToast('Please select an assignment to submit', 'error');
+      return;
+    }
+    const fileInput = document.getElementById('hw-file-input');
+    const file = fileInput ? fileInput.files[0] : null;
+    const remarks = document.getElementById('hw-modal-remarks')?.value.trim() || '';
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+
     try {
-      var classId = document.getElementById("hw-class").value;
-      var dueVal = document.getElementById("hw-due").value;
-      var pointsVal = parseInt(document.getElementById("hw-points").value);
-
-      if (!classId) {
-        showToast("Please select a classroom", "warning");
-        btn.disabled = false; btn.textContent = "Publish Assignment";
-        return;
-      }
-      if (!dueVal) {
-        showToast("Please select a valid due date", "warning");
-        btn.disabled = false; btn.textContent = "Publish Assignment";
-        return;
-      }
-      var today = new Date();
-      today.setHours(0,0,0,0);
-      if (new Date(dueVal) < today) {
-        showToast("Due date cannot be in the past", "warning");
-        btn.disabled = false; btn.textContent = "Publish Assignment";
-        return;
-      }
-      if (isNaN(pointsVal) || pointsVal <= 0) {
-        showToast("Points must be greater than 0", "warning");
-        btn.disabled = false; btn.textContent = "Publish Assignment";
-        return;
-      }
-
-      await ClassoraAuth.createAssignment({
-        title: document.getElementById("hw-title").value.trim(),
-        classroom_id: classId,
-        description: document.getElementById("hw-desc").value.trim(),
-        due_date: dueVal,
-        total_points: pointsVal
+      await ClassoraAuth.submitAssignment({
+        assignment_id: activeAssignmentId,
+        notes: remarks,
+        file: file
       });
-      closeModal("modal-create-hw"); showToast("Assignment published!", "success"); e.target.reset(); await loadHomework();
-    } catch (err) { showToast(err.message||"Failed","error"); }
-    finally { btn.disabled=false; btn.textContent="Publish Assignment"; }
+      closeModal('modal-submit-hw');
+      showToast('Assignment turned in successfully! Your teacher has been notified.', 'success', 5000);
+      await loadStudentHomework();
+    } catch(err) {
+      showToast('Submission error: ' + err.message, 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Turn In Assignment'; }
+    }
   }
 
-  async function populateHwClassDropdown() {
-    var sel = document.getElementById("hw-class"); if (!sel) return;
-    var cls = await ClassoraAuth.fetchClassrooms();
-    if (!cls.length) { sel.innerHTML = "<option value=\"\" disabled selected>No classrooms yet</option>"; return; }
-    sel.innerHTML = "<option value=\"\" disabled selected>Select classroom</option>";
-    cls.forEach(function(c){var o=document.createElement("option");o.value=c.id;o.textContent=c.name+" ("+c.class_code+")";sel.appendChild(o);});
+  async function loadStudentHomework() {
+    // Fetch assignments from all enrolled classrooms
+    const enrolledClassrooms = await ClassoraAuth.fetchEnrolledClassrooms();
+    let allAssignments = [];
+    for (const cls of enrolledClassrooms) {
+      const hw = await ClassoraAuth.fetchAssignments({ classroomId: cls.id });
+      allAssignments = allAssignments.concat(hw);
+    }
+    allAssignments.sort((a,b) => new Date(a.due_date||0) - new Date(b.due_date||0));
+
+    // Fetch existing submissions
+    const submissions = await ClassoraAuth.fetchSubmissions();
+    const submittedMap = new Map(submissions.map(s => [s.assignment_id, s]));
+
+    const pending = allAssignments.filter(a => !submittedMap.has(a.id));
+    const completed = allAssignments.filter(a => submittedMap.has(a.id));
+
+    // Update badges and tabs
+    const badge = document.getElementById('hw-badge');
+    if (badge) badge.textContent = pending.length;
+    const hwCount = document.getElementById('hw-count');
+    if (hwCount) hwCount.textContent = pending.length;
+    const tabPending = document.querySelector('.tabs .tab:first-child');
+    if (tabPending) tabPending.textContent = `Pending Assignments (${pending.length})`;
+    const tabCompleted = document.querySelector('.tabs .tab:last-child');
+    if (tabCompleted) tabCompleted.textContent = `Completed (${completed.length})`;
+
+    // Render pending
+    const pendingContainer = document.getElementById('hw-pending');
+    if (pendingContainer) {
+      if (!pending.length) {
+        pendingContainer.innerHTML = `<div style="text-align:center;padding:56px 20px;border:2px dashed var(--gray-200);border-radius:var(--radius-xl);background:var(--gray-50)">
+          <div style="font-size:2.5rem;margin-bottom:8px">&#128218;</div>
+          <h4 style="color:var(--gray-800);margin-bottom:4px">No Pending Homework</h4>
+          <p style="font-size:0.875rem;color:var(--gray-500)">You have turned in all assignments. Great job staying up to date!</p>
+        </div>`;
+      } else {
+        pendingContainer.innerHTML = pending.map(a => {
+          const cls = a.classrooms ? a.classrooms.name : 'N/A';
+          const due = a.due_date ? new Date(a.due_date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : 'No due date';
+          const isPast = a.due_date && new Date(a.due_date) < new Date();
+          const pts = a.total_points || a.max_marks || 20;
+          return `<div class="card animate-fade-up" style="border-left:4px solid ${isPast?'#EF4444':'var(--primary-600)'};margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+              <div><h4 style="color:var(--gray-900);margin-bottom:4px;font-size:1rem">${a.title}</h4><div style="font-size:0.8rem;color:var(--gray-500)">${cls}</div></div>
+              <span class="badge" style="background:${isPast?'#FEE2E2':'#EEF2FF'};color:${isPast?'#B91C1C':'#4338CA'};font-size:0.72rem">${isPast?'Overdue':'Active'}</span>
+            </div>
+            <p style="font-size:0.825rem;color:var(--gray-600);margin-bottom:12px">${a.description||'No instructions provided.'}</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--gray-100);padding-top:10px">
+              <span style="font-size:0.8rem;color:var(--gray-500)">Due: ${due} &bull; ${pts} pts</span>
+              <button class="btn btn-primary btn-sm" onclick="openSubmitModal('${a.id}', '${a.title.replace(/'/g, "\\'")}')">Turn In</button>
+            </div>
+          </div>`;
+        }).join('');
+      }
+    }
+
+    // Render completed
+    const completedContainer = document.getElementById('hw-submitted');
+    if (completedContainer) {
+      if (!completed.length) {
+        completedContainer.innerHTML = `<div style="text-align:center;padding:56px 20px;border:2px dashed var(--gray-200);border-radius:var(--radius-xl);background:var(--gray-50)">
+          <div style="font-size:2.5rem;margin-bottom:8px">✅</div>
+          <h4 style="color:var(--gray-800);margin-bottom:4px">No Completed Assignments Yet</h4>
+          <p style="font-size:0.875rem;color:var(--gray-500)">Turn in your tasks to see them tracked here.</p>
+        </div>`;
+      } else {
+        completedContainer.innerHTML = completed.map(a => {
+          const sub = submittedMap.get(a.id);
+          const subDate = sub && sub.submitted_at ? new Date(sub.submitted_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : 'Recently';
+          const cls = a.classrooms ? a.classrooms.name : 'N/A';
+          return `<div class="card animate-fade-up" style="border-left:4px solid #10B981;margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+              <div><h4 style="color:var(--gray-900);margin-bottom:4px;font-size:1rem">${a.title}</h4><div style="font-size:0.8rem;color:var(--gray-500)">${cls}</div></div>
+              <span class="badge" style="background:#D1FAE5;color:#065F46;font-size:0.72rem">✅ Turned In</span>
+            </div>
+            <p style="font-size:0.825rem;color:var(--gray-600);margin-bottom:12px">${a.description||'No instructions provided.'}</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--gray-100);padding-top:10px">
+              <span style="font-size:0.8rem;color:var(--gray-500)">Submitted on: ${subDate}</span>
+              ${sub && sub.file_url ? `<a href="${sub.file_url}" target="_blank" class="btn btn-ghost btn-sm" style="color:var(--primary-600)">View Submission</a>` : '<span style="font-size:0.75rem;color:var(--gray-400)">Text/Online Turn In</span>'}
+            </div>
+          </div>`;
+        }).join('');
+      }
+    }
   }
 
-  document.addEventListener("DOMContentLoaded", async function() {
-    await loadHomework();
-    await populateHwClassDropdown();
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadStudentHomework();
     if (ClassoraAuth.realtime) {
       ClassoraAuth.realtime.subscribeToAssignments({
         onInsert: function(newHw) {
-          showToast("Assignment updated live.", "info");
-          loadHomework();
+          showToast('New homework assigned by your teacher! 📚', 'info', 5000);
+          loadStudentHomework();
         },
-        onUpdate: function() { loadHomework(); },
-        onDelete: function() { loadHomework(); },
-        onReconnect: function() { loadHomework(); }
+        onUpdate: function() { loadStudentHomework(); },
+        onDelete: function() { loadStudentHomework(); },
+        onReconnect: function() { loadStudentHomework(); }
       });
     }
   });
 
-  window.addEventListener("beforeunload", function() {
+  window.addEventListener('beforeunload', function() {
     if (ClassoraAuth.realtime) {
-      ClassoraAuth.realtime.removeChannel("cr-hw-all");
+      ClassoraAuth.realtime.removeChannel('cr-hw-all');
     }
   });
 </script>

@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Examinations — Teacher Portal — Classora</title>
+  <title>Examinations — Student Portal — Classora</title>
   <link rel="stylesheet" href="../css/style.css"/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
 </head>
 <body>
 <div class="layout-dashboard">
 
-  <!-- ════ SIDEBAR ════ -->
-  <aside class="sidebar" id="sidebar" aria-label="Teacher navigation">
+  <!-- ════ STUDENT SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Student navigation">
     <div class="sidebar-header">
       <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
         <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
@@ -28,28 +28,25 @@
         <span class="sidebar-icon">👤</span> My Profile
       </a>
 
-      <span class="sidebar-section-label">Classroom</span>
+      <span class="sidebar-section-label">Academics</span>
       <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
-        <span class="sidebar-icon">🏫</span> Classrooms
-        <span class="sidebar-badge">3</span>
+        <span class="sidebar-icon">🏫</span> My Classrooms
+        <span class="sidebar-badge">0</span>
       </a>
-      <a href="students.html" class="sidebar-link" id="nav-students">
-        <span class="sidebar-icon">👥</span> Students
+      <a href="teachers.html" class="sidebar-link" id="nav-teachers">
+        <span class="sidebar-icon">🧑‍🏫</span> My Teachers
       </a>
-      <a href="join-requests.html" class="sidebar-link" id="nav-join">
-        <span class="sidebar-icon">📩</span> Join Requests
-        <span class="sidebar-badge">2</span>
-      </a>
-
-      <span class="sidebar-section-label">Academic</span>
       <a href="schedule.html" class="sidebar-link" id="nav-schedule">
         <span class="sidebar-icon">📅</span> Schedule
       </a>
-      <a href="exams.html" class="sidebar-link active" id="nav-exams">
-        <span class="sidebar-icon">📝</span> Examinations
-      </a>
+
+      <span class="sidebar-section-label">Performance</span>
       <a href="homework.html" class="sidebar-link" id="nav-homework">
         <span class="sidebar-icon">📚</span> Homework
+        <span class="sidebar-badge" style="background:#F59E0B;">0</span>
+      </a>
+      <a href="exams.html" class="sidebar-link active" id="nav-exams">
+        <span class="sidebar-icon">📝</span> Examinations
       </a>
       <a href="results.html" class="sidebar-link" id="nav-results">
         <span class="sidebar-icon">📊</span> Results
@@ -57,22 +54,22 @@
       <a href="progress.html" class="sidebar-link" id="nav-progress">
         <span class="sidebar-icon">📈</span> Progress
       </a>
-      <a href="notes.html" class="sidebar-link" id="nav-notes">
-        <span class="sidebar-icon">🗒️</span> Notes
-      </a>
 
-      <span class="sidebar-section-label">System</span>
+      <span class="sidebar-section-label">Resources</span>
+      <a href="downloads.html" class="sidebar-link" id="nav-downloads">
+        <span class="sidebar-icon">📥</span> Downloads
+      </a>
       <a href="notifications.html" class="sidebar-link" id="nav-notif">
         <span class="sidebar-icon">🔔</span> Notifications
-        <span class="sidebar-badge">5</span>
+        <span class="sidebar-badge">0</span>
       </a>
     </nav>
 
     <div class="sidebar-footer">
       <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
-        <div class="user-avatar avatar-sm">T</div>
+        <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
         <div style="flex:1; min-width:0;">
-          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Educator Portal</div>
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
           <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
@@ -89,64 +86,44 @@
     <div class="dash-topbar">
       <div style="display:flex; align-items:center; gap:16px;">
         <div>
-          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Assessments & Evaluation</div>
-          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Examinations Management</div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Exams & Assessments</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">My Scheduled & Past Exams</div>
         </div>
-      </div>
-      <div style="display:flex; align-items:center; gap:12px;">
-        <button class="btn btn-primary btn-sm" onclick="openModal('modal-create-exam')">➕ Schedule Exam</button>
       </div>
     </div>
 
     <div class="dash-content">
       
-      <div class="stats-grid">
-        <div class="card-stat">
-          <div class="card-stat-icon" style="background:#EEF2FF; color:var(--primary-700);">📝</div>
-          <div>
-            <div style="font-size:1.5rem; font-weight:800; color:var(--gray-900);">0</div>
-            <div style="font-size:0.8125rem; color:var(--gray-500);">Total Scheduled Exams</div>
-          </div>
-        </div>
-        <div class="card-stat">
-          <div class="card-stat-icon" style="background:#FEF3C7; color:#B45309;">⏳</div>
-          <div>
-            <div style="font-size:1.5rem; font-weight:800; color:var(--gray-900);">0</div>
-            <div style="font-size:0.8125rem; color:var(--gray-500);">Upcoming This Week</div>
-          </div>
-        </div>
-        <div class="card-stat">
-          <div class="card-stat-icon" style="background:#D1FAE5; color:#047857;">✅</div>
-          <div>
-            <div style="font-size:1.5rem; font-weight:800; color:var(--gray-900);">0</div>
-            <div style="font-size:0.8125rem; color:var(--gray-500);">Completed & Graded</div>
-          </div>
-        </div>
+      <!-- Upcoming Exam Banner -->
+      <div class="card" style="border-left:4px solid var(--primary-600); margin-bottom:28px; text-align:center; padding:40px 20px;">
+        <div style="font-size:2.5rem; margin-bottom:8px;">📝</div>
+        <h3 style="margin-bottom:6px;">No Upcoming Examinations Scheduled</h3>
+        <p style="color:var(--gray-500); max-width:440px; margin:0 auto;">
+          When your educators schedule quizzes, term tests, or finals, dates and syllabus will be displayed here.
+        </p>
       </div>
 
-      <!-- Exams Table -->
+      <!-- Past Exams Table -->
       <div class="table-wrapper">
         <div class="table-header">
-          <h4>Active & Upcoming Examination Schedule</h4>
+          <h4>Completed Examinations & Recorded Marks</h4>
         </div>
         <table>
           <thead>
             <tr>
-              <th>Exam Title</th>
+              <th>Exam Name</th>
               <th>Classroom</th>
-              <th>Date & Time</th>
-              <th>Marks & Scale</th>
-              <th>Status</th>
-              <th style="text-align:right;">Actions</th>
+              <th>Date Held</th>
+              <th>Total Marks</th>
+              <th>Your Score</th>
+              <th>Grade</th>
+              <th>Teacher Feedback</th>
             </tr>
           </thead>
-          <tbody id="exams-tbody">
+          <tbody>
             <tr>
-              <td colspan="6" style="text-align:center; padding:56px 20px;">
-                <div style="font-size:2.5rem; margin-bottom:8px;">📝</div>
-                <h4 style="color:var(--gray-800); margin-bottom:4px;">No Scheduled Examinations</h4>
-                <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:16px;">Plan tests, midterms, or quizzes and record student performance.</p>
-                <button class="btn btn-primary btn-sm" onclick="openModal('modal-create-exam')">➕ Schedule First Exam</button>
+              <td colspan="7" style="text-align:center; padding:36px; color:var(--gray-500);">
+                No completed examinations recorded yet.
               </td>
             </tr>
           </tbody>
@@ -157,150 +134,104 @@
   </main>
 </div>
 
-<!-- Modal: Create Exam -->
-<div class="modal-overlay" id="modal-create-exam">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 style="margin:0;">Schedule New Examination</h3>
-      <button class="btn btn-ghost btn-sm" data-modal-close="modal-create-exam">✕</button>
-    </div>
-    <form onsubmit="handleCreateExam(event)">
-      <div class="form-group">
-        <label class="form-label">Exam Title</label>
-        <input class="form-input" type="text" id="exam-title" placeholder="e.g. Unit 3 Trigonometry Test" required/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Target Classroom</label>
-        <select class="form-input" id="exam-class" required>
-          <option value="" disabled selected>Select active classroom</option>
-        </select>
-      </div>
-      <div class="grid" style="grid-template-columns:1fr 1fr; gap:12px;">
-        <div class="form-group">
-          <label class="form-label">Date</label>
-          <input class="form-input" type="date" id="exam-date" required/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Duration (Minutes)</label>
-          <input class="form-input" type="number" id="exam-duration" value="60" required/>
-        </div>
-      </div>
-      <div class="grid" style="grid-template-columns:1fr 1fr; gap:12px;">
-        <div class="form-group">
-          <label class="form-label">Total Marks</label>
-          <input class="form-input" type="number" id="exam-total" value="100" required/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Passing Marks</label>
-          <input class="form-input" type="number" id="exam-pass" value="40" required/>
-        </div>
-      </div>
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-        <button type="button" class="btn btn-ghost" data-modal-close="modal-create-exam">Cancel</button>
-        <button type="submit" id="exam-submit-btn" class="btn btn-primary">Schedule & Notify Students</button>
-      </div>
-    </form>
-  </div>
-</div>
-
 <div class="toast-container" id="toast-container"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  var examRealtimeChannel = null;
-
-  function renderExamRows(exams) {
-    var tbody = document.getElementById("exams-tbody"); if (!tbody) return;
-    if (!exams || !exams.length) {
-      tbody.innerHTML = "<tr><td colspan=\"6\" style=\"text-align:center;padding:56px 20px\"><div style=\"font-size:2.5rem;margin-bottom:8px\">&#128221;</div><h4 style=\"color:#1F2937;margin-bottom:4px\">No Scheduled Examinations</h4><p style=\"font-size:0.875rem;color:#6B7280;margin-bottom:16px\">Plan tests and record student performance.</p><button class=\"btn btn-primary btn-sm\" onclick=\"openModal('modal-create-exam')\">+ Schedule First Exam</button></td></tr>"; return;
-    }
-    tbody.innerHTML = exams.map(function(ex) {
-      var cls = (ex.classrooms && ex.classrooms.name) ? ex.classrooms.name : "N/A";
-      var dt = ex.exam_date ? new Date(ex.exam_date).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}) : "TBD";
-      var stat = ex.status || "upcoming";
-      var statusColor = stat==="completed"?"#059669":(stat==="ongoing"?"#D97706":"#4F46E5");
-      return "<tr><td><strong>"+ex.title+"</strong></td><td>"+cls+"</td><td>"+dt+" | "+(ex.duration_minutes||60)+" min</td><td>"+(ex.total_marks||100)+" / pass "+(ex.passing_marks||40)+"</td><td><span style=\"background:#EEF2FF;color:"+statusColor+";border-radius:4px;padding:2px 8px;font-size:0.78rem;font-weight:600\">"+stat+"</span></td><td style=\"text-align:right\"><button class=\"btn btn-ghost btn-sm\" onclick=\"deleteExam('"+ex.id+"')\" style=\"color:#EF4444;font-size:0.8rem\">Delete</button></td></tr>";
-    }).join("");
-    updateExamStats(exams);
-  }
-
-  function updateExamStats(exams) {
-    var stats = document.querySelectorAll(".card-stat");
-    if (stats.length >= 3) {
-      stats[0].querySelector("div > div:first-child").textContent = exams.length;
-      var now = new Date(); var weekLater = new Date(now.getTime() + 7*24*60*60*1000);
-      var upcoming = exams.filter(function(e){return e.exam_date && new Date(e.exam_date)>=now && new Date(e.exam_date)<=weekLater;}).length;
-      stats[1].querySelector("div > div:first-child").textContent = upcoming;
-      var completed = exams.filter(function(e){return e.status==="completed";}).length;
-      stats[2].querySelector("div > div:first-child").textContent = completed;
-    }
-  }
-
-  async function loadExams() { var r = await ClassoraAuth.fetchExams(); renderExamRows(r); }
-
-  async function deleteExam(id) {
-    if (!confirm("Delete this exam?")) return;
-    try { await ClassoraAuth.deleteExam(id); showToast("Exam removed.","success"); await loadExams(); }
-    catch(e){ showToast(e.message||"Error","error"); }
-  }
-
-  async function handleCreateExam(e) {
-    e.preventDefault();
-    var btn = document.getElementById("exam-submit-btn");
-    btn.disabled = true; btn.textContent = "Scheduling...";
+  async function loadStudentExams() {
     try {
-      var title = document.getElementById("exam-title").value.trim();
-      var classroom_id = document.getElementById("exam-class").value;
-      var exam_date = document.getElementById("exam-date").value;
-      var duration_minutes = parseInt(document.getElementById("exam-duration").value)||60;
-      var total_marks = parseInt(document.getElementById("exam-total").value)||100;
-      var passing_marks = parseInt(document.getElementById("exam-pass").value)||40;
-      if (total_marks <= 0) {
-        showToast("Total marks must be greater than 0", "warning");
-        return;
+      const user = ClassoraAuth.getCurrentUser();
+      const exams = await ClassoraAuth.fetchExams();
+      const banner = document.querySelector('.dash-content > .card:first-child');
+      if (banner) {
+        if (!exams || !exams.length) {
+          banner.innerHTML = `
+            <div style="font-size:2.5rem; margin-bottom:8px;">📝</div>
+            <h3 style="margin-bottom:6px;">No Upcoming Examinations Scheduled</h3>
+            <p style="color:var(--gray-500); max-width:440px; margin:0 auto;">
+              When your educators schedule quizzes, term tests, or finals, dates and syllabus will be displayed here.
+            </p>
+          `;
+        } else {
+          banner.innerHTML = `
+            <div style="text-align:left;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h4 style="margin:0; color:var(--gray-900);">Scheduled Examinations (${exams.length})</h4>
+                <span class="badge badge-primary">Live Synced</span>
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:14px;">
+                ${exams.map(e => {
+                  const examDate = e.exam_date ? new Date(e.exam_date).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : 'TBD';
+                  const cls = (e.classrooms && e.classrooms.name) ? e.classrooms.name : (e.subject || 'Academic');
+                  return `
+                    <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:16px; box-shadow:var(--shadow-sm);">
+                      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                        <span class="badge badge-primary" style="font-size:0.75rem;">${cls}</span>
+                        <span style="font-size:0.8rem; font-weight:700; color:var(--primary-700);">${examDate}</span>
+                      </div>
+                      <h4 style="margin:0 0 6px; font-size:1rem; color:var(--gray-900);">${e.title}</h4>
+                      <div style="font-size:0.8rem; color:var(--gray-500);">Duration: ${e.duration_minutes || e.duration_mins || 60} mins • Max Marks: ${e.total_marks || 100}</div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        }
       }
-      if (passing_marks > total_marks) {
-        showToast("Passing marks (" + passing_marks + ") cannot exceed total marks (" + total_marks + ")", "warning");
-        return;
-      }
-      if (passing_marks < 0) {
-        showToast("Passing marks cannot be negative", "warning");
-        return;
-      }
-      await ClassoraAuth.createExam({title:title, classroom_id:classroom_id, exam_date:exam_date, duration_minutes:duration_minutes, total_marks:total_marks, passing_marks:passing_marks});
-      closeModal("modal-create-exam"); showToast("Exam scheduled!","success"); e.target.reset(); await loadExams();
-    } catch(err){ showToast(err.message||"Failed","error"); }
-    finally { btn.disabled=false; btn.textContent="Schedule & Notify Students"; }
-  }
 
-  async function populateExamClassDropdown() {
-    var sel = document.getElementById("exam-class"); if (!sel) return;
-    var cls = await ClassoraAuth.fetchClassrooms();
-    if (!cls.length) { sel.innerHTML = "<option value=\"\" disabled selected>No classrooms yet</option>"; return; }
-    sel.innerHTML = "<option value=\"\" disabled selected>Select classroom</option>";
-    cls.forEach(function(c){var o=document.createElement("option");o.value=c.id;o.textContent=c.name+" ("+c.class_code+")";sel.appendChild(o);});
+      // Populate Completed Examinations & Recorded Marks table (N5)
+      const pastTbody = document.querySelector('.table-wrapper table tbody');
+      if (pastTbody && user) {
+        const results = await ClassoraAuth.fetchExamResults({ studentId: user.id });
+        if (results && results.length > 0) {
+          pastTbody.innerHTML = results.map(r => {
+            const ex = r.exams || {};
+            const cls = (ex.classrooms && ex.classrooms.name) || ex.subject || 'Class';
+            const dateStr = ex.exam_date ? new Date(ex.exam_date).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : 'Completed';
+            const maxM = ex.total_marks || 100;
+            const obtM = r.marks_obtained != null ? r.marks_obtained : (r.score != null ? r.score : 0);
+            const pct = Math.min(100, Math.round((parseFloat(obtM) / maxM) * 100));
+            const grade = r.grade || (pct >= 80 ? 'A' : pct >= 60 ? 'B' : 'C');
+            return `
+              <tr>
+                <td><strong>${escapeHTML(ex.title || 'Exam')}</strong></td>
+                <td><span class="badge badge-primary">${escapeHTML(cls)}</span></td>
+                <td>${dateStr}</td>
+                <td>${maxM}</td>
+                <td><strong style="color:var(--primary-700);">${obtM}</strong></td>
+                <td><span class="badge ${pct >= 75 ? 'badge-success' : 'badge-primary'}">${grade}</span></td>
+                <td><span style="font-size:0.85rem; color:var(--gray-600);">${escapeHTML(r.remarks || 'Evaluated')}</span></td>
+              </tr>
+            `;
+          }).join('');
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to load student exams:', err);
+    }
   }
+  window.loadStudentExams = loadStudentExams;
 
-  document.addEventListener("DOMContentLoaded", async function() {
-    await loadExams();
-    await populateExamClassDropdown();
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadStudentExams();
     if (ClassoraAuth.realtime) {
       ClassoraAuth.realtime.subscribeToExams({
         onInsert: function(newExam) {
-          showToast("Exam schedule updated live.", "info");
-          loadExams();
+          showToast('New examination scheduled by your teacher! 📝', 'info', 5000);
+          loadStudentExams();
         },
-        onUpdate: function() { loadExams(); },
-        onDelete: function() { loadExams(); },
-        onReconnect: function() { loadExams(); }
+        onUpdate: function() { loadStudentExams(); },
+        onDelete: function() { loadStudentExams(); },
+        onReconnect: function() { loadStudentExams(); }
       });
     }
   });
 
-  window.addEventListener("beforeunload", function() {
+  window.addEventListener('beforeunload', function() {
     if (ClassoraAuth.realtime) {
-      ClassoraAuth.realtime.removeChannel("cr-exams-all");
+      ClassoraAuth.realtime.removeChannel('cr-exams-all');
     }
   });
 </script>

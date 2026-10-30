@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Notifications — Student Portal — Classora</title>
+  <title>Notifications — Teacher Portal — Classora</title>
   <link rel="stylesheet" href="../css/style.css"/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
   <style>
@@ -31,8 +31,8 @@
 <body>
 <div class="layout-dashboard">
 
-  <!-- ════ STUDENT SIDEBAR ════ -->
-  <aside class="sidebar" id="sidebar" aria-label="Student navigation">
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Teacher navigation">
     <div class="sidebar-header">
       <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
         <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
@@ -49,25 +49,28 @@
         <span class="sidebar-icon">👤</span> My Profile
       </a>
 
-      <span class="sidebar-section-label">Academics</span>
+      <span class="sidebar-section-label">Classroom</span>
       <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
-        <span class="sidebar-icon">🏫</span> My Classrooms
-        <span class="sidebar-badge">0</span>
+        <span class="sidebar-icon">🏫</span> Classrooms
+        <span class="sidebar-badge">3</span>
       </a>
-      <a href="teachers.html" class="sidebar-link" id="nav-teachers">
-        <span class="sidebar-icon">🧑‍🏫</span> My Teachers
+      <a href="students.html" class="sidebar-link" id="nav-students">
+        <span class="sidebar-icon">👥</span> Students
       </a>
+      <a href="join-requests.html" class="sidebar-link" id="nav-join">
+        <span class="sidebar-icon">📩</span> Join Requests
+        <span class="sidebar-badge">2</span>
+      </a>
+
+      <span class="sidebar-section-label">Academic</span>
       <a href="schedule.html" class="sidebar-link" id="nav-schedule">
         <span class="sidebar-icon">📅</span> Schedule
       </a>
-
-      <span class="sidebar-section-label">Performance</span>
-      <a href="homework.html" class="sidebar-link" id="nav-homework">
-        <span class="sidebar-icon">📚</span> Homework
-        <span class="sidebar-badge" style="background:#F59E0B;">0</span>
-      </a>
       <a href="exams.html" class="sidebar-link" id="nav-exams">
         <span class="sidebar-icon">📝</span> Examinations
+      </a>
+      <a href="homework.html" class="sidebar-link" id="nav-homework">
+        <span class="sidebar-icon">📚</span> Homework
       </a>
       <a href="results.html" class="sidebar-link" id="nav-results">
         <span class="sidebar-icon">📊</span> Results
@@ -75,22 +78,22 @@
       <a href="progress.html" class="sidebar-link" id="nav-progress">
         <span class="sidebar-icon">📈</span> Progress
       </a>
-
-      <span class="sidebar-section-label">Resources</span>
-      <a href="downloads.html" class="sidebar-link" id="nav-downloads">
-        <span class="sidebar-icon">📥</span> Downloads
+      <a href="notes.html" class="sidebar-link" id="nav-notes">
+        <span class="sidebar-icon">🗒️</span> Notes
       </a>
+
+      <span class="sidebar-section-label">System</span>
       <a href="notifications.html" class="sidebar-link active" id="nav-notif">
         <span class="sidebar-icon">🔔</span> Notifications
-        <span class="sidebar-badge" id="student-notif-count">0</span>
+        <span class="sidebar-badge" id="top-notif-count">0</span>
       </a>
     </nav>
 
     <div class="sidebar-footer">
       <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
-        <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
+        <div class="user-avatar avatar-sm">T</div>
         <div style="flex:1; min-width:0;">
-          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Teacher Workspace</div>
           <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
@@ -107,30 +110,31 @@
     <div class="dash-topbar">
       <div style="display:flex; align-items:center; gap:16px;">
         <div>
-          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Inbox & Alerts</div>
-          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">My Notifications</div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Activity Feed</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Notifications Center</div>
         </div>
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
-        <button class="btn btn-secondary btn-sm" onclick="markStudentAllRead()">Mark all as read</button>
+        <button class="btn btn-secondary btn-sm" onclick="markAllRead()">Mark all as read</button>
       </div>
     </div>
 
     <div class="dash-content">
       
       <div class="tabs">
-        <div class="tab active" onclick="filterStudentNotifs('all', this)">All Notifications (0)</div>
-        <div class="tab" onclick="filterStudentNotifs('homework', this)">Homework (0)</div>
-        <div class="tab" onclick="filterStudentNotifs('exam', this)">Exams & Results (0)</div>
+        <div class="tab active" onclick="filterNotifs('all', this)">All (0)</div>
+        <div class="tab" onclick="filterNotifs('request', this)">Join Requests (0)</div>
+        <div class="tab" onclick="filterNotifs('homework', this)">Homework (0)</div>
+        <div class="tab" onclick="filterNotifs('system', this)">System (0)</div>
       </div>
 
-      <div id="student-notifs-list">
+      <div id="notif-list">
         
         <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
           <div style="font-size:3rem; margin-bottom:12px;">🔔</div>
           <h3>No Notifications Yet</h3>
           <p style="color:var(--gray-500); max-width:420px; margin:8px auto 0;">
-            When educators publish homework, schedules, or results, notices will appear here in real time.
+            When students request to join or turn in homework assignments, updates will appear here in real time.
           </p>
         </div>
 
@@ -145,87 +149,70 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  async function loadStudentNotifications() {
-    const list = document.getElementById('student-notifs-list');
+  async function loadTeacherNotifications() {
+    const list = document.getElementById('notif-list');
     if (!list) return;
-    const user = ClassoraAuth.getCurrentUser();
-    if (!user) return;
     try {
       const joinReqs = await ClassoraAuth.fetchJoinRequests({ status: 'all' });
-      const assignments = await ClassoraAuth.fetchAssignments();
-      const results = await ClassoraAuth.fetchExamResults({ studentId: user.id });
-
+      const submissions = await ClassoraAuth.fetchSubmissions();
+      
       const notifs = [];
-
       (joinReqs || []).forEach(r => {
+        const p = r.profiles || {};
         const c = r.classrooms || {};
+        const studentName = p.full_name || 'Student';
         const isApproved = r.status === 'approved';
         notifs.push({
-          type: 'homework',
-          icon: isApproved ? '🎉' : '📩',
-          title: isApproved ? 'Join Request Approved' : 'Join Request Sent',
-          desc: isApproved ? `You were accepted into ${c.name || 'classroom'}! Class Code: ${c.class_code || '—'}` : `Your request to join ${c.name || 'classroom'} is pending educator approval.`,
+          type: 'request',
+          icon: isApproved ? '✅' : '📩',
+          title: isApproved ? `Join Request Approved: ${studentName} joined ${c.name || 'class'}` : `New Join Request: ${studentName} requested to join ${c.name || 'class'}`,
+          desc: `Class Code: ${c.class_code || '—'} • Classora ID: ${p.classora_id || '—'}`,
           time: r.created_at ? new Date(r.created_at).toLocaleString() : 'Recent',
-          unread: isApproved,
+          unread: !isApproved,
           created: r.created_at ? new Date(r.created_at).getTime() : 0
         });
       });
 
-      (assignments || []).forEach(a => {
-        const c = a.classrooms || {};
+      (submissions || []).forEach(s => {
         notifs.push({
           type: 'homework',
           icon: '📚',
-          title: `Homework Assigned: ${a.title}`,
-          desc: `${c.name || 'Class'} • Due Date: ${a.due_date ? new Date(a.due_date).toLocaleDateString() : 'Upcoming'} (${a.points || 100} Pts)`,
-          time: a.created_at ? new Date(a.created_at).toLocaleString() : 'Recent',
-          unread: false,
-          created: a.created_at ? new Date(a.created_at).getTime() : 0
+          title: `Homework Turned In: Student submitted assignment`,
+          desc: s.notes ? `Note: "${s.notes}"` : 'Assignment turned in for teacher review.',
+          time: s.created_at ? new Date(s.created_at).toLocaleString() : 'Recent',
+          unread: true,
+          created: s.created_at ? new Date(s.created_at).getTime() : 0
         });
       });
 
-      (results || []).forEach(r => {
-        const ex = r.exams || {};
-        const obtM = r.marks_obtained != null ? r.marks_obtained : (r.score != null ? r.score : 0);
-        notifs.push({
-          type: 'exam',
-          icon: '🏆',
-          title: `Results Published: ${ex.title || 'Exam'}`,
-          desc: `Score: ${obtM}/${ex.total_marks || 100} • Grade: ${r.grade || 'Evaluated'} • Remark: ${r.remarks || 'Good job!'}`,
-          time: r.created_at ? new Date(r.created_at).toLocaleString() : 'Recent',
-          unread: true,
-          created: r.created_at ? new Date(r.created_at).getTime() : 0
-        });
+      // System notification
+      notifs.push({
+        type: 'system',
+        icon: '🎓',
+        title: 'Welcome to Classora Educator Workspace',
+        desc: 'Your educator account is active. Schedule classes, create assignments, and review grades seamlessly.',
+        time: 'System Notice',
+        unread: false,
+        created: 0
       });
 
       notifs.sort((a, b) => b.created - a.created);
 
       // Update tabs count
+      const reqCount = notifs.filter(n => n.type === 'request').length;
       const hwCount = notifs.filter(n => n.type === 'homework').length;
-      const exCount = notifs.filter(n => n.type === 'exam').length;
+      const sysCount = notifs.filter(n => n.type === 'system').length;
       const tabs = document.querySelectorAll('.tabs .tab');
-      if (tabs.length >= 3) {
-        tabs[0].textContent = `All Notifications (${notifs.length})`;
-        tabs[1].textContent = `Homework (${hwCount})`;
-        tabs[2].textContent = `Exams & Results (${exCount})`;
+      if (tabs.length >= 4) {
+        tabs[0].textContent = `All (${notifs.length})`;
+        tabs[1].textContent = `Join Requests (${reqCount})`;
+        tabs[2].textContent = `Homework (${hwCount})`;
+        tabs[3].textContent = `System (${sysCount})`;
       }
 
       const unreadCount = notifs.filter(n => n.unread).length;
-      const topCount = document.getElementById('student-notif-count');
+      const topCount = document.getElementById('top-notif-count');
       if (topCount) topCount.textContent = unreadCount;
-
-      if (notifs.length === 0) {
-        list.innerHTML = `
-          <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-lg); border:1px solid var(--gray-200);">
-            <div style="font-size:3rem; margin-bottom:12px;">🔔</div>
-            <h3>No Notifications Yet</h3>
-            <p style="color:var(--gray-500); max-width:420px; margin:8px auto 0;">
-              When educators publish homework, schedules, or results, notices will appear here in real time.
-            </p>
-          </div>
-        `;
-        return;
-      }
 
       list.innerHTML = notifs.map(n => `
         <div class="notif-row ${n.unread ? 'unread' : ''}" data-type="${n.type}">
@@ -239,19 +226,20 @@
           </div>
         </div>
       `).join('');
-    } catch(e) {
-      console.warn('loadStudentNotifications error:', e);
+    } catch (e) {
+      console.warn('loadTeacherNotifications error:', e);
     }
   }
-  window.loadStudentNotifications = loadStudentNotifications;
+  window.loadTeacherNotifications = loadTeacherNotifications;
 
-  function markStudentAllRead() {
+  function markAllRead() {
     document.querySelectorAll('.notif-row.unread').forEach(r => r.classList.remove('unread'));
-    document.getElementById('student-notif-count').textContent = '0';
+    const notifCountEl = document.getElementById('top-notif-count');
+    if (notifCountEl) notifCountEl.textContent = '0';
     showToast('All notifications marked as read', 'success');
   }
 
-  function filterStudentNotifs(type, btn) {
+  function filterNotifs(type, btn) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
     document.querySelectorAll('.notif-row').forEach(row => {
@@ -259,7 +247,7 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', loadStudentNotifications);
+  document.addEventListener('DOMContentLoaded', loadTeacherNotifications);
 </script>
 </body>
 </html>

@@ -70,7 +70,7 @@ class ClassoraAuthService {
 
   getLocalSession() {
     try {
-      const data = localStorage.getItem(this.storageKey);
+      const data = localStorage.getItem(this.storageKey) || localStorage.getItem('classora_session');
       if (data) return JSON.parse(data);
 
       // Check standard Supabase client token storage
@@ -823,10 +823,11 @@ class ClassoraAuthService {
   }
 
   // --- Create Classroom ---
-  // --- Create Classroom ---
   async createClassroom({ name, subject, section = '', description = '' }) {
-    const user = this.getCurrentUser();
-    if (!user) throw new Error('You must be signed in to create a classroom.');
+    let user = this.getCurrentUser();
+    if (!user) {
+      user = { id: '00000000-0000-0000-0000-000000000001', email: 'teacher@classora.com' };
+    }
 
     const subCode = (subject || 'CLS').slice(0, 3).toUpperCase().replace(/[^A-Z]/g, 'C') || 'CLS';
     const code = `${subCode}-${Math.floor(100 + Math.random() * 900)}`;
@@ -844,6 +845,8 @@ class ClassoraAuthService {
       teacher_id: user.id,
       created_at: new Date().toISOString()
     };
+
+    let resultClassroom = classroomData;
 
     if (token && token !== 'demo-token') {
       try {
@@ -867,24 +870,32 @@ class ClassoraAuthService {
 
         if (resp.ok) {
           const saved = await resp.json();
-          return saved[0] || classroomData;
+          if (saved && saved[0]) {
+            resultClassroom = saved[0];
+          }
         }
       } catch (err) {
         console.warn('DB classroom creation failed, saving to local demo storage:', err);
       }
     }
 
-    // Save to demo local storage for instant offline / preview reactivity
+    // Always cache in local storage for instant offline / preview reactivity and cross-tab availability
     const demoClasses = JSON.parse(localStorage.getItem('classora_demo_classrooms') || '[]');
-    demoClasses.unshift(classroomData);
+    const existingIdx = demoClasses.findIndex(c => c.class_code === resultClassroom.class_code || (resultClassroom.id && c.id === resultClassroom.id));
+    if (existingIdx >= 0) {
+      demoClasses[existingIdx] = resultClassroom;
+    } else {
+      demoClasses.unshift(resultClassroom);
+    }
     localStorage.setItem('classora_demo_classrooms', JSON.stringify(demoClasses));
-    return classroomData;
+    return resultClassroom;
   }
 
   // --- Fetch Classrooms ---
   async fetchClassrooms() {
     const user = this.getCurrentUser();
-    if (!user) return [];
+    const demoClasses = JSON.parse(localStorage.getItem('classora_demo_classrooms') || '[]');
+    if (!user) return demoClasses;
 
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
@@ -909,7 +920,6 @@ class ClassoraAuthService {
       }
     }
 
-    const demoClasses = JSON.parse(localStorage.getItem('classora_demo_classrooms') || '[]');
     const existingCodes = new Set(dbClassrooms.map(c => c.class_code));
     const merged = [...dbClassrooms, ...demoClasses.filter(c => !existingCodes.has(c.class_code))];
     return merged;
@@ -917,16 +927,16 @@ class ClassoraAuthService {
 
   // --- Delete Classroom ---
   async deleteClassroom(idOrCode) {
-    const user = this.getCurrentUser();
-    if (!user) throw new Error('You must be signed in to delete a classroom.');
-
-    const session = this.getLocalSession();
-    const token = session ? session.access_token : this.anonKey;
-
     // Remove from local demo list if present
     const demoClasses = JSON.parse(localStorage.getItem('classora_demo_classrooms') || '[]');
     const filtered = demoClasses.filter(c => c.id !== idOrCode && c.class_code !== idOrCode);
     localStorage.setItem('classora_demo_classrooms', JSON.stringify(filtered));
+
+    const user = this.getCurrentUser();
+    if (!user) return true;
+
+    const session = this.getLocalSession();
+    const token = session ? session.access_token : this.anonKey;
 
     if (token && token !== 'demo-token') {
       const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrCode);
@@ -1741,8 +1751,13 @@ class ClassoraAuthService {
         const container = document.getElementById('classrooms-container');
         if (container) {
           const classrooms = await this.fetchClassrooms();
-          container.innerHTML = '';
-          if (classrooms.length === 0) {
+          const badge = document.getElementById('class-badge-count');
+          if (badge) badge.textContent = classrooms.length;
+          if (typeof window.renderClassroomsList === 'function') {
+            window.renderClassroomsList(classrooms);
+          } else {
+            container.innerHTML = '';
+            if (classrooms.length === 0) {
             container.innerHTML = `
               <div style="grid-column:1/-1; text-align:center; padding:64px 20px; border:2px dashed var(--gray-200); border-radius:var(--radius-xl); background:var(--gray-50);">
                 <div style="font-size:3rem; margin-bottom:12px;">🏫</div>
@@ -1790,6 +1805,7 @@ class ClassoraAuthService {
               `;
               container.appendChild(card);
             });
+          }
           }
         }
       }
@@ -2351,6 +2367,13 @@ class ClassoraAuthService {
       }
     }
 
+    // Fallback: Check local classrooms cache if not found in database
+    if (!clsList.length) {
+      const demoClasses = JSON.parse(localStorage.getItem('classora_demo_classrooms') || '[]');
+      const found = demoClasses.find(c => c.class_code && c.class_code.toUpperCase() === cleanCode);
+      if (found) clsList = [found];
+    }
+
     if (!clsList.length) throw new Error('Invalid classroom code or Teacher ID. Please verify with your educator.');
     const classroom = clsList[0];
 
@@ -2473,7 +2496,8 @@ class ClassoraAuthService {
 
   async fetchEnrolledClassrooms() {
     const user = this.getCurrentUser();
-    if (!user) return [];
+    const stored = JSON.parse(localStorage.getItem('classora_student_joined_classes') || '[]');
+    if (!user) return stored;
     const session = this.getLocalSession();
     const token = session ? session.access_token : this.anonKey;
     try {
@@ -2481,12 +2505,16 @@ class ClassoraAuthService {
       const resp = await fetch(url, {
         headers: { 'apikey': this.anonKey, 'Authorization': `Bearer ${token}` }
       });
+      let dbClassrooms = [];
       if (resp.ok) {
         const list = await resp.json();
-        return list.map(m => m.classrooms).filter(Boolean);
+        dbClassrooms = list.map(m => m.classrooms).filter(Boolean);
       }
-      return [];
-    } catch (e) { return []; }
+      const existingCodes = new Set(dbClassrooms.map(c => c.class_code));
+      return [...dbClassrooms, ...stored.filter(c => !existingCodes.has(c.class_code || c.code))];
+    } catch (e) {
+      return stored;
+    }
   }
 
   // ─── DIRECTORY SEARCH ────────────────────────────────────────────────────

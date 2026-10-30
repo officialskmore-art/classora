@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Results & Grades Entry — Teacher Portal — Classora</title>
+  <title>Academic Results — Student Portal — Classora</title>
   <link rel="stylesheet" href="../css/style.css"/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F46E5'/><text y='.9em' font-size='70' x='15'>🎓</text></svg>"/>
 </head>
 <body>
 <div class="layout-dashboard">
 
-  <!-- ════ SIDEBAR ════ -->
-  <aside class="sidebar" id="sidebar" aria-label="Teacher navigation">
+  <!-- ════ STUDENT SIDEBAR ════ -->
+  <aside class="sidebar" id="sidebar" aria-label="Student navigation">
     <div class="sidebar-header">
       <a href="../index.html" class="navbar-logo" style="text-decoration:none;">
         <div class="logo-icon" style="width:32px;height:32px;font-size:0.875rem;">C</div>
@@ -28,28 +28,25 @@
         <span class="sidebar-icon">👤</span> My Profile
       </a>
 
-      <span class="sidebar-section-label">Classroom</span>
+      <span class="sidebar-section-label">Academics</span>
       <a href="classrooms.html" class="sidebar-link" id="nav-classrooms">
-        <span class="sidebar-icon">🏫</span> Classrooms
-        <span class="sidebar-badge">3</span>
+        <span class="sidebar-icon">🏫</span> My Classrooms
+        <span class="sidebar-badge">0</span>
       </a>
-      <a href="students.html" class="sidebar-link" id="nav-students">
-        <span class="sidebar-icon">👥</span> Students
+      <a href="teachers.html" class="sidebar-link" id="nav-teachers">
+        <span class="sidebar-icon">🧑‍🏫</span> My Teachers
       </a>
-      <a href="join-requests.html" class="sidebar-link" id="nav-join">
-        <span class="sidebar-icon">📩</span> Join Requests
-        <span class="sidebar-badge">2</span>
-      </a>
-
-      <span class="sidebar-section-label">Academic</span>
       <a href="schedule.html" class="sidebar-link" id="nav-schedule">
         <span class="sidebar-icon">📅</span> Schedule
       </a>
-      <a href="exams.html" class="sidebar-link" id="nav-exams">
-        <span class="sidebar-icon">📝</span> Examinations
-      </a>
+
+      <span class="sidebar-section-label">Performance</span>
       <a href="homework.html" class="sidebar-link" id="nav-homework">
         <span class="sidebar-icon">📚</span> Homework
+        <span class="sidebar-badge" style="background:#F59E0B;">0</span>
+      </a>
+      <a href="exams.html" class="sidebar-link" id="nav-exams">
+        <span class="sidebar-icon">📝</span> Examinations
       </a>
       <a href="results.html" class="sidebar-link active" id="nav-results">
         <span class="sidebar-icon">📊</span> Results
@@ -57,22 +54,22 @@
       <a href="progress.html" class="sidebar-link" id="nav-progress">
         <span class="sidebar-icon">📈</span> Progress
       </a>
-      <a href="notes.html" class="sidebar-link" id="nav-notes">
-        <span class="sidebar-icon">🗒️</span> Notes
-      </a>
 
-      <span class="sidebar-section-label">System</span>
+      <span class="sidebar-section-label">Resources</span>
+      <a href="downloads.html" class="sidebar-link" id="nav-downloads">
+        <span class="sidebar-icon">📥</span> Downloads
+      </a>
       <a href="notifications.html" class="sidebar-link" id="nav-notif">
         <span class="sidebar-icon">🔔</span> Notifications
-        <span class="sidebar-badge">5</span>
+        <span class="sidebar-badge">0</span>
       </a>
     </nav>
 
     <div class="sidebar-footer">
       <div class="sidebar-user" id="sidebar-user-menu" data-dropdown="user-dropdown">
-        <div class="user-avatar avatar-sm">T</div>
+        <div class="user-avatar avatar-sm" style="background:var(--grad-primary);">S</div>
         <div style="flex:1; min-width:0;">
-          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Educator Portal</div>
+          <div style="font-size:0.875rem; font-weight:600; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Student Workspace</div>
           <div class="classora-id" style="font-size:0.65rem; padding:1px 6px; margin-top:2px; display:inline-block;">Loading ID...</div>
         </div>
         <span style="font-size:0.8rem; color:var(--gray-400);">⋮</span>
@@ -89,61 +86,63 @@
     <div class="dash-topbar">
       <div style="display:flex; align-items:center; gap:16px;">
         <div>
-          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Gradebook & Publishing</div>
-          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">Examination Results Roster</div>
+          <div style="font-size:0.75rem; color:var(--gray-400); font-weight:500;">Academic Performance</div>
+          <div style="font-weight:700; color:var(--gray-900); font-size:1.0625rem;">My Report Card & Published Scores</div>
         </div>
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
-        <button class="btn btn-secondary btn-sm" onclick="saveDraftResults()">💾 Save Draft</button>
-        <button class="btn btn-primary btn-sm" onclick="publishResults()">🚀 Publish Results</button>
+        <button class="btn btn-primary btn-sm" onclick="showToast('Official Grade Transcript will be available once marks are published.', 'info')">📄 Download Transcript</button>
       </div>
     </div>
 
     <div class="dash-content">
       
-      <!-- Selection Bar -->
-      <div class="card" style="margin-bottom:24px; padding:18px 24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-          <div style="display:flex; gap:16px; align-items:center;">
-            <div>
-              <label style="font-size:0.75rem; color:var(--gray-500); display:block; margin-bottom:4px; font-weight:600;">ACTIVE EXAM</label>
-              <select class="form-input" style="padding:8px 12px; width:260px;" id="exam-select">
-                <option value="" disabled selected>No active exam selected</option>
-              </select>
-            </div>
-            <div>
-              <label style="font-size:0.75rem; color:var(--gray-500); display:block; margin-bottom:4px; font-weight:600;">PUBLISH STATUS</label>
-              <span class="badge badge-gray" id="pub-status-badge">Awaiting Grading</span>
-            </div>
+      <!-- Summary Cards -->
+      <div class="stats-grid">
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#D1FAE5; color:#065F46;">🏆</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--accent-600);">--</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Cumulative Score</div>
           </div>
-          
-          <div style="display:flex; gap:8px;">
-            <button class="btn btn-ghost btn-sm" onclick="exportResultsCSV()">📥 Export CSV</button>
-            <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨️ Print Sheet</button>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#EEF2FF; color:var(--primary-700);">🥇</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--gray-900);">--</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Cohort Position</div>
+          </div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-icon" style="background:#FEF3C7; color:#92400E;">📜</div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:800; color:#D97706;">0 / 0</div>
+            <div style="font-size:0.8125rem; color:var(--gray-500);">Assessments Cleared</div>
           </div>
         </div>
       </div>
 
-      <!-- Results Table -->
+      <!-- Published Scorecards Table -->
       <div class="table-wrapper">
+        <div class="table-header">
+          <h4>Published Academic Results</h4>
+        </div>
         <table>
           <thead>
             <tr>
-              <th>Student Name</th>
-              <th>Classora ID</th>
+              <th>Subject / Examination</th>
+              <th>Teacher</th>
               <th>Max Marks</th>
               <th>Obtained Marks</th>
-              <th>Calculated %</th>
+              <th>Percentage</th>
               <th>Grade</th>
               <th>Teacher Remark</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td colspan="7" style="text-align:center; padding:56px 20px;">
-                <div style="font-size:2.5rem; margin-bottom:8px;">📊</div>
-                <h4 style="color:var(--gray-800); margin-bottom:4px;">No Exam Results Recorded</h4>
-                <p style="font-size:0.875rem; color:var(--gray-500); margin:0;">Results will be recorded here once you conduct an exam and grade student papers.</p>
+              <td colspan="7" style="text-align:center; padding:36px; color:var(--gray-500);">
+                No examination scorecards published yet.
               </td>
             </tr>
           </tbody>
@@ -159,274 +158,89 @@
 <script src="../js/supabase-client.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  let currentExam = null;
-  let examRoster = [];
-
-  function updateRow(input, max) {
-    const val = parseFloat(input.value);
-    const row = input.closest('tr');
-    const calcEl = row.querySelector('.calc-pct');
-    const badge = row.querySelector('.grade-badge');
-
-    if (isNaN(val) || input.value.trim() === '') {
-      input.style.borderColor = '';
-      if (calcEl) calcEl.textContent = '--';
-      if (badge) { badge.textContent = '--'; badge.className = 'badge badge-primary grade-badge'; }
-      return;
-    }
-
-    if (val > max) {
-      input.style.borderColor = 'var(--danger-500)';
-      if (calcEl) { calcEl.textContent = 'Exceeds Max!'; calcEl.style.color = 'var(--danger-600)'; }
-      if (badge) { badge.textContent = 'Invalid'; badge.className = 'badge badge-danger grade-badge'; }
-      showToast(`Marks (${val}) cannot exceed maximum exam marks (${max})`, 'warning');
-      return;
-    }
-
-    if (val < 0) {
-      input.style.borderColor = 'var(--danger-500)';
-      if (calcEl) { calcEl.textContent = 'Invalid'; calcEl.style.color = 'var(--danger-600)'; }
-      if (badge) { badge.textContent = 'Invalid'; badge.className = 'badge badge-danger grade-badge'; }
-      showToast('Marks cannot be negative', 'warning');
-      return;
-    }
-
-    input.style.borderColor = '';
-    const pct = Math.round((val / max) * 100);
-    if (calcEl) { calcEl.textContent = pct + '%'; calcEl.style.color = 'var(--primary-700)'; }
-
-    if (badge) {
-      if (pct >= 90) {
-        badge.textContent = 'A+'; badge.className = 'badge badge-success grade-badge';
-      } else if (pct >= 80) {
-        badge.textContent = 'A'; badge.className = 'badge badge-success grade-badge';
-      } else if (pct >= 70) {
-        badge.textContent = 'B'; badge.className = 'badge badge-warning grade-badge';
-      } else {
-        badge.textContent = 'C'; badge.className = 'badge badge-danger grade-badge';
-      }
-    }
-  }
-
-  async function loadTeacherExamsDropdown() {
-    const exams = await ClassoraAuth.fetchExams();
-    const sel = document.getElementById('exam-select');
-    if (!sel) return;
-    if (!exams.length) {
-      sel.innerHTML = '<option value="" disabled selected>No exams scheduled yet</option>';
-      return;
-    }
-    sel.innerHTML = '<option value="" disabled selected>Select an active examination</option>' +
-      exams.map(e => `<option value="${e.id}" data-max="${e.total_marks || 100}">${e.title} (${e.total_marks || 100} Marks)</option>`).join('');
-    
-    sel.onchange = async () => {
-      const examId = sel.value;
-      currentExam = exams.find(e => e.id === examId);
-      await loadExamRoster(currentExam);
-    };
-  }
-
-  async function loadExamRoster(exam) {
-    if (!exam) return;
-    const tbody = document.querySelector('.table-wrapper table tbody');
-    if (!tbody) return;
-
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--gray-500);">Loading students & previous marks…</td></tr>';
-
+  async function loadStudentResults() {
+    const user = ClassoraAuth.getCurrentUser();
+    if (!user) return;
     try {
-      const students = await ClassoraAuth.fetchStudentsForTeacher();
-      const existingResults = await ClassoraAuth.fetchExamResults({ examId: exam.id });
-      const resultMap = new Map();
-      existingResults.forEach(r => {
-        if (r.student_id) resultMap.set(r.student_id, r);
-        if (r.profiles && r.profiles.classora_id) resultMap.set(r.profiles.classora_id, r);
-      });
-
-      examRoster = students;
-      const maxMarks = exam.total_marks || 100;
-
-      if (!students.length) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" style="text-align:center; padding:48px 20px;">
-              <div style="font-size:2rem; margin-bottom:8px;">👥</div>
-              <h5 style="color:var(--gray-800); margin-bottom:4px;">No Enrolled Students</h5>
-              <p style="font-size:0.85rem; color:var(--gray-500); margin:0;">Students who join your classroom will appear here for grading.</p>
-            </td>
-          </tr>
-        `;
-        return;
+      const results = await ClassoraAuth.fetchExamResults({ studentId: user.id });
+      const exams = await ClassoraAuth.fetchExams();
+      const totalAssessments = Math.max(exams ? exams.length : 0, results ? results.length : 0);
+      const tbody = document.querySelector('.table-wrapper table tbody');
+      const stats = document.querySelectorAll('.stats-grid .card-stat');
+      if (stats.length >= 3) {
+        stats[2].querySelector('div > div:first-child').textContent = `${results ? results.length : 0} / ${totalAssessments}`;
       }
 
-      const rawDraft = localStorage.getItem('classora_results_draft_' + exam.id);
-      let draftData = {};
-      try { draftData = rawDraft ? JSON.parse(rawDraft) : {}; } catch(e){}
+      if (tbody) {
+        if (!results || !results.length) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align:center; padding:36px; color:var(--gray-500);">
+                No examination scorecards published yet.
+              </td>
+            </tr>
+          `;
+        } else {
+          const totalMax = results.reduce((sum, r) => sum + ((r.exams && r.exams.total_marks) || 100), 0);
+          const totalObtained = results.reduce((sum, r) => {
+            const val = r.marks_obtained != null ? r.marks_obtained : (r.score != null ? r.score : 0);
+            return sum + (parseFloat(val) || 0);
+          }, 0);
+          const cumPct = totalMax > 0 ? Math.round((totalObtained / totalMax) * 100) : 0;
 
-      tbody.innerHTML = students.map(s => {
-        const studentProfile = s.profiles || {};
-        const stName = studentProfile.full_name || 'Student';
-        const stCid = studentProfile.classora_id || s.student_id;
-        const res = resultMap.get(s.student_id) || resultMap.get(stCid) || {};
-        const draft = draftData[s.student_id] || {};
-        const rawObt = (res.marks_obtained != null && res.marks_obtained !== '') ? res.marks_obtained : ((res.score != null && res.score !== '') ? res.score : (draft.marks != null ? draft.marks : ''));
-        const obt = rawObt !== '' ? rawObt : '';
-        const pct = obt !== '' ? Math.min(100, Math.round((parseFloat(obt) / maxMarks) * 100)) : 0;
-        const grade = res.grade || (pct >= 80 ? 'A' : pct >= 60 ? 'B' : 'C');
-        const remark = res.remarks || (draft.remarks || '');
+          if (stats.length >= 3) {
+            stats[0].querySelector('div > div:first-child').textContent = cumPct + '%';
+            stats[2].querySelector('div > div:first-child').textContent = `${results.length} / ${totalAssessments}`;
+          }
 
-        return `
-          <tr data-student-id="${s.student_id}">
-            <td><strong>${stName}</strong></td>
-            <td><code>${stCid}</code></td>
-            <td>${maxMarks}</td>
-            <td>
-              <input type="number" class="form-input score-input" style="width:80px; padding:6px 8px; font-weight:700;" value="${obt}" min="0" max="${maxMarks}" placeholder="0" oninput="updateRow(this, ${maxMarks})"/>
-            </td>
-            <td><strong class="calc-pct" style="color:var(--primary-700);">${obt !== '' ? pct + '%' : '--'}</strong></td>
-            <td><span class="badge ${pct >= 75 ? 'badge-success' : 'badge-primary'} grade-badge">${obt !== '' ? grade : '--'}</span></td>
-            <td>
-              <input type="text" class="form-input remark-input" style="padding:6px 10px; font-size:0.85rem;" placeholder="e.g. Excellent work" value="${remark}"/>
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      const badge = document.getElementById('pub-status-badge');
-      if (badge) {
-        badge.textContent = existingResults.length > 0 ? 'Results Published' : (rawDraft ? 'Draft Saved Locally' : 'Awaiting Grading');
-        badge.className = existingResults.length > 0 ? 'badge badge-success' : (rawDraft ? 'badge badge-primary' : 'badge badge-gray');
-      }
-    } catch (e) {
-      console.warn('Roster load error:', e);
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--danger-600);">Failed to load roster.</td></tr>';
-    }
-  }
-
-  function saveDraftResults() {
-    if (!currentExam) {
-      showToast('Please select an active examination first.', 'warning');
-      return;
-    }
-    const rows = document.querySelectorAll('.table-wrapper table tbody tr[data-student-id]');
-    if (!rows.length) {
-      showToast('No student entries available to save as draft.', 'warning');
-      return;
-    }
-    const draftData = {};
-    rows.forEach(r => {
-      const sId = r.dataset.studentId;
-      const score = r.querySelector('.score-input')?.value;
-      const rem = r.querySelector('.remark-input')?.value;
-      draftData[sId] = { marks: score, remarks: rem };
-    });
-    localStorage.setItem('classora_results_draft_' + currentExam.id, JSON.stringify(draftData));
-    const badge = document.getElementById('pub-status-badge');
-    if (badge && badge.textContent !== 'Results Published') {
-      badge.textContent = 'Draft Saved Locally';
-      badge.className = 'badge badge-primary';
-    }
-    showToast('Grades and remarks saved locally as draft! 💾', 'success');
-  }
-
-  function exportResultsCSV() {
-    if (!currentExam) {
-      showToast('Please select an active examination first.', 'warning');
-      return;
-    }
-    const rows = document.querySelectorAll('.table-wrapper table tbody tr[data-student-id]');
-    if (!rows.length) {
-      showToast('No student results available to export.', 'warning');
-      return;
-    }
-    let csv = 'Student Name,Classora ID,Max Marks,Obtained Marks,Percentage,Grade,Teacher Remark\n';
-    rows.forEach(r => {
-      const name = r.cells[0]?.innerText?.trim() || '';
-      const cid = r.cells[1]?.innerText?.trim() || '';
-      const maxM = r.cells[2]?.innerText?.trim() || '';
-      const obt = r.querySelector('.score-input')?.value || '';
-      const pct = r.querySelector('.calc-pct')?.innerText?.trim() || '';
-      const grade = r.querySelector('.grade-badge')?.innerText?.trim() || '';
-      const rem = r.querySelector('.remark-input')?.value?.replace(/"/g, '""') || '';
-      csv += `"${name}","${cid}",${maxM},"${obt}","${pct}","${grade}","${rem}"\n`;
-    });
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${(currentExam.title || 'results').replace(/[^a-zA-Z0-9_-]/g, '_')}_results.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast('Results CSV downloaded successfully!', 'success');
-  }
-
-  async function publishResults() {
-    if (!currentExam) {
-      showToast('Please select an active examination first.', 'warning');
-      return;
-    }
-    const rows = document.querySelectorAll('.table-wrapper table tbody tr[data-student-id]');
-    if (!rows.length) {
-      showToast('No students to grade.', 'warning');
-      return;
-    }
-
-    const maxMarks = currentExam.total_marks || 100;
-    for (const row of rows) {
-      const scoreInput = row.querySelector('.score-input');
-      const marks = parseFloat(scoreInput.value);
-      if (!isNaN(marks)) {
-        if (marks > maxMarks) {
-          showToast(`Marks (${marks}) cannot exceed maximum exam marks (${maxMarks}).`, 'error');
-          scoreInput.focus();
-          return;
-        }
-        if (marks < 0) {
-          showToast('Marks cannot be negative.', 'error');
-          scoreInput.focus();
-          return;
+          tbody.innerHTML = results.map(r => {
+            const exam = r.exams || {};
+            const teacher = (exam.profiles && exam.profiles.full_name) || 'Classora Educator';
+            const maxM = exam.total_marks || 100;
+            const obtM = (r.marks_obtained != null) ? r.marks_obtained : (r.score != null ? r.score : 0);
+            const pct = Math.min(100, Math.round((parseFloat(obtM) / maxM) * 100));
+            const grade = r.grade || (pct >= 80 ? 'A' : pct >= 60 ? 'B' : 'C');
+            return `
+              <tr class="animate-fade-up">
+                <td><strong>${exam.title || 'Exam'}</strong><div style="font-size:0.75rem; color:var(--gray-500);">${exam.subject || 'Academic'}</div></td>
+                <td>${teacher}</td>
+                <td>${maxM}</td>
+                <td><strong style="color:var(--primary-700);">${obtM}</strong></td>
+                <td>${pct}%</td>
+                <td><span class="badge ${pct >= 75 ? 'badge-success' : 'badge-primary'}">${grade}</span></td>
+                <td><span style="font-size:0.85rem; color:var(--gray-600);">${r.remarks || 'Evaluated'}</span></td>
+              </tr>
+            `;
+          }).join('');
         }
       }
-    }
-
-    const btn = document.querySelector('button[onclick="publishResults()"]');
-    if (btn) { btn.disabled = true; btn.textContent = 'Publishing…'; }
-
-    try {
-      let publishedCount = 0;
-      for (const row of rows) {
-        const studentId = row.dataset.studentId;
-        const scoreInput = row.querySelector('.score-input');
-        const remarkInput = row.querySelector('.remark-input');
-        const gradeBadge = row.querySelector('.grade-badge');
-        const marks = parseFloat(scoreInput.value);
-
-        if (!isNaN(marks)) {
-          await ClassoraAuth.publishExamResult({
-            exam_id: currentExam.id,
-            student_id: studentId,
-            marks_obtained: marks,
-            grade: gradeBadge ? gradeBadge.textContent : null,
-            remarks: remarkInput ? remarkInput.value.trim() : ''
-          });
-          publishedCount++;
-        }
-      }
-
-      localStorage.removeItem('classora_results_draft_' + currentExam.id);
-      document.getElementById('pub-status-badge').textContent = 'Published to Students';
-      document.getElementById('pub-status-badge').className = 'badge badge-success';
-      showToast(`Results published for ${publishedCount} students! Portals updated in realtime. 🚀`, 'success', 5000);
     } catch (err) {
-      showToast('Error publishing results: ' + err.message, 'error');
-    } finally {
-      if (btn) { btn.disabled = false; btn.textContent = '🚀 Publish Results'; }
+      console.warn('Failed to load student results:', err);
     }
   }
+  window.loadStudentResults = loadStudentResults;
 
   document.addEventListener('DOMContentLoaded', async () => {
-    await loadTeacherExamsDropdown();
+    await loadStudentResults();
+    const user = ClassoraAuth.getCurrentUser();
+    if (user && ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.subscribeToResults({
+        studentId: user.id,
+        onInsert: function(newRes) {
+          showToast('New exam score published! 🏆 Check your report card.', 'success', 6000);
+          loadStudentResults();
+        },
+        onUpdate: function() { loadStudentResults(); },
+        onReconnect: function() { loadStudentResults(); }
+      });
+    }
+  });
+
+  window.addEventListener('beforeunload', function() {
+    const user = ClassoraAuth.getCurrentUser();
+    if (user && ClassoraAuth.realtime) {
+      ClassoraAuth.realtime.removeChannel('cr-res-s-' + user.id);
+    }
   });
 </script>
 </body>
